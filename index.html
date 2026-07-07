@@ -846,6 +846,14 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
 .batch-row .br-count{font-size:11px;color:var(--text2)}
 .batch-row .br-date{font-size:10px;color:var(--text3);margin-left:auto}
 .batch-row .br-badge{padding:2px 8px;border-radius:99px;font-size:10px;background:var(--green-dim);color:var(--green)}
+.month-delete-card{padding:11px 12px;border:1px solid color-mix(in srgb,var(--amber) 42%,var(--border));background:linear-gradient(135deg,color-mix(in srgb,var(--amber) 8%,var(--surface)),var(--surface));border-radius:var(--r)}
+.month-delete-title{font-size:11.5px;font-weight:700;color:var(--text);margin-bottom:3px}
+.month-delete-copy{font-size:10.5px;color:var(--text2);line-height:1.55}
+.month-delete-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.month-delete-controls .fb-select{min-width:235px;flex:1}
+.month-delete-meta{min-height:16px;font-size:10.5px;color:var(--text3);line-height:1.45;margin-top:8px}
+.month-delete-meta strong{color:var(--text2)}
+.month-delete-empty{font-size:10.5px;color:var(--text3);padding:9px 0 1px}
 
 /* ─── CASE GENERATOR ─── */
 .cg-quickpick{margin-top:10px;display:flex;flex-direction:column;gap:5px}
@@ -1974,15 +1982,26 @@ thead th{padding:7px 10px}
       <div class="settings-section danger-zone">
         <div class="ss-header">
           <h3>Data Controls</h3>
-          <p>Clear imported data when you want a fresh slate. This does not affect the HTML file itself.</p>
+          <p>Remove one imported month when a file was wrong, or clear everything only when you genuinely need a blank tracker. This never changes the HTML file itself.</p>
         </div>
         <div class="ss-body">
           <div style="font-size:11.5px;color:var(--text2);line-height:1.5">
             Current data loaded: <strong id="data-counts">0 active · 0 archived · 0 batches</strong>
           </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn btn-danger" onclick="resetAllData()">Remove All Imported Data</button>
+          <div class="month-delete-card">
+            <div class="month-delete-title">Delete one imported month</div>
+            <div class="month-delete-copy">Choose a batch to remove its Review Queue, COG-error, Active, History and annotation rows together. It deletes the matching rows from Supabase first and verifies they are gone before clearing this screen. Other imported months stay untouched. This cannot be undone.</div>
+            <div class="month-delete-controls">
+              <select class="fb-select" id="delete-batch-select" onchange="updateDeleteBatchSummary()">
+                <option value="">No imported months available</option>
+              </select>
+              <button class="btn btn-danger" id="delete-batch-btn" onclick="deleteSelectedBatch()" disabled>Delete selected month from Supabase…</button>
             </div>
+            <div class="month-delete-meta" id="delete-batch-summary"></div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:2px">
+            <button class="btn btn-danger" onclick="resetAllData()">Remove All Imported Data</button>
+          </div>
         </div>
       </div>
 
@@ -2118,6 +2137,16 @@ function save() {
 let _sb = null;          // supabase client (or null when disabled)
 let _cloudReady = false;
 let _pushTimer = null;
+// Every cloud write goes through one queue. Without this, an in-flight import
+// upsert can finish AFTER a month-delete and silently put the deleted rows back.
+let _cloudWriteQueue = Promise.resolve();
+function queueCloudWrite(task){
+  const next = _cloudWriteQueue.catch(()=>{}).then(task);
+  // Keep the queue usable after a failed request, while the caller still gets
+  // the actual rejection for its own error handling.
+  _cloudWriteQueue = next.catch(()=>{});
+  return next;
+}
 const CLOUD_TABLE = 'sf_state';
 
 function cloudEnabled(){
@@ -2192,43 +2221,55 @@ function cloudPush(){
   if (!_cloudReady || !_sb) return;
   clearTimeout(_pushTimer);
   setSyncBadge('syncing');
-  _pushTimer = setTimeout(cloudPushNow, 1200);
+  _pushTimer = setTimeout(()=>{ cloudPushNow().catch(()=>{}); }, 1200);
 }
 
 async function cloudPushNow(){
-  if (!_cloudReady || !_sb) return;
-  const OWNER = window.SF_CLOUD.workspace || 'sarah';
-  try {
-    // Relational, local-first mirror. Local is the source of truth; we push the
-    // full current state so a wiped/restored table always matches the browser.
-    const toReimbRow = r => ({
-      id:r.reimb_id, owner_id:OWNER, reimb_id_real:r.reimb_id_real||r.reimb_id,
-      sku:r.sku||null, fnsku:r.fnsku||null, asin:r.asin||null, product_name:r.product_name||null,
-      date:r.date||null, reason:r.reason||null, quantity:r.quantity||1,
-      actual_cost:Number(r.actual_cost)||0, cog_source:r.cog_source||null,
-      reimb_amount:Number(r.reimb_amount)||0, net_result:(r.net_result!=null?Number(r.net_result):null),
-      is_reversal:r.is_reversal||'No', is_adjustment:r.is_adjustment||'No',
-      case_id:r.case_id||null, order_id:r.order_id||null, raw:r, updated_at:new Date().toISOString(),
-    });
-    const allRecs = [...records, ...archived, ...importErrors];
-    const reimbRows = allRecs.map(toReimbRow);
-    const annRows = Object.entries(annotations).map(([id,a])=>({
-      reimb_id:id, owner_id:OWNER,
-      workflow_status:a.workflow_status||null, msc_status:a.msc_status||null,
-      msc_attempts:a.msc_attempts||[], review_date:a.review_date||null,
-      case_status:a.case_status||null, new_case_id:a.new_case_id||null, new_reimb_id:a.new_reimb_id||null,
-      case_opened_date:a.case_opened_date||null, outcome:a.outcome||null,
-      invoice_link:a.invoice_link||null, no_cog:!!a.no_cog, audit:a.audit||[],
-      updated_at:new Date().toISOString(),
-    })).filter(a=>reimbRows.some(r=>r.id===a.reimb_id));  // FK-safe
-    // chunked upserts (Supabase caps payload size)
-    const chunk=(arr,n)=>arr.length?Array.from({length:Math.ceil(arr.length/n)},(_,i)=>arr.slice(i*n,i*n+n)):[];
-    for(const c of chunk(reimbRows,200)){ const {error}=await _sb.from('sfre_reimbursements').upsert(c,{onConflict:'id'}); if(error) throw error; }
-    for(const c of chunk(annRows,200)){ const {error}=await _sb.from('sfre_annotations').upsert(c,{onConflict:'reimb_id'}); if(error) throw error; }
-    if(batches.length){ const brows=batches.map(b=>({id:String(b.id||b.batch_id||(b.from+'_'+b.to+'_'+b.imported_at)), owner_id:OWNER, meta:b})); await _sb.from('sfre_batches').upsert(brows,{onConflict:'id'}); }
-    await _sb.from('sfre_app_settings').upsert({owner_id:OWNER, payload:settings, updated_at:new Date().toISOString()},{onConflict:'owner_id'});
-    setSyncBadge('ok');
-  } catch(e){ console.warn('Cloud push failed:', e); setSyncBadge('error'); }
+  if (!_cloudReady || !_sb) return false;
+  return queueCloudWrite(async()=>{
+    const OWNER = window.SF_CLOUD.workspace || 'sarah';
+    try {
+      // Relational, local-first mirror. Local is the source of truth; we push the
+      // full current state so a wiped/restored table always matches the browser.
+      const toReimbRow = r => ({
+        id:r.reimb_id, owner_id:OWNER, reimb_id_real:r.reimb_id_real||r.reimb_id,
+        sku:r.sku||null, fnsku:r.fnsku||null, asin:r.asin||null, product_name:r.product_name||null,
+        date:r.date||null, reason:r.reason||null, quantity:r.quantity||1,
+        actual_cost:Number(r.actual_cost)||0, cog_source:r.cog_source||null,
+        reimb_amount:Number(r.reimb_amount)||0, net_result:(r.net_result!=null?Number(r.net_result):null),
+        is_reversal:r.is_reversal||'No', is_adjustment:r.is_adjustment||'No',
+        case_id:r.case_id||null, order_id:r.order_id||null, raw:r, updated_at:new Date().toISOString(),
+      });
+      const allRecs = [...records, ...archived, ...importErrors];
+      const reimbRows = allRecs.map(toReimbRow);
+      const annRows = Object.entries(annotations).map(([id,a])=>({
+        reimb_id:id, owner_id:OWNER,
+        workflow_status:a.workflow_status||null, msc_status:a.msc_status||null,
+        msc_attempts:a.msc_attempts||[], review_date:a.review_date||null,
+        case_status:a.case_status||null, new_case_id:a.new_case_id||null, new_reimb_id:a.new_reimb_id||null,
+        case_opened_date:a.case_opened_date||null, outcome:a.outcome||null,
+        invoice_link:a.invoice_link||null, no_cog:!!a.no_cog, audit:a.audit||[],
+        updated_at:new Date().toISOString(),
+      })).filter(a=>reimbRows.some(r=>String(r.id)===String(a.reimb_id)));  // FK-safe
+      // chunked upserts (Supabase caps payload size)
+      const chunk=(arr,n)=>arr.length?Array.from({length:Math.ceil(arr.length/n)},(_,i)=>arr.slice(i*n,i*n+n)):[];
+      for(const c of chunk(reimbRows,200)){ const {error}=await _sb.from('sfre_reimbursements').upsert(c,{onConflict:'id'}); if(error) throw error; }
+      for(const c of chunk(annRows,200)){ const {error}=await _sb.from('sfre_annotations').upsert(c,{onConflict:'reimb_id'}); if(error) throw error; }
+      if(batches.length){
+        const brows=batches.map(b=>({id:String(b.id||b.batch_id||(b.from+'_'+b.to+'_'+b.imported_at)), owner_id:OWNER, meta:b}));
+        const {error:bErr}=await _sb.from('sfre_batches').upsert(brows,{onConflict:'id'});
+        if(bErr) throw bErr;
+      }
+      const {error:sErr}=await _sb.from('sfre_app_settings').upsert({owner_id:OWNER, payload:settings, updated_at:new Date().toISOString()},{onConflict:'owner_id'});
+      if(sErr) throw sErr;
+      setSyncBadge('ok');
+      return true;
+    } catch(e){
+      console.warn('Cloud push failed:', e);
+      setSyncBadge('error');
+      throw e;
+    }
+  });
 }
 
 // Tiny status pill (uses #sync-badge if present in the DOM; silent otherwise).
@@ -4718,27 +4759,31 @@ function confirmImportPreview() {
   const selectedValid = workable.filter(cogOk);
   const selectedMissingCog = workable.filter(r=>!cogOk(r));
   let added=0, dupes=0, skipped=0, errorsAdded=0, reversalsAdded=0, orphansSkipped=orphan.length;
+  const dates = selected.map(r=>normaliseDate(r.date)).filter(Boolean).sort();
+  const period = dates.length ? dates[0].substring(0,7)+' to '+dates[dates.length-1].substring(0,7) : 'Unknown';
+  const batchId = period.replace(/\s/g,'_')+'_'+Date.now();
+  // Keep a durable batch key on every row. This is what makes deleting one bad
+  // monthly import safe: Review, COG errors, Active and History can all be removed
+  // as one batch without relying on whatever screen the row currently lives on.
+  const stampBatch = r => ({...r, import_batch_id:batchId, import_batch_label:period});
   settings.import_mapping = mapped;
   selectedValid.forEach(r => {
     const exists = records.find(x=>x.reimb_id===r.reimb_id)||archived.find(x=>x.reimb_id===r.reimb_id)||importErrors.find(x=>x.reimb_id===r.reimb_id);
-    if (!exists) { records.push(r); setAnn(r.reimb_id,{workflow_status:'triage'}); added++; }
+    if (!exists) { records.push(stampBatch(r)); setAnn(r.reimb_id,{workflow_status:'triage'}); added++; }
     else dupes++;
   });
   selectedMissingCog.forEach(r => {
     const exists = records.find(x=>x.reimb_id===r.reimb_id)||archived.find(x=>x.reimb_id===r.reimb_id)||importErrors.find(x=>x.reimb_id===r.reimb_id);
-    if (!exists) { importErrors.push({...r, import_error:'Missing COG from SKU'}); errorsAdded++; }
+    if (!exists) { importErrors.push({...stampBatch(r), import_error:'Missing COG from SKU'}); errorsAdded++; }
     else dupes++;
   });
   reversalRows.forEach(r => {
     const exists = records.find(x=>x.reimb_id===r.reimb_id)||archived.find(x=>x.reimb_id===r.reimb_id);
-    if (!exists) { archived.push(r); setAnn(r.reimb_id,{workflow_status:'archived', outcome:'reversal'}); reversalsAdded++; }
+    if (!exists) { archived.push(stampBatch(r)); setAnn(r.reimb_id,{workflow_status:'archived', outcome:'reversal'}); reversalsAdded++; }
     else dupes++;
   });
   skipped = parsed.length - selected.length;
-  const dates = selected.map(r=>normaliseDate(r.date)).filter(Boolean).sort();
-  const period = dates.length ? dates[0].substring(0,7)+' to '+dates[dates.length-1].substring(0,7) : 'Unknown';
-  const batchId = period.replace(/\s/g,'_')+'_'+Date.now();
-  batches.push({period, label:period, count:added, dupes, skipped, errorsAdded, date:new Date().toISOString(), id:batchId});
+  batches.push({period, label:period, count:added, errorsAdded, reversalsAdded, importedCount:added+errorsAdded+reversalsAdded, dupes, skipped, date:new Date().toISOString(), id:batchId});
   save();
   document.getElementById('import-result').innerHTML = '<div class="ip-ok">✅ Import complete — <strong>'+added+' to Review Queue</strong>, <strong>'+errorsAdded+' blocked for COG fix</strong>, <strong>'+reversalsAdded+' reversals filed to History</strong>. '+dupes+' duplicates skipped. '+orphansSkipped+' orphan credits (no product) skipped. '+skipped+' rows not selected.</div>';
   cancelImportPreview(false);
@@ -4933,6 +4978,7 @@ function renderSettings() {
   setv('s-auto-archive', settings.auto_archive_days);
   document.getElementById('theme-select').value = document.documentElement.getAttribute('data-theme')||'dark';
   updateDataCounts();
+  renderDeleteBatchControl();
   document.getElementById('reasons-list').innerHTML = settings.reasons.map((r,i)=>`
     <div style="display:flex;gap:6px;align-items:center">
       <input class="fb-input" style="flex:1" value="${esc(r)}" onchange="settings.reasons[${i}]=this.value">
@@ -4963,6 +5009,162 @@ function saveSettings() {
 }
 
 
+
+// ── Delete a single imported batch ─────────────────────────────────────────
+// Pull every matching remote row before a deletion. The original local-only list
+// can be stale, and Supabase defaults to paginated reads, so deleting only what
+// happens to be in the browser lets older rows return on a hard refresh.
+async function fetchAllCloudReimbursementRows(owner){
+  const all=[];
+  const pageSize=1000;
+  for(let from=0;;from+=pageSize){
+    const {data,error}=await _sb.from('sfre_reimbursements')
+      .select('id,date,raw')
+      .eq('owner_id',owner)
+      .order('id',{ascending:true})
+      .range(from,from+pageSize-1);
+    if(error) throw error;
+    const rows=data||[];
+    all.push(...rows);
+    if(rows.length<pageSize) break;
+  }
+  return all;
+}
+function cloudRowBelongsToBatch(row,batch){
+  const raw=(row && row.raw && typeof row.raw==='object') ? row.raw : (row||{});
+  return recordBelongsToBatch({...raw, reimb_id:raw.reimb_id||row.id, date:raw.date||row.date}, batch);
+}
+// Current imports carry import_batch_id. For historical imports made before this
+// feature existed, fall back to their logged YYYY-MM range so the existing months
+// can still be deleted and re-imported now.
+function batchMonthBounds(batch) {
+  const months = String(batch?.period || batch?.label || '').match(/\d{4}-\d{2}/g) || [];
+  if (!months.length) return null;
+  return {start:months[0], end:months[months.length-1]};
+}
+function recordBelongsToBatch(record, batch) {
+  if (!record || !batch) return false;
+  if (record.import_batch_id) return String(record.import_batch_id) === String(batch.id);
+  const bounds = batchMonthBounds(batch);
+  const rowMonth = String(normaliseDate(record.date || '') || '').substring(0,7);
+  return !!(bounds && rowMonth && rowMonth >= bounds.start && rowMonth <= bounds.end);
+}
+function batchRows(batch) {
+  return [...records, ...archived, ...importErrors].filter(r => recordBelongsToBatch(r, batch));
+}
+function batchDisplayName(batch) {
+  return batch?.label || batch?.period || 'Unknown import';
+}
+function batchSummaryText(batch, rows) {
+  const review = rows.filter(r => records.includes(r) && ann(r.reimb_id).workflow_status === 'triage' && r.is_reversal !== 'Yes').length;
+  const active = rows.filter(r => records.includes(r) && ann(r.reimb_id).workflow_status !== 'triage' && r.is_reversal !== 'Yes').length;
+  const errors = rows.filter(r => importErrors.includes(r)).length;
+  const history = rows.filter(r => archived.includes(r)).length;
+  return rows.length+' imported row'+(rows.length===1?'':'s')+' found: '+review+' review · '+errors+' COG error'+(errors===1?'':'s')+' · '+active+' active · '+history+' history.';
+}
+function renderDeleteBatchControl() {
+  const select = document.getElementById('delete-batch-select');
+  const button = document.getElementById('delete-batch-btn');
+  const summary = document.getElementById('delete-batch-summary');
+  if (!select || !button || !summary) return;
+  const ordered = [...batches].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+  if (!ordered.length) {
+    select.innerHTML = '<option value="">No imported months available</option>';
+    select.disabled = true; button.disabled = true;
+    summary.innerHTML = '<span class="month-delete-empty">There are no import batches to remove.</span>';
+    return;
+  }
+  const selected = ordered.some(b=>String(b.id)===String(select.value)) ? String(select.value) : String(ordered[0].id);
+  select.disabled = false;
+  select.innerHTML = ordered.map(b=>'<option value="'+esc(String(b.id))+'">'+esc(batchDisplayName(b))+'</option>').join('');
+  select.value = selected;
+  button.disabled = false;
+  updateDeleteBatchSummary();
+}
+function updateDeleteBatchSummary() {
+  const select = document.getElementById('delete-batch-select');
+  const button = document.getElementById('delete-batch-btn');
+  const summary = document.getElementById('delete-batch-summary');
+  if (!select || !button || !summary) return;
+  const batch = batches.find(b=>String(b.id)===String(select.value));
+  if (!batch) { button.disabled=true; summary.textContent=''; return; }
+  const rows = batchRows(batch);
+  button.disabled = false;
+  summary.innerHTML = '<strong>'+esc(batchDisplayName(batch))+':</strong> '+esc(batchSummaryText(batch, rows));
+}
+async function deleteSelectedBatch() {
+  if (isReadOnly && isReadOnly()) { toast('Read-only mode — deletion is blocked'); return; }
+  const batchId = document.getElementById('delete-batch-select')?.value;
+  const batch = batches.find(b=>String(b.id)===String(batchId));
+  if (!batch) { toast('Choose an import month first'); return; }
+  const localRows = batchRows(batch);
+  const label = batchDisplayName(batch);
+  const first = 'Delete '+label+'?\n\nThis removes '+batchSummaryText(batch, localRows)+'\n\nOther imported months will stay untouched.';
+  if (!confirm(first)) return;
+  if (!confirm('This cannot be undone. Permanently delete '+label+' from Supabase now?')) return;
+
+  const localIds = [...new Set(localRows.map(r=>String(r.reimb_id||'')).filter(Boolean))];
+  const chunks = (arr,n) => Array.from({length:Math.ceil(arr.length/n)},(_,i)=>arr.slice(i*n,i*n+n));
+  let deletedIds = localIds;
+  try {
+    if (cloudEnabled()) {
+      if (!_cloudReady || !_sb) { toast('Cloud is not ready — reload then try again'); return; }
+      // Stop a scheduled sync. Then wait for any sync already in flight before
+      // deleting: this prevents an old upsert from resurrecting the bad month.
+      clearTimeout(_pushTimer); _pushTimer = null;
+      setSyncBadge('syncing');
+      const OWNER = window.SF_CLOUD.workspace || 'sarah';
+
+      deletedIds = await queueCloudWrite(async()=>{
+        const remoteRows = await fetchAllCloudReimbursementRows(OWNER);
+        const remoteIds = remoteRows
+          .filter(row=>cloudRowBelongsToBatch(row,batch))
+          .map(row=>String(row.id))
+          .filter(Boolean);
+        const idsToDelete = [...new Set([...localIds,...remoteIds])];
+
+        // Delete child annotations first, then reimbursement rows, then the
+        // batch metadata. Every delete is scoped to this workspace.
+        for (const group of chunks(idsToDelete, 200)) {
+          if (!group.length) continue;
+          const {error:aErr} = await _sb.from('sfre_annotations').delete().eq('owner_id',OWNER).in('reimb_id',group);
+          if (aErr) throw aErr;
+          const {error:rErr} = await _sb.from('sfre_reimbursements').delete().eq('owner_id',OWNER).in('id',group);
+          if (rErr) throw rErr;
+        }
+        const {error:bErr} = await _sb.from('sfre_batches').delete().eq('owner_id',OWNER).eq('id',String(batch.id));
+        if (bErr) throw bErr;
+
+        // Confirm with Supabase before touching the screen. A green toast now
+        // means a hard refresh cannot restore this batch.
+        const remainingRows = await fetchAllCloudReimbursementRows(OWNER);
+        const stillThere = remainingRows.filter(row=>cloudRowBelongsToBatch(row,batch));
+        if (stillThere.length) throw new Error('Supabase still has '+stillThere.length+' row(s) for this import. No local rows were removed.');
+        return idsToDelete;
+      });
+    }
+
+    const idSet = new Set(deletedIds.map(String));
+    records = records.filter(r=>!idSet.has(String(r.reimb_id)));
+    archived = archived.filter(r=>!idSet.has(String(r.reimb_id)));
+    importErrors = importErrors.filter(r=>!idSet.has(String(r.reimb_id)));
+    Object.keys(annotations).forEach(id=>{ if(idSet.has(String(id))) delete annotations[id]; });
+    batches = batches.filter(b=>String(b.id)!==String(batch.id));
+
+    // This follow-up push now contains only the remaining data and keeps the
+    // rest of the remote batch log/settings in sync.
+    save();
+    renderAllViews();
+    renderImport();
+    updateDataCounts();
+    toast(label+' deleted from Supabase — safe to re-import ✓');
+    nav('import');
+  } catch(e) {
+    console.warn('Delete batch failed', e);
+    setSyncBadge('error');
+    toast('Supabase delete failed — nothing was removed locally. '+(e?.message||'Reload from cloud before retrying.'));
+  }
+}
 
 function updateDataCounts() {
   const el = document.getElementById('data-counts');
