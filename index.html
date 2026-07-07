@@ -1127,6 +1127,14 @@ a{color:var(--accent)}
 .menu button,.menu a{text-align:left;background:none;border:none;color:var(--text2);font-size:12px;font-family:inherit;padding:7px 10px;border-radius:6px;cursor:pointer;text-decoration:none;display:block;white-space:nowrap}
 .menu button:hover,.menu a:hover{background:var(--surface2);color:var(--text)}
 .menu-sep{height:1px;background:var(--border);margin:4px 2px}
+.cloud-status{font-size:12.5px;padding:10px 13px;border-radius:9px;border:1px solid var(--border2);background:var(--surface2)}
+.cloud-status.ok{border-color:color-mix(in srgb,var(--green) 35%,var(--border));color:var(--text2)}
+.cloud-status.ok b{color:var(--green)}
+.cloud-status.err{border-color:var(--red);color:#ff8a92;background:color-mix(in srgb,var(--red) 8%,var(--surface2))}
+.sf-check{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--text2);padding:7px 0;cursor:pointer;line-height:1.4}
+.sf-check input{margin-top:2px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
+#ro-banner{position:fixed;bottom:0;left:0;right:0;background:var(--amber);color:#0c1117;font-size:12.5px;font-weight:600;text-align:center;padding:7px 12px;z-index:500}
+body.readonly .btn-primary{opacity:.4;pointer-events:none}
 .err-actions{display:flex;align-items:center;gap:6px;white-space:nowrap}
 .err-act-btn{padding:5px 10px;font-size:10.5px;white-space:nowrap}
 .err-hist-btn{padding:5px 8px;font-size:10px;background:transparent;border:1px solid var(--border);color:var(--text3)}
@@ -1449,7 +1457,7 @@ thead th{padding:7px 10px}
   <div class="sb-logo">
     <div class="sb-logo-text">
       <div class="name">SF Re-evaluation</div>
-      <div class="sub">Reimb. Tracker · <span style="color:var(--accent);font-weight:700">v16.32</span></div>
+      <div class="sub">Reimb. Tracker · <span style="color:var(--accent);font-weight:700">v16.34</span></div>
     </div>
     <button class="sb-toggle" onclick="toggleSidebar()" title="Collapse sidebar">‹</button>
   </div>
@@ -1805,17 +1813,32 @@ thead th{padding:7px 10px}
 
       <div class="settings-section">
         <div class="ss-header">
-          <h3>Trial / sample data</h3>
-          <p>Cloud-only build. Your data lives in Supabase (once connected) — not in this browser. Import a SellerFuse CSV or PDF to begin.</p>
+          <h3>Data &amp; cloud</h3>
+          <p>Your data lives in Supabase. Nothing is stored in this browser. Import a SellerFuse CSV or PDF to add records.</p>
         </div>
         <div class="ss-body">
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn btn-sec" onclick="resetSampleData()">↺ Reload sample data</button>
-            <button class="btn btn-sec" onclick="clearAllData()" style="color:var(--red);border-color:var(--red)">🗑 Clear all data</button>
+          <div id="cloud-status-box" class="cloud-status">Checking connection…</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+            <button class="btn-sec" onclick="cloudPull().then(()=>{renderAllViews();toast('Reloaded from Supabase');})">↻ Reload from cloud</button>
+            <button class="btn-sec" onclick="wipeCloudData()" style="color:var(--red);border-color:var(--red)">Wipe all cloud data…</button>
           </div>
-          <div style="font-size:10.5px;color:var(--text3);line-height:1.6;margin-top:8px">
-            <strong>Clear all data</strong> empties the current session. Data persists in Supabase once connected; until then, a refresh clears it.
+          <div style="font-size:11.5px;color:var(--text3);line-height:1.6;margin-top:10px">
+            <strong>Reload from cloud</strong> pulls the latest from Supabase (use if a device looks out of date).<br>
+            <strong>Wipe all cloud data</strong> permanently deletes every reimbursement, annotation and batch for this workspace from Supabase. Use only to start clean — it cannot be undone.
           </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="ss-header">
+          <h3>Safeguards</h3>
+          <p>Prevents accidental data problems.</p>
+        </div>
+        <div class="ss-body">
+          <label class="sf-check"><input type="checkbox" id="sg-confirm-bulk" onchange="saveSafeguards()"> <span>Confirm before any bulk action (move/mark multiple at once)</span></label>
+          <label class="sf-check"><input type="checkbox" id="sg-confirm-import" onchange="saveSafeguards()"> <span>Show a summary and confirm before every import writes to the cloud</span></label>
+          <label class="sf-check"><input type="checkbox" id="sg-readonly" onchange="saveSafeguards()"> <span>Read-only mode — view data but block all edits and cloud writes</span></label>
+          <div style="font-size:11.5px;color:var(--text3);line-height:1.6;margin-top:8px">Read-only is handy on a shared/public link when you just want to look without risk of changing anything.</div>
         </div>
       </div>
 
@@ -2077,9 +2100,8 @@ function loadAll() {
 }
 
 function save() {
-  // CLOUD-ONLY (per config): data is NOT persisted to localStorage — Supabase is
-  // the single store. ⚠ Until SF_CLOUD is configured, nothing persists across a
-  // refresh. Connect Supabase to make saves durable.
+  // CLOUD-ONLY: Supabase is the single store. Read-only mode blocks all writes.
+  if (isReadOnly && isReadOnly()) { toast('Read-only mode — change not saved'); return; }
   if (cloudEnabled()) cloudPush();
   else setSyncBadge('off');
 }
@@ -2152,8 +2174,11 @@ async function cloudPull(){
       setSyncBadge('ok');
       return true;
     }
-    // No remote rows yet — seed from local.
-    await cloudPushNow();
+    // No remote rows yet. Only seed the cloud from local if this is REAL data
+    // (imported), never demo/sample rows — otherwise a fresh DB gets polluted.
+    if (!SAMPLE_MODE && (records.length || archived.length || importErrors.length)) {
+      await cloudPushNow();
+    }
     setSyncBadge('ok');
   } catch(e){ console.warn('Cloud pull failed:', e); setSyncBadge('error'); }
   return false;
@@ -5810,7 +5835,7 @@ function flashRow(reimb_id) {
 // ════════════════════════════════════════════
 //  SAMPLE / TRIAL DATA  (set SAMPLE_MODE=false to ship empty)
 // ════════════════════════════════════════════
-const SAMPLE_MODE = true;    // in-memory preview only (never persisted); Supabase data takes over once connected
+const SAMPLE_MODE = false;   // PRODUCTION: no demo data. Real data comes from Supabase / import.
 const SAMPLE_CSV = `SKU,ASIN,Product Name,Date,Reason,Quantity,Reimbursement Amount,Unit COG (Net),Unit COG (Gross),Unit COG VAT,Your Cost,Your Cost VAT,Net Result (Profit/Loss),COG Counted,Is Reversal,Is Adjustment,Case ID,Order ID,Reimbursement ID
 B0038E4MM2_1.44_3.90_9,B0038E4MM2,"Essence Cosmetics eyebrow DESIGNER, defining (1g)",2026-05-31 15:52:13,Reimbursement_Reversal,-1,-1.44,0,0,0,0,0,0,,Yes,Yes,,,8378342842
 Amg_49.14_0810_Repl_3,B07PGVX915,"Tefal VC1451 Steam Cooker, 2 Stainless Steel Containers, 6 L Capacity, 24 cm Diameter, Timer and Automatic Shut-off, 900 W",2026-05-31 15:07:03,Lost_Outbound,1,48,41.37,49.64,8.270000000000003,41.37,8.270000000000003,6.630000000000003,true,No,No,12643675292,S02-5116022-0908827,8365626952
@@ -6026,17 +6051,70 @@ function resetSampleData(){
   nav(importErrors.length ? 'errors' : 'triage'); toast('Sample data reloaded into Review Queue');
 }
 function clearAllData(){
-  if(!confirm('Permanently clear ALL data from this browser? This cannot be undone.')) return;
-  ['bdl_reimb_v15_records','bdl_reimb_v15_archived','bdl_reimb_v15_import_errors','bdl_reimb_v15_annotations','bdl_reimb_v15_batches'].forEach(k=>localStorage.removeItem(k));
+  if(!confirm('Clear all data from this session? (Cloud data is untouched — use "Wipe all cloud data" for that.)')) return;
   records=[]; archived=[]; importErrors=[]; annotations={}; batches=[];
-  save(); renderActive(); renderTriage(); renderErrors(); renderHistory(); renderActions(); renderCaseGen(); updateBadges();
-  nav('import'); toast('All data cleared');
+  renderAllViews(); nav('import'); toast('Session cleared (cloud data kept)');
+}
+
+// ── Cloud data management ──
+async function wipeCloudData(){
+  if(!cloudEnabled()){ toast('Not connected to Supabase'); return; }
+  const total = records.length+archived.length+importErrors.length;
+  if(!confirm('Permanently DELETE all cloud data for this workspace?\n\nThis removes every reimbursement, annotation and batch from Supabase. It cannot be undone.\n\nType-check: you currently have '+total+' records loaded.')) return;
+  if(!confirm('Are you absolutely sure? This is irreversible.')) return;
+  const OWNER = window.SF_CLOUD.workspace || 'sarah';
+  try{
+    setSyncBadge('syncing');
+    await _sb.from('sfre_annotations').delete().eq('owner_id',OWNER);
+    await _sb.from('sfre_reimbursements').delete().eq('owner_id',OWNER);
+    await _sb.from('sfre_batches').delete().eq('owner_id',OWNER);
+    await _sb.from('sfre_app_settings').delete().eq('owner_id',OWNER);
+    records=[]; archived=[]; importErrors=[]; annotations={}; batches=[];
+    setSyncBadge('ok'); renderAllViews(); nav('import');
+    toast('All cloud data wiped — clean slate');
+  }catch(e){ console.warn('Wipe failed',e); setSyncBadge('error'); toast('Wipe failed — see console'); }
+}
+
+// ── Safeguards (persist as UI prefs; read-only gates all writes) ──
+function loadSafeguards(){
+  try{ return JSON.parse(localStorage.getItem('sfre_safeguards')||'{}'); }catch(e){ return {}; }
+}
+function saveSafeguards(){
+  const sg={ confirmBulk:document.getElementById('sg-confirm-bulk')?.checked,
+             confirmImport:document.getElementById('sg-confirm-import')?.checked,
+             readOnly:document.getElementById('sg-readonly')?.checked };
+  localStorage.setItem('sfre_safeguards', JSON.stringify(sg));
+  window._safeguards=sg;
+  updateReadOnlyUI();
+  toast('Safeguards updated');
+}
+function applySafeguards(){
+  const sg=loadSafeguards(); window._safeguards=sg;
+  const set=(id,v)=>{const el=document.getElementById(id); if(el)el.checked=!!v;};
+  set('sg-confirm-bulk',sg.confirmBulk); set('sg-confirm-import',sg.confirmImport); set('sg-readonly',sg.readOnly);
+  updateReadOnlyUI();
+}
+function isReadOnly(){ return !!(window._safeguards&&window._safeguards.readOnly); }
+function updateReadOnlyUI(){
+  document.body.classList.toggle('readonly', isReadOnly());
+  const b=document.getElementById('ro-banner');
+  if(isReadOnly() && !b){ const d=document.createElement('div'); d.id='ro-banner'; d.textContent='Read-only mode — edits and cloud writes are blocked. Turn off in Settings ▸ Safeguards.'; document.body.appendChild(d); }
+  else if(!isReadOnly() && b){ b.remove(); }
+}
+function updateCloudStatusBox(){
+  const el=document.getElementById('cloud-status-box'); if(!el) return;
+  if(!cloudEnabled()){ el.className='cloud-status err'; el.innerHTML='⚠ Not connected — data is NOT being saved. Check Supabase setup.'; return; }
+  const OWNER=window.SF_CLOUD.workspace||'sarah';
+  const total=records.length+archived.length+importErrors.length;
+  el.className='cloud-status ok';
+  el.innerHTML='✓ Connected to Supabase · workspace <b>'+OWNER+'</b> · '+total+' records in this session';
 }
 
 function renderAllViews(){
   renderActive(); renderTriage(); renderErrors(); renderHistory(); renderActions();
   if(typeof renderCaseGen==='function') renderCaseGen();
   if(typeof renderSettings==='function') renderSettings();
+  if(typeof updateCloudStatusBox==='function') updateCloudStatusBox();
   updateBadges();
 }
 
@@ -6098,6 +6176,7 @@ function updateLastBackup(){
 
 loadAll();
 applyDensity();
+applySafeguards();
 updateLastBackup();
 let _seeded=false;
 if (SAMPLE_MODE && !records.length && !importErrors.length && !archived.length) { seedSampleData(); _seeded=true; }
