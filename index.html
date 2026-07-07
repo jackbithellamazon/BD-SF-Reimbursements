@@ -907,7 +907,7 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
 .ip-head{padding:8px 11px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:var(--surface2)}
 .ip-title{font-size:12px;font-weight:700}
 .ip-sub{font-size:10.5px;color:var(--text2);margin-top:2px}
-.ip-body{padding:9px 11px;display:flex;flex-direction:column;gap:12px}
+.ip-body{padding:8px 10px;display:flex;flex-direction:column;gap:10px}
 .ip-map{display:grid;grid-template-columns:repeat(4,minmax(160px,1fr));gap:8px}
 .ip-group{margin-bottom:10px}
 .ip-group-head{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text2);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border)}
@@ -917,8 +917,22 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
 .ip-ms-bad{color:var(--amber)}
 .map-status.map-ok{color:var(--green)}
 .map-status.map-off{color:var(--text3);font-weight:400}
-.ip-mini{font-size:10.5px;color:var(--text2);line-height:1.5;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:8px 10px}
-.ip-table-wrap{max-height:260px;overflow:auto;border:1px solid var(--border);border-radius:var(--rs)}
+.ip-mini{font-size:10.5px;color:var(--text2);line-height:1.45;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:7px 9px}
+.ip-table-wrap{max-height:390px;overflow:auto;border:1px solid var(--border);border-radius:var(--rs);background:var(--bg)}
+.ip-table-wrap table{width:100%;min-width:1080px;table-layout:fixed}
+.ip-table-wrap th:nth-child(1){width:64px}.ip-table-wrap th:nth-child(2){width:104px}.ip-table-wrap th:nth-child(3){width:320px}.ip-table-wrap th:nth-child(4){width:205px}.ip-table-wrap th:nth-child(5){width:170px}.ip-table-wrap th:nth-child(6){width:72px}.ip-table-wrap th:nth-child(7){width:140px}.ip-table-wrap th:nth-child(8){width:160px}.ip-table-wrap th:nth-child(9){width:135px}
+.ip-table-wrap td{vertical-align:middle;padding-top:8px;padding-bottom:8px}
+.ip-item-name{font-weight:650;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ip-item-meta{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:3px;font-size:9.5px;color:var(--text3);line-height:1.25}
+.ip-mini-id{font-family:var(--mono);color:var(--code-dim)}
+.ip-money{display:flex;flex-direction:column;align-items:flex-end;gap:2px;line-height:1.2}
+.ip-money-main{font-size:12.5px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--text);white-space:nowrap}
+.ip-money-sub{font-size:9.5px;color:var(--text3);white-space:nowrap}
+.ip-money-main.good{color:var(--green)}.ip-money-main.bad{color:var(--red)}.ip-money-main.flat{color:var(--text3)}.ip-money-main.warn{color:var(--amber)}
+.ip-reason-tile{display:inline-flex;align-items:center;max-width:100%;padding:4px 8px;border-radius:7px;border:1px solid var(--rt-b);background:var(--rt-bg);color:var(--rt-c);font-size:10px;font-weight:800;line-height:1;text-transform:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ip-reason-sub{font-size:9.5px;color:var(--text3);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ip-adj-row{background:linear-gradient(90deg,color-mix(in srgb,var(--amber) 10%,var(--surface)),transparent 62%)}
+.ip-adj-badge{display:inline-flex;align-items:center;width:fit-content;padding:1px 6px;border-radius:99px;border:1px solid color-mix(in srgb,var(--amber) 50%,transparent);background:var(--amber-dim);color:var(--amber);font-size:9px;font-weight:800;white-space:nowrap}
 .ip-table-wrap::-webkit-scrollbar{height:15px;width:15px}
 .ip-table-wrap::-webkit-scrollbar-track{background:var(--surface)}
 .ip-table-wrap::-webkit-scrollbar-thumb{background:var(--border2);border-radius:8px;border:3px solid var(--surface)}
@@ -939,8 +953,11 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
 .recon-hint{font-size:10px;color:var(--text3);line-height:1.4;margin-top:4px}
 .recon-ok{margin-top:5px;font-size:10.5px;font-weight:700;color:var(--green);background:color-mix(in srgb,var(--green) 12%,transparent);border-radius:var(--rs);padding:5px 7px}
 .recon-bad{margin-top:5px;font-size:10.5px;font-weight:700;color:var(--red);background:color-mix(in srgb,var(--red) 12%,transparent);border-radius:var(--rs);padding:5px 7px;line-height:1.4}
-.ip-warn{background:var(--amber-dim);border:1px solid var(--amber);color:var(--amber);padding:9px 12px;border-radius:var(--rs);font-size:11px;line-height:1.5}
+.ip-warn{background:var(--amber-dim);border:1px solid var(--amber);color:var(--amber);padding:7px 10px;border-radius:var(--rs);font-size:10.5px;line-height:1.45}
 .ip-ok{background:var(--green-dim);border:1px solid var(--green);color:var(--green);padding:9px 12px;border-radius:var(--rs);font-size:11px;line-height:1.5}
+.import-download-card{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;margin-bottom:12px}
+.import-download-card b{font-size:12px;color:var(--text)}
+.import-download-card span{display:block;font-size:10.5px;color:var(--text3);margin-top:2px}
 @media(max-width:900px){.ip-map{grid-template-columns:1fr 1fr}.fg3{grid-template-columns:1fr 1fr}}
 
 /* ─── TOAST ─── */
@@ -1525,6 +1542,7 @@ thead th{padding:7px 10px}
     <div class="tb-spacer"></div>
     <button class="tb-btn" onclick="cycleDensity()" id="density-btn" title="UI size — click to cycle">Comfortable</button>
     <button class="tb-btn" onclick="toggleTheme()" id="theme-btn">☀ Light</button>
+    <button class="tb-btn" onclick="downloadHtmlApp()" title="Download this app as a standalone HTML file">⤓ HTML</button>
     <button class="tb-btn" onclick="nav('import')">
       <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
       Import
@@ -1801,6 +1819,10 @@ thead th{padding:7px 10px}
       <p style="font-size:11.5px;color:var(--text2);margin-bottom:14px;line-height:1.6">
         Import your monthly SellerFuse reimbursement export. Each month is treated as a separate batch — duplicate imports for the same period are blocked. Import on the 5th of each month for the previous month's data.
       </p>
+      <div class="import-download-card">
+        <div><b>Need the GitHub / Mac file?</b><span>Downloads a standalone HTML copy to your browser Downloads folder.</span></div>
+        <button class="btn btn-sec" onclick="downloadHtmlApp()">⤓ Download HTML file</button>
+      </div>
       <label class="import-zone" id="drop-zone">
         <input type="file" id="csv-input" accept=".csv,.pdf" onchange="handleImport(this)">
         <div style="font-size:17px;margin-bottom:10px">📂</div>
@@ -3199,7 +3221,7 @@ function renderTriage() {
       <div class="rvq-body">
         <div class="rvq-top">${tierTag}${grpBadge}<span class="rvq-name">${esc(r.product_name||'(no product name)')}</span></div>
         <div class="rvq-codes"><span class="rvq-code" onclick="event.stopPropagation();copyText('${esc(r.sku)}','SKU')">${esc(r.sku)}</span><span class="rvq-dot">·</span><span class="rvq-code dim" onclick="event.stopPropagation();copyText('${esc(r.asin||'')}','ASIN')">${esc(r.asin||'')}</span>${r.fnsku?'<span class="rvq-dot">·</span><span class="rvq-code dim" onclick="event.stopPropagation();copyText(\''+esc(r.fnsku)+'\',\'FNSKU\')">'+esc(r.fnsku)+'</span>':''}</div>
-        <div class="rvq-tags">${reasonPill(r.reason)}${r.is_adjustment==='Yes'?'<span class="rvq-adjchip" title="Top-up on an earlier claim — check the original claim to see if full COG is already recovered before chasing.">check original claim</span>':''}${ageStr}${r.quantity>1?'<span class="rvq-qty">Qty '+r.quantity+'</span>':''}</div>
+        <div class="rvq-tags">${reasonPill(r.reason)}${r.is_adjustment==='Yes'?'<span class="rvq-adjchip" title="Adjustment credit — check the original claim/case total before deciding whether anything is still short.">check original claim</span>':''}${ageStr}${r.quantity>1?'<span class="rvq-qty">Qty '+r.quantity+'</span>':''}</div>
       </div>
       <div class="rvq-money">
         <div class="rvq-m"><span class="rvq-m-v">£${(r.actual_cost||0).toFixed(2)}</span><span class="rvq-m-l">cost</span></div>
@@ -4585,7 +4607,7 @@ function renderImportPreview() {
       <button class="btn btn-sec" onclick="cancelImportPreview()">Cancel</button>
     </div>
     <div class="ip-body">
-      <div class="ip-warn"><strong>How this works:</strong> the app reads your SellerFuse CSV, auto-matches each column (green <strong>mapped</strong> tags below), and shows a live sample so you can confirm before importing. Your mapping is saved for next time. <strong>COG always comes from the SKU</strong> (e.g. <span class="td-mono">Amf_113.79_…</span> = £113.79) — SellerFuse's own cost columns are ignored on purpose. Any row with no readable SKU COG is blocked into <strong>Import Errors</strong> until the VA adds it. <strong>Note:</strong> SellerFuse exports don't include FNSKU, so it stays blank on import — the VA adds it on the record afterwards.</div>
+      <div class="ip-warn"><strong>Import rules:</strong> COG comes from the SKU, not SellerFuse cost columns. Missing COG rows go to <strong>Import Errors</strong>. SellerFuse CSVs do not include FNSKU, so the VA can add it later if needed.</div>
       <div class="ip-mapstatus" id="ip-mapstatus"></div>
       <div class="ip-group">
         <div class="ip-group-head">Key columns <span class="ip-group-sub">· required to import</span></div>
@@ -4597,7 +4619,7 @@ function renderImportPreview() {
       </div>
       <div class="ip-mini" id="import-parse-summary"></div>
       <div class="ip-recon" id="ip-recon"></div>
-      <div class="ip-table-wrap"><table><thead><tr><th>Include</th><th>Date</th><th>ASIN</th><th>FNSKU</th><th>Product Name</th><th>SKU</th><th>Reason</th><th class="td-num">Quantity</th><th class="td-num">COG from SKU</th><th class="td-num">Net Result</th><th>Case ID</th><th>Reimbursement ID</th><th>Re-evaluation ID</th><th>MSC</th><th class="td-num">Reimbursement Amount</th><th class="td-num">MSC Amt.</th><th>Notes</th></tr></thead><tbody id="import-preview-rows"></tbody></table></div>
+      <div class="ip-table-wrap"><table><thead><tr><th>Include</th><th>Date</th><th>Item</th><th>SKU</th><th>Reason</th><th class="td-num">Qty</th><th class="td-num">COG</th><th class="td-num">Reimbursement</th><th class="td-num">P/L</th></tr></thead><tbody id="import-preview-rows"></tbody></table></div>
     </div>
     <div class="ip-actions">
       <button class="btn btn-primary" onclick="confirmImportPreview()">Confirm import selected rows</button>
@@ -4717,26 +4739,58 @@ function updateImportPreviewRows() {
       },0);
     }
   }
-  document.getElementById('import-preview-rows').innerHTML = parsed.slice(0,80).map((r,i)=>`
-    <tr class="${(!r.actual_cost || Number(r.actual_cost)<=0) && r.is_adjustment!=='Yes' ?'ip-error-row':''}">
+  const signedMoney = v => (Number(v||0) < 0 ? '-£'+Math.abs(Number(v||0)).toFixed(2) : '+£'+Math.abs(Number(v||0)).toFixed(2));
+  const moneyCell = (main, sub, cls='') => '<div class="ip-money"><span class="ip-money-main '+cls+'">'+main+'</span><span class="ip-money-sub">'+sub+'</span></div>';
+  const costCell = r => {
+    if (r.is_adjustment==='Yes') return moneyCell('£'+Number(r.actual_cost||0).toFixed(2),'COG context only','warn');
+    if (r.actual_cost && Number(r.actual_cost)>0) return moneyCell('£'+Number(r.actual_cost).toFixed(2),'from SKU');
+    return '<span class="cog-error">COG missing</span>';
+  };
+  const reimbCell = r => moneyCell('£'+Number(r.reimb_amount||0).toFixed(2), r.is_adjustment==='Yes'?'adjustment credit':'Amazon paid');
+  const resultCell = r => {
+    const v = Number(r.imported_net_result||0);
+    if (r.is_adjustment==='Yes') return '<div class="ip-money"><span class="ip-adj-badge">Manual check</span><span class="ip-money-main good">'+signedMoney(v)+'</span><span class="ip-money-sub">check original claim</span></div>';
+    const cls = v < -0.005 ? 'bad' : (Math.abs(v)<=0.005 ? 'flat' : 'good');
+    return moneyCell(Math.abs(v)<=0.005?'£0.00':signedMoney(v),'profit / loss',cls);
+  };
+  const reasonTile = r => {
+    const reason = String(r.reason||'Other');
+    const map = {
+      GeneralAdjustment:['Adjustment','var(--amber-dim)','color-mix(in srgb,var(--amber) 55%,transparent)','var(--amber)','check original claim'],
+      Lost_Inbound:['Lost inbound','rgba(245,65,79,.11)','rgba(245,65,79,.38)','var(--red)',''],
+      Lost_Outbound:['Lost outbound','rgba(245,65,79,.11)','rgba(245,65,79,.38)','var(--red)',''],
+      Lost_Warehouse:['Lost warehouse','rgba(245,166,35,.12)','rgba(245,166,35,.42)','var(--amber)',''],
+      Damaged_Warehouse:['Damaged WH','rgba(192,132,252,.12)','rgba(192,132,252,.42)','#c084fc',''],
+      Damaged_Inbound:['Damaged inbound','rgba(192,132,252,.12)','rgba(192,132,252,.42)','#c084fc',''],
+      CustomerReturn:['Customer return','rgba(56,189,248,.11)','rgba(56,189,248,.36)','#38bdf8',''],
+      Reimbursement_Reversal:['Reversal','rgba(148,163,184,.13)','rgba(148,163,184,.34)','var(--text3)','filed to History']
+    };
+    const cfg = map[reason] || [reason.replace(/_/g,' '),'var(--surface3)','var(--border2)','var(--text2)',''];
+    return '<div><span class="ip-reason-tile" style="--rt-bg:'+cfg[1]+';--rt-b:'+cfg[2]+';--rt-c:'+cfg[3]+'">'+esc(cfg[0])+'</span>'+(cfg[4]?'<div class="ip-reason-sub">'+esc(cfg[4])+'</div>':'')+'</div>';
+  };
+  document.getElementById('import-preview-rows').innerHTML = parsed.map((r,i)=>`
+    <tr class="${[
+      (!r.actual_cost || Number(r.actual_cost)<=0) && r.is_adjustment!=='Yes' ? 'ip-error-row' : '',
+      r.is_adjustment==='Yes' ? 'ip-adj-row' : ''
+    ].filter(Boolean).join(' ')}">
       <td><input type="checkbox" class="ip-row-check" data-i="${i}" checked></td>
       <td>${fmtDate(r.date)}</td>
-      <td class="td-mono">${esc(r.asin||'')}</td>
-      <td class="td-mono">${esc(r.fnsku||'')}</td>
-      <td title="${esc(r.product_name||'')}">${esc((r.product_name||'').substring(0,46))}${(r.product_name||'').length>46?'…':''}</td>
+      <td title="${esc(r.product_name||'')}">
+        <div class="ip-item-name">${esc(r.product_name||'(no product name)')}</div>
+        <div class="ip-item-meta">
+          ${r.asin?'<span class="ip-mini-id">ASIN '+esc(r.asin)+'</span>':''}
+          ${r.fnsku?'<span class="ip-mini-id">FNSKU '+esc(r.fnsku)+'</span>':'<span>FNSKU blank</span>'}
+          ${r.case_id?'<span class="ip-mini-id">Case '+esc(r.case_id)+'</span>':''}
+          ${r.reimb_id_real||r.reimb_id?'<span class="ip-mini-id">Reimb '+esc(r.reimb_id_real||r.reimb_id||'')+'</span>':''}
+        </div>
+      </td>
       <td class="td-mono sku-cell"><span class="sku-full">${esc(r.sku)}</span></td>
-      <td>${esc(r.reason||'')}</td>
+      <td>${reasonTile(r)}</td>
       <td class="td-num">${r.quantity}</td>
-      <td class="td-num">${r.is_adjustment==='Yes' ? '£'+Number(r.actual_cost||0).toFixed(2)+' <span style="color:var(--amber);font-size:9.5px" title="Top-up on an earlier claim. Priced at full SKU cost so your VA can check the original claim and chase if still short.">adj · check original</span>' : (r.actual_cost&&Number(r.actual_cost)>0) ? '£'+Number(r.actual_cost).toFixed(2)+' <span style="color:var(--text3);font-size:9.5px">SKU</span>' : '<span class="cog-error">COG missing</span>'}</td>
-      <td class="td-num">${(r.imported_net_result||0) < 0 ? '-£'+Math.abs(r.imported_net_result||0).toFixed(2) : '+£'+Math.abs(r.imported_net_result||0).toFixed(2)}</td>
-      <td class="td-mono">${esc(r.case_id||'')}</td>
-      <td class="td-mono">${esc(r.reimb_id_real||r.reimb_id||'')}</td>
-      <td class="td-mono">${esc(r.re_evaluation_id||'')}</td>
-      <td>${esc(r.msc_text||'')}</td>
-      <td class="td-num">£${(r.reimb_amount||0).toFixed(2)}</td>
-      <td class="td-num">${r.msc_amount ? '£'+Number(r.msc_amount).toFixed(2) : ''}</td>
-      <td title="${esc(r.notes||'')}">${esc((r.notes||'').substring(0,32))}${(r.notes||'').length>32?'…':''}</td>
-    </tr>`).join('') + (parsed.length>80?`<tr><td colspan="17" style="color:var(--text2)">Showing first 80 rows only. Hidden rows will still import unless a visible row is unticked.</td></tr>`:'');
+      <td class="td-num">${costCell(r)}</td>
+      <td class="td-num">${reimbCell(r)}</td>
+      <td class="td-num">${resultCell(r)}</td>
+    </tr>`).join('') || '<tr><td colspan="9" style="color:var(--text3);text-align:center;padding:22px">No rows found.</td></tr>';
 }
 
 function confirmImportPreview() {
@@ -4804,18 +4858,15 @@ function cancelImportPreview(clearMsg=true) {
 function rowToRecord(raw, map) {
   const sku = raw[map.sku] || '';
   const skuCog = extractCogFromSku(sku);
-  // GeneralAdjustment (SellerFuse Type "Adjustment") is a TOP-UP on an earlier
-  // reimbursement — its cost was counted on the ORIGINAL claim ("cost on
-  // original" in SellerFuse). Charging SKU COG against it fabricates losses,
-  // so these rows carry zero cost and their net is the full amount received.
+  // GeneralAdjustment (SellerFuse Type "Adjustment") is an adjustment credit.
+  // The CSV alone does not prove which original reimbursement it belongs to, so
+  // SKU COG is shown as context and the VA checks the original claim/case.
   const reasonV = String(raw[map.reason]||'').trim();
   const typeV = String(raw[map.is_reversal]||'').trim();
   const isAdj = reasonV==='GeneralAdjustment' || typeV==='Adjustment';
-  // Adjustments are a TOP-UP on an earlier claim. We CAN'T tell from the export
-  // whether the original + this top-up already covers full COG — only the VA can,
-  // by checking the original claim. So price it at the real SKU cost (shows the
-  // true worst-case gap, puts it in front of the VA), tag it as an adjustment,
-  // and exclude it from loss STATS so headline numbers aren't distorted.
+  // Adjustments may close a gap, partially close it, or belong to a different
+  // original-case context. Keep them visible for review without pretending the
+  // CSV proves the final recovery position.
   const actualCost = skuCog !== null ? skuCog : 0;
   const qty = parseFloat(raw[map.quantity])||1;
   const reimb = parseMoney(raw[map.reimb_amount]);
@@ -5903,7 +5954,7 @@ const REASON_INFO = {
   'Lost_Inbound':['p-li','Lost In','Lost on the way into Amazon (inbound shipment to FBA)'],
   'CustomerReturn':['p-cr','Cust. Return','Customer return — check condition; reimbursed below cost may be claimable'],
   'ReturnAdjustment':['p-ra','Return Adj.','Adjustment applied to a previous return — judged by net like any row'],
-  'GeneralAdjustment':['p-ga','Adjustment ↺','TOP-UP on an earlier claim. We show the full SKU cost so you can see the worst-case gap — but the ORIGINAL claim may already cover some of it. Check the original in Amazon/SellerFuse: if total recovered = full COG, mark no action; if still short, move to Active and chase the rest.'],
+  'GeneralAdjustment':['p-ga','Adjustment ↺','SellerFuse adjustment credit. The CSV does not prove which original reimbursement it relates to. Check the original claim/case total: if fully recovered, mark no action; if still short, move to Active and chase the gap.'],
   'CustomerServiceIssue':['p-csi','CS Issue','Customer-service goodwill credit — judged by net'],
   'Damaged_Outbound':['p-do','Dam. Out','Item damaged in outbound transit'],
   'Reimbursement_Reversal':['p-rev','Reversal','Amazon reversed a previous reimbursement — kept separate from normal claims'],
@@ -5929,7 +5980,7 @@ function relatedBand(rec){
     const rev=r.is_reversal==='Yes';
     const where=records.includes(r)?((annotations[r.reimb_id]||{}).workflow_status==='triage'?'Review':'Active'):(archived.includes(r)?'History':'COG fix');
     const netCol=net>=0.005?'var(--green)':net<=-0.005?'var(--red)':'var(--text2)';
-    const badge=adj?'<span class="rel-adj" title="Top-up on an earlier claim — cost on original; pure gain">ADJ ↺</span>':rev?'<span class="rel-rev">REV</span>':'';
+    const badge=adj?'<span class="rel-adj" title="Adjustment credit — check original claim/case total">ADJ ↺</span>':rev?'<span class="rel-rev">REV</span>':'';
     return '<div class="rel-row" title="'+esc((r.product_name||'').slice(0,80))+'">'
       +'<span class="rel-date">'+fmtDate(r.date)+'</span>'
       +reasonPill(r.reason)+badge
@@ -6356,6 +6407,23 @@ function backupData(){
     updateLastBackup();
     toast('Backup downloaded ✓');
   }catch(e){ toast('Backup failed — '+e.message); }
+}
+async function downloadHtmlApp(){
+  try{
+    let html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    try{
+      const res = await fetch(location.href, {cache:'no-store'});
+      if(res.ok) html = await res.text();
+    }catch(_e){}
+    const blob = new Blob([html], {type:'text/html'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'sellerfuse-reimbursements-github.html';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+    toast('HTML downloaded to Downloads ✓');
+  }catch(e){ toast('HTML download failed — '+e.message); }
 }
 function restoreData(file){
   if(!file) return;
