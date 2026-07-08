@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" data-theme="dark" data-density="comfortable"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SF Re-evaluation Reimbursements</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <!-- ── Optional cloud sync (Supabase). Leave blank to run fully standalone/offline. ── -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -828,10 +827,12 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
 .btn-spacer{flex:1}
 
 /* ─── IMPORT ─── */
+#page-import .page-body{padding:10px 18px 18px}
+#page-import h2{margin-bottom:4px!important}
 .import-zone{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  width:100%;min-height:132px;
-  border:2px dashed var(--border2);border-radius:var(--r);padding:24px;
+  width:100%;min-height:94px;
+  border:1px dashed var(--border2);border-radius:var(--r);padding:16px;
   text-align:center;color:var(--text2);cursor:pointer;transition:all .15s;
   background:var(--surface);
 }
@@ -901,63 +902,79 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
 
 /* ─── IMPORT PREVIEW ─── */
 .import-preview{
-  display:none;margin-top:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;
+  display:none;margin-top:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;
 }
 .import-preview.open{display:block}
-.ip-head{padding:8px 11px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:var(--surface2)}
-.ip-title{font-size:12px;font-weight:700}
+.ip-head{padding:7px 11px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:var(--surface2)}
+.ip-title{font-size:12.5px;font-weight:750}
 .ip-sub{font-size:10.5px;color:var(--text2);margin-top:2px}
-.ip-body{padding:8px 10px;display:flex;flex-direction:column;gap:10px}
-.ip-map{display:grid;grid-template-columns:repeat(4,minmax(160px,1fr));gap:8px}
-.ip-group{margin-bottom:10px}
-.ip-group-head{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text2);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+.ip-body{padding:6px 8px;display:flex;flex-direction:column;gap:7px}
+.ip-map{display:grid;grid-template-columns:repeat(6,minmax(130px,1fr));gap:7px}
+.ip-group{margin-bottom:7px}
+.ip-group-head{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--text2);margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border)}
 .ip-group-sub{font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3)}
-.ip-mapstatus{margin-bottom:12px;font-size:11.5px;font-weight:600}
+.ip-mapstatus{font-size:11.5px;font-weight:700}
 .ip-ms-ok{color:var(--green)}
 .ip-ms-bad{color:var(--amber)}
 .map-status.map-ok{color:var(--green)}
 .map-status.map-off{color:var(--text3);font-weight:400}
-.ip-mini{font-size:10.5px;color:var(--text2);line-height:1.45;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:7px 9px}
-.ip-table-wrap{max-height:390px;overflow:auto;border:1px solid var(--border);border-radius:var(--rs);background:var(--bg)}
+.ip-mini{font-size:10.5px;color:#c4cedb;line-height:1.3;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:5px 7px}
+.ip-topgrid{display:grid;grid-template-columns:minmax(310px,.82fr) minmax(540px,1.18fr);gap:7px;align-items:stretch}
+.ip-topgrid .ip-mini,.ip-topgrid .ip-recon{min-width:0}
+.ip-summarybar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;height:100%}
+.ip-stat{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 8px;min-width:0}
+.ip-stat b{display:block;font-size:14px;line-height:1;font-variant-numeric:tabular-nums;color:var(--text)}
+.ip-stat span{display:block;margin-top:1px;font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:#aeb9c8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ip-stat.good b{color:var(--green)}.ip-stat.bad b{color:var(--red)}.ip-stat.warn b{color:var(--amber)}
+.ip-mapdetails{background:var(--surface2);border:1px solid var(--border);border-radius:9px;overflow:hidden}
+.ip-mapdetails>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:8px 10px;color:var(--text2);font-size:11.5px;font-weight:750}
+.ip-mapdetails>summary::-webkit-details-marker{display:none}
+.ip-mapdetails>summary:after{content:"Show";margin-left:auto;color:var(--text3);font-size:10.5px;font-weight:700}
+.ip-mapdetails[open]>summary{border-bottom:1px solid var(--border)}
+.ip-mapdetails[open]>summary:after{content:"Hide"}
+.ip-mapdetails-body{padding:8px 10px 10px}
+.ip-table-wrap{max-height:590px;overflow:auto;border:1px solid var(--border);border-radius:var(--rs);background:var(--bg)}
 .ip-table-wrap table{width:100%;min-width:1080px;table-layout:fixed}
-.ip-table-wrap th:nth-child(1){width:64px}.ip-table-wrap th:nth-child(2){width:104px}.ip-table-wrap th:nth-child(3){width:320px}.ip-table-wrap th:nth-child(4){width:205px}.ip-table-wrap th:nth-child(5){width:170px}.ip-table-wrap th:nth-child(6){width:72px}.ip-table-wrap th:nth-child(7){width:140px}.ip-table-wrap th:nth-child(8){width:160px}.ip-table-wrap th:nth-child(9){width:135px}
-.ip-table-wrap td{vertical-align:middle;padding-top:8px;padding-bottom:8px}
-.ip-item-name{font-weight:650;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ip-item-meta{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:3px;font-size:9.5px;color:var(--text3);line-height:1.25}
-.ip-mini-id{font-family:var(--mono);color:var(--code-dim)}
+.ip-table-wrap th:nth-child(1){width:56px}.ip-table-wrap th:nth-child(2){width:94px}.ip-table-wrap th:nth-child(3){width:330px}.ip-table-wrap th:nth-child(4){width:210px}.ip-table-wrap th:nth-child(5){width:160px}.ip-table-wrap th:nth-child(6){width:62px}.ip-table-wrap th:nth-child(7){width:130px}.ip-table-wrap th:nth-child(8){width:145px}.ip-table-wrap th:nth-child(9){width:122px}
+.ip-table-wrap td{vertical-align:middle;padding-top:4px;padding-bottom:4px}
+.ip-table-wrap th{padding-top:5px;padding-bottom:5px}
+.ip-item-name{font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11.4px;line-height:1.18}
+.ip-item-meta{display:block;margin-top:2px;font-size:9.2px;color:#aeb9c8;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ip-mini-id{font-family:var(--mono);color:#aeb9c8}
 .ip-money{display:flex;flex-direction:column;align-items:flex-end;gap:2px;line-height:1.2}
-.ip-money-main{font-size:12.5px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--text);white-space:nowrap}
-.ip-money-sub{font-size:9.5px;color:var(--text3);white-space:nowrap}
+.ip-money-main{font-size:11.7px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--text);white-space:nowrap}
+.ip-money-sub{font-size:9px;color:#aeb9c8;white-space:nowrap}
 .ip-money-main.good{color:var(--green)}.ip-money-main.bad{color:var(--red)}.ip-money-main.flat{color:var(--text3)}.ip-money-main.warn{color:var(--amber)}
-.ip-reason-tile{display:inline-flex;align-items:center;max-width:100%;padding:4px 8px;border-radius:7px;border:1px solid var(--rt-b);background:var(--rt-bg);color:var(--rt-c);font-size:10px;font-weight:800;line-height:1;text-transform:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ip-reason-sub{font-size:9.5px;color:var(--text3);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ip-reason-tile{display:inline-flex;align-items:center;max-width:100%;padding:3px 7px;border-radius:7px;border:1px solid var(--rt-b);background:var(--rt-bg);color:var(--rt-c);font-size:9.5px;font-weight:850;line-height:1;text-transform:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ip-reason-sub{font-size:9px;color:#aeb9c8;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ip-adj-row{background:linear-gradient(90deg,color-mix(in srgb,var(--amber) 10%,var(--surface)),transparent 62%)}
 .ip-adj-badge{display:inline-flex;align-items:center;width:fit-content;padding:1px 6px;border-radius:99px;border:1px solid color-mix(in srgb,var(--amber) 50%,transparent);background:var(--amber-dim);color:var(--amber);font-size:9px;font-weight:800;white-space:nowrap}
 .ip-table-wrap::-webkit-scrollbar{height:15px;width:15px}
 .ip-table-wrap::-webkit-scrollbar-track{background:var(--surface)}
 .ip-table-wrap::-webkit-scrollbar-thumb{background:var(--border2);border-radius:8px;border:3px solid var(--surface)}
 .ip-table-wrap::-webkit-scrollbar-thumb:hover{background:var(--text3)}
-.ip-actions{display:flex;gap:8px;align-items:center;padding:8px 11px;border-top:1px solid var(--border);background:var(--surface2)}
-.ip-recon{margin:8px 0}
-.recon-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:9px 11px}
-.recon-h{font-size:11px;font-weight:700;margin-bottom:7px}
+.ip-actions{display:flex;gap:8px;align-items:center;padding:7px 10px;border-top:1px solid var(--border);background:var(--surface2)}
+.ip-recon{margin:0}
+.recon-box{background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:6px 8px;height:100%}
+.recon-h{font-size:10.5px;font-weight:750;margin-bottom:5px}
 .recon-sub{font-weight:400;color:var(--text3)}
-.recon-grid{display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:10px}
+.recon-grid{display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:6px}
 @media(max-width:820px){.recon-grid{grid-template-columns:1fr}}
-.recon-col{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:7px 9px}
+@media(max-width:1250px){.ip-topgrid{grid-template-columns:1fr}.ip-summarybar{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.recon-col{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:5px 7px}
 .recon-cl{font-size:8.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);font-weight:700;margin-bottom:4px}
-.recon-row{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:11px;padding:2px 0;border-bottom:1px dotted var(--border)}
+.recon-row{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:10px;padding:0;border-bottom:1px dotted var(--border)}
 .recon-row b{font-variant-numeric:tabular-nums}
 .recon-inp-wrap{display:inline-flex;align-items:center;gap:2px;color:var(--text3)}
 .recon-inp{width:78px;background:var(--bg);border:1px solid var(--border2);border-radius:4px;color:var(--text);font-size:11px;padding:2px 5px;text-align:right;font-variant-numeric:tabular-nums;font-family:inherit}
 .recon-hint{font-size:10px;color:var(--text3);line-height:1.4;margin-top:4px}
 .recon-ok{margin-top:5px;font-size:10.5px;font-weight:700;color:var(--green);background:color-mix(in srgb,var(--green) 12%,transparent);border-radius:var(--rs);padding:5px 7px}
 .recon-bad{margin-top:5px;font-size:10.5px;font-weight:700;color:var(--red);background:color-mix(in srgb,var(--red) 12%,transparent);border-radius:var(--rs);padding:5px 7px;line-height:1.4}
-.ip-warn{background:var(--amber-dim);border:1px solid var(--amber);color:var(--amber);padding:7px 10px;border-radius:var(--rs);font-size:10.5px;line-height:1.45}
+.ip-warn{background:var(--amber-dim);border:1px solid var(--amber);color:var(--amber);padding:6px 9px;border-radius:var(--rs);font-size:10.5px;line-height:1.35}
 .ip-ok{background:var(--green-dim);border:1px solid var(--green);color:var(--green);padding:9px 12px;border-radius:var(--rs);font-size:11px;line-height:1.5}
-.import-download-card{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;margin-bottom:12px}
+.import-download-card{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:8px 10px;margin-bottom:9px}
 .import-download-card b{font-size:12px;color:var(--text)}
-.import-download-card span{display:block;font-size:10.5px;color:var(--text3);margin-top:2px}
+.import-download-card span{display:block;font-size:10.5px;color:var(--text3);margin-top:1px}
 @media(max-width:900px){.ip-map{grid-template-columns:1fr 1fr}.fg3{grid-template-columns:1fr 1fr}}
 
 /* ─── TOAST ─── */
@@ -1049,7 +1066,7 @@ a{color:var(--accent)}
 .cfm-v{margin-left:auto;font-weight:600;font-variant-numeric:tabular-nums}
 #page-errors .rvq-card{grid-template-columns:6px 1fr auto auto}
 #page-errors .rvq-card::before{background:var(--amber);opacity:.5}
-.rvq{max-width:none;width:100%}
+.rvq{max-width:1680px;width:100%;margin:0 auto}
 .rvq-intro{margin-bottom:12px}
 .rvq-intro-t{font-size:16px;font-weight:650;color:var(--text);letter-spacing:-.01em}
 .rvq-intro-s{font-size:12px;color:var(--text3);margin-top:2px}
@@ -1080,12 +1097,16 @@ a{color:var(--accent)}
 .rvq-chip button{background:var(--surface3);border:none;color:var(--text3);width:18px;height:18px;border-radius:50%;cursor:pointer;font-size:10px}
 .rvq-chip button:hover{color:var(--text);background:var(--border2)}
 /* the card list — compact */
-.rvq-list{display:flex;flex-direction:column;gap:6px}
+.rvq-sortbar{display:grid;grid-template-columns:minmax(0,1fr) 110px 120px 120px 120px 130px;gap:8px;align-items:center;margin:0 0 7px;padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:10px}
+.rvq-sortbar button{background:transparent;border:0;color:var(--text3);font-family:inherit;font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;text-align:left;cursor:pointer;padding:3px 0}
+.rvq-sortbar button:hover,.rvq-sortbar button.on{color:var(--accent)}
+.rvq-sortbar .right{text-align:right}
+.rvq-list{display:flex;flex-direction:column;gap:5px}
 [data-density="compact"] .rvq-list{gap:4px}
 [data-density="compact"] .rvq-card{padding-top:5px;padding-bottom:5px}
 [data-density="compact"] .rvq-name{font-size:13px}
 [data-density="compact"] .rvq-code{font-size:11.5px}
-.rvq-card{position:relative;display:grid;grid-template-columns:22px 1fr auto auto;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:7px 14px 7px 16px;cursor:pointer;transition:transform .12s,border-color .12s,box-shadow .12s,background .12s}
+.rvq-card{position:relative;display:grid;grid-template-columns:22px minmax(0,1fr) auto auto;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:6px 12px 6px 14px;cursor:pointer;transition:border-color .12s,box-shadow .12s,background .12s}
 .rvq-card::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:transparent}
 .rvq-card.tier-hi::before{background:var(--red)}
 .rvq-card.tier-md::before{background:var(--amber)}
@@ -1113,7 +1134,7 @@ a{color:var(--accent)}
 .rvq-age.expired{color:var(--red);font-weight:600}
 .rvq-qty{color:var(--text3)}
 .rvq-adjchip{font-size:10px;font-weight:600;color:var(--amber);background:color-mix(in srgb,var(--amber) 12%,transparent);border:1px solid color-mix(in srgb,var(--amber) 30%,transparent);padding:1px 7px;border-radius:5px}
-.rvq-money{display:flex;gap:16px;padding-right:4px}
+.rvq-money{display:grid;grid-template-columns:88px 96px 96px;gap:12px;padding-right:2px}
 .rvq-m{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
 .rvq-m-v{font-size:13px;font-weight:650;color:var(--text2);font-variant-numeric:tabular-nums}
 .rvq-m-v.net-neg{color:#ff6b74}.rvq-m-v.net-pos{color:var(--green)}.rvq-m-v.net-flat{color:var(--text3)}
@@ -1136,6 +1157,15 @@ a{color:var(--accent)}
 .rvq-empty-ic{font-size:24px;color:var(--green);opacity:.6;margin-bottom:8px}
 .rvq-empty-t{font-size:13.5px;font-weight:600;color:var(--text2)}
 .rvq-empty-s{font-size:11.5px;color:var(--text4);margin-top:3px}
+.rvq-tags .pill{border-radius:6px;padding:2px 8px;font-size:10px;font-weight:800;letter-spacing:.03em}
+.aq-nextwork{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
+.aq-nextcard{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 15px;display:flex;align-items:center;justify-content:space-between;gap:14px;cursor:pointer}
+.aq-nextcard:hover{border-color:var(--border2);background:var(--surface2)}
+.aq-next-n{font-size:24px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.aq-next-t{font-size:13px;font-weight:700;color:var(--text2);margin-top:3px}
+.aq-next-s{font-size:11.5px;color:var(--text3);margin-top:2px}
+.sf-cog-btn{border-color:color-mix(in srgb,#38bdf8 42%,var(--border2));color:#7dd3fc;background:rgba(56,189,248,.10)}
+.sf-cog-btn:hover{border-color:#38bdf8;color:#dff7ff;background:rgba(56,189,248,.16)}
 /* button tiers */
 .btn-primary{background:var(--accent);color:#06140d;border:none;font-weight:700;font-size:12.5px;padding:8px 14px;border-radius:8px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:filter .12s}
 .btn-primary:hover{filter:brightness(1.08)}
@@ -1490,45 +1520,45 @@ thead th{padding:7px 10px}
 
   <div class="sb-section">
     <div class="sb-section-label">Pages</div>
-    <button class="nav-btn active" onclick="nav('overview')">
-      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    <button class="nav-btn" onclick="nav('overview')">
+      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
       <span class="nb-label">Overview</span>
     </button>
     <button class="nav-btn" onclick="nav('actions')">
-      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
       <span class="nb-label">Actions</span>
       <span class="nb-badge hot" id="badge-actions">0</span>
     </button>
     <button class="nav-btn" onclick="nav('triage')">
-      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 4h18"/><path d="M7 12h10"/><path d="M10 20h4"/></svg>
+      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 4h18"></path><path d="M7 12h10"></path><path d="M10 20h4"></path></svg>
       <span class="nb-label">Review Queue</span>
       <span class="nb-badge" id="badge-triage">0</span>
     </button>
     <button class="nav-btn" onclick="nav('errors')">
-      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
       <span class="nb-label">Import Errors</span>
       <span class="nb-badge hot" id="badge-errors">0</span>
     </button>
     <button class="nav-btn" onclick="nav('active')">
-      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path></svg>
       <span class="nb-label">Active</span>
       <span class="nb-badge" id="badge-active">0</span>
     </button>
     <button class="nav-btn" onclick="nav('history')">
-      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3h6v6H3z"/><path d="M15 3h6v6h-6z"/><path d="M15 15h6v6h-6z"/><path d="M3 15h6v6H3z"/></svg>
+      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3h6v6H3z"></path><path d="M15 3h6v6h-6z"></path><path d="M15 15h6v6h-6z"></path><path d="M3 15h6v6H3z"></path></svg>
       <span class="nb-label">History</span>
       <span class="nb-badge" id="badge-history">0</span>
     </button>
     <button class="nav-btn" onclick="nav('casegen')">
-      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
       <span class="nb-label">Case Generator</span>
     </button>
-    <button class="nav-btn" onclick="nav('import')">
-      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+    <button class="nav-btn active" onclick="nav('import')">
+      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
       <span class="nb-label">Import</span>
     </button>
     <button class="nav-btn" onclick="nav('settings')">
-      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"></path></svg>
       <span class="nb-label">Settings</span>
     </button>
   </div>
@@ -1538,20 +1568,20 @@ thead th{padding:7px 10px}
 <div id="main">
 
   <div id="topbar">
-    <h1 id="page-title">Overview</h1>
+    <h1 id="page-title">Import</h1>
     <div class="tb-spacer"></div>
     <button class="tb-btn" onclick="cycleDensity()" id="density-btn" title="UI size — click to cycle">Comfortable</button>
     <button class="tb-btn" onclick="toggleTheme()" id="theme-btn">☀ Light</button>
-    <button class="tb-btn" onclick="downloadHtmlApp()" title="Download this app as a standalone HTML file">⤓ HTML</button>
+    <button class="tb-btn" onclick="downloadHtmlApp()" title="Download this app as a standalone HTML file">⤓ Download HTML</button>
     <button class="tb-btn" onclick="nav('import')">
-      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
       Import
     </button>
     <button class="tb-btn primary" onclick="nav('actions')">⚡ Actions</button>
   </div>
 
   <!-- OVERVIEW — coming soon -->
-  <div class="page active" id="page-overview">
+  <div class="page" id="page-overview">
     <div class="page-body" id="ov-body"></div>
   </div>
 
@@ -1577,7 +1607,7 @@ thead th{padding:7px 10px}
       </div>
       <div class="kpi-row" id="triage-kpi"></div>
       <div class="rvq-toolbar">
-        <div class="rvq-search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="triage-srch" placeholder="Search product, SKU, ASIN…" oninput="renderTriage()"></div>
+        <div class="rvq-search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><input id="triage-srch" placeholder="Search product, SKU, ASIN…" oninput="renderTriage()"></div>
         <select class="fb-select" id="triage-reason" onchange="renderTriage()">
           <option value="">All reasons</option>
           <option value="Lost_Outbound">Lost Out</option>
@@ -1643,7 +1673,7 @@ thead th{padding:7px 10px}
       </div>
       <div class="kpi-row" id="errors-kpi"></div>
       <div class="rvq-toolbar">
-        <div class="rvq-search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="errors-srch" placeholder="Search product, SKU, ASIN…" oninput="renderErrors()"></div>
+        <div class="rvq-search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><input id="errors-srch" placeholder="Search product, SKU, ASIN…" oninput="renderErrors()"></div>
         <select class="fb-select" id="errors-reason" onchange="renderErrors()"><option value="">All reasons</option>
           <option value="Lost_Outbound">Lost Out</option><option value="Lost_Warehouse">Lost WH</option><option value="Lost_Inbound">Lost In</option>
           <option value="Damaged_Warehouse">Damaged WH</option><option value="CustomerReturn">Customer return</option><option value="CustomerServiceIssue">CS issue</option></select>
@@ -1683,9 +1713,9 @@ thead th{padding:7px 10px}
       <select class="fb-select" id="f-loss" onchange="renderActive()">
         <option value="">All results</option>
         <option value="loss">Losses only</option>
-        <option value="loss5">Loss > £5</option>
-        <option value="loss10">Loss > £10</option>
-        <option value="loss20">Loss > £20</option>
+        <option value="loss5">Loss &gt; £5</option>
+        <option value="loss10">Loss &gt; £10</option>
+        <option value="loss20">Loss &gt; £20</option>
         <option value="gain">Gains only</option>
       </select>
       <select class="fb-select" id="f-sort" onchange="setActiveSort(this.value)">
@@ -1695,7 +1725,7 @@ thead th{padding:7px 10px}
         <option value="actual_cost">Highest COG</option>
       </select>
       <div class="fb-sep"></div>
-      <label class="fb-check"><input type="checkbox" id="f-hide-rev" onchange="renderActive()" checked> Hide reversals</label>
+      <label class="fb-check"><input type="checkbox" id="f-hide-rev" onchange="renderActive()" checked=""> Hide reversals</label>
       <button class="btn btn-sec" style="padding:4px 10px;font-size:10.5px" onclick="arAllToggle()" title="Toggle all cards between full and compact view">⌃⌄ Collapse / expand all</button>
     </div>
     <div class="ar-tagbar" id="active-tags"></div>
@@ -1791,7 +1821,7 @@ thead th{padding:7px 10px}
               </div>
               <div class="f">
                 <label>Reimbursement ID (auto)</label>
-                <input type="text" id="cg-reimb-id" readonly style="opacity:.6">
+                <input type="text" id="cg-reimb-id" readonly="" style="opacity:.6">
               </div>
             </div>
           </div>
@@ -1813,7 +1843,7 @@ thead th{padding:7px 10px}
   </div>
 
   <!-- IMPORT -->
-  <div class="page" id="page-import">
+  <div class="page active" id="page-import">
     <div class="page-body">
       <h2 style="font-size:12px;font-weight:700;margin-bottom:6px">Import SellerFuse CSV</h2>
       <p style="font-size:11.5px;color:var(--text2);margin-bottom:14px;line-height:1.6">
@@ -1827,12 +1857,12 @@ thead th{padding:7px 10px}
         <input type="file" id="csv-input" accept=".csv,.pdf" onchange="handleImport(this)">
         <div style="font-size:17px;margin-bottom:10px">📂</div>
         <div style="font-size:12px;font-weight:600">Drop CSV or PDF here or click to browse</div>
-        <div style="font-size:11px;margin-top:5px;color:var(--text3)">SellerFuse CSV export (recommended) · or the PDF report — both import & self-verify</div>
+        <div style="font-size:11px;margin-top:5px;color:var(--text3)">SellerFuse CSV export (recommended) · or the PDF report — both import &amp; self-verify</div>
       </label>
       <div id="import-result" style="margin-top:12px"></div>
       <div id="import-preview" class="import-preview"></div>
       <h3 style="font-size:12px;font-weight:600;margin:18px 0 8px;color:var(--text2)">Import Batches</h3>
-      <div id="batch-list" class="batch-list"></div>
+      <div id="batch-list" class="batch-list"><div style="color:var(--text3);font-size:11.5px">No imports yet. Use the file picker above to import a SellerFuse CSV.</div></div>
       <div id="import-stats" style="margin-top:0"></div>
     </div>
   </div>
@@ -1850,7 +1880,7 @@ thead th{padding:7px 10px}
         <div class="ss-body">
           <div id="cloud-status-box" class="cloud-status">Checking connection…</div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
-            <button class="btn-sec" onclick="cloudPull().then(()=>{renderAllViews();toast('Reloaded from Supabase');})">↻ Reload from cloud</button>
+            <button class="btn-sec" onclick="cloudPull().then(()=&gt;{renderAllViews();toast('Reloaded from Supabase');})">↻ Reload from cloud</button>
             <button class="btn-sec" onclick="wipeCloudData()" style="color:var(--red);border-color:var(--red)">Wipe all cloud data…</button>
           </div>
           <div style="font-size:11.5px;color:var(--text3);line-height:1.6;margin-top:10px">
@@ -1988,9 +2018,9 @@ thead th{padding:7px 10px}
         </div>
         <div class="ss-body">
           <div style="font-size:11.5px;color:var(--text2);line-height:1.5;margin-bottom:10px">
-            Last backup: <strong id="last-backup">never</strong>
+            Last backup: <strong id="last-backup" style="color: var(--amber);">never</strong>
             <span style="margin:0 8px;color:var(--border2)">·</span>
-            Cloud: <strong id="sync-badge" style="color:var(--text3)">Local only</strong>
+            Cloud: <strong id="sync-badge" style="color: var(--green);">Supabase · synced ✓</strong>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
             <button class="btn btn-primary" onclick="backupData()">⤓ Download backup</button>
@@ -2017,7 +2047,7 @@ thead th{padding:7px 10px}
               <select class="fb-select" id="delete-batch-select" onchange="updateDeleteBatchSummary()">
                 <option value="">No imported months available</option>
               </select>
-              <button class="btn btn-danger" id="delete-batch-btn" onclick="deleteSelectedBatch()" disabled>Delete selected month from Supabase…</button>
+              <button class="btn btn-danger" id="delete-batch-btn" onclick="deleteSelectedBatch()" disabled="">Delete selected month from Supabase…</button>
             </div>
             <div class="month-delete-meta" id="delete-batch-summary"></div>
           </div>
@@ -2209,9 +2239,9 @@ async function cloudPull(){
       records=[]; archived=[]; importErrors=[];
       rebuilt.forEach(r=>{
         const st=(annMap[r.reimb_id]||{}).workflow_status;
-        const noCog=(!r.actual_cost||Number(r.actual_cost)<=0) && r.is_adjustment!=='Yes';
+        const noCog=(!r.actual_cost||Number(r.actual_cost)<=0);
         if(st==='archived'||st==='no_action') archived.push(r);
-        else if(noCog && !st) importErrors.push({...r, import_error:'Missing COG from SKU'});
+        else if(noCog) importErrors.push({...r, import_error:'Missing COG from SKU'});
         else records.push(r);
       });
       annotations = annMap;
@@ -2429,6 +2459,7 @@ function nav(id) {
 //  BADGES
 // ════════════════════════════════════════════
 function updateBadges() {
+  if (typeof moveTriageMissingCogToErrors === 'function') moveTriageMissingCogToErrors();
   const today = new Date().toISOString().split('T')[0];
   const triageCount = records.filter(r => ann(r.reimb_id).workflow_status === 'triage' && r.is_reversal !== 'Yes').length;
   const activeRows = records.filter(r => ann(r.reimb_id).workflow_status !== 'triage' && r.is_reversal !== 'Yes');
@@ -2443,7 +2474,7 @@ function updateBadges() {
     if ((a.outcome||'')==='reimbursed') return;
     if ((a.snooze_until||'') >= today) return; // cleared for today
     const d = daysLeft60(r.date);
-    if ((!r.actual_cost || Number(r.actual_cost)<=0) && r.is_adjustment!=='Yes') { actionCount++; return; }
+    if (!r.actual_cost || Number(r.actual_cost)<=0) { actionCount++; return; }
     if ((a.msc_status==='approved'||a.msc_status==='reduced') && !vaCaseOpen(r)) { actionCount++; return; }
     if (a.review_date && a.review_date <= today) { actionCount++; return; }
     if (d <= (settings.deadline_risk_days||7) && d > 0 && computedNet(r) < 0) { actionCount++; return; }
@@ -2455,8 +2486,9 @@ function updateBadges() {
     if (a.msc_status==='docs') { actionCount++; return; }
     if (computedNet(r) < -0.01 && (!a.msc_status || a.msc_status==='none')) { actionCount++; return; }
   });
-  actionCount += triageCount; // review queue items need a decision
-  actionCount += importErrors.filter(r=>r.is_reversal!=='Yes').length; // import errors need fixing
+  // The Actions badge is only for do-now Active work. Review Queue and Import
+  // Errors have their own badges, so the user does not see "132 actions" with
+  // an empty action list.
   const ba=document.getElementById('badge-actions'); if(ba) ba.textContent = actionCount;
   const bac=document.getElementById('badge-active'); if(bac) bac.textContent = activeRows.length;
   const bh=document.getElementById('badge-history'); if(bh) bh.textContent = archived.length;
@@ -2555,7 +2587,7 @@ function renderOverview() {
   let focusItems = [];
   active.forEach(r=>{
     const a=ann(r.reimb_id); const d=daysLeft60(r.date);
-    if ((!r.actual_cost||Number(r.actual_cost)<=0) && r.is_adjustment!=='Yes'){ focusItems.push({r,rank:1,tag:'Fix COG',reason:'COG missing — blocked',col:'var(--red)'}); return; }
+    if (!r.actual_cost||Number(r.actual_cost)<=0){ focusItems.push({r,rank:1,tag:'Fix COG',reason:'COG missing — blocked',col:'var(--red)'}); return; }
     if ((a.msc_status==='approved'||a.msc_status==='reduced')&&!vaCaseOpen(r)){ focusItems.push({r,rank:2,tag:'Open case',reason:'MSC approved — open the case',col:'#38bdf8'}); return; }
     if (a.review_date&&a.review_date<=today){ focusItems.push({r,rank:1,tag:'Re-submit',reason:'MSC re-submission overdue',col:'var(--red)'}); return; }
     if (d<=RISK_D&&d>0&&computedNet(r)<0){ focusItems.push({r,rank:1,tag:'Work now',reason:'Claim window closing — '+d+'d left',col:'var(--red)'}); return; }
@@ -2687,6 +2719,7 @@ function renderOverview() {
 }
 
 function renderActions() {
+  if (typeof moveTriageMissingCogToErrors === 'function') moveTriageMissingCogToErrors();
   const today = new Date().toISOString().split('T')[0];
   const todayMs = new Date(today).getTime();
   const RISK_D = settings.deadline_risk_days||7;
@@ -2725,7 +2758,7 @@ function renderActions() {
     const a = ann(r.reimb_id);
     const d = daysLeft60(r.date);
     const net = computedNet(r);
-    if ((!r.actual_cost || Number(r.actual_cost)<=0) && r.is_adjustment!=='Yes') { fixCog.push(r); return; }
+    if (!r.actual_cost || Number(r.actual_cost)<=0) { fixCog.push(r); return; }
     if ((a.msc_status==='approved'||a.msc_status==='reduced') && !vaCaseOpen(r)) { openCaseNow.push(r); return; }
     if (a.review_date && a.review_date < today) { reviewOverdue.push(r); return; }
     if (a.review_date && a.review_date === today) { reviewToday.push(r); return; }
@@ -2743,10 +2776,11 @@ function renderActions() {
   });
   caseFollowUp.sort((a,b)=>b.sinceDays-a.sinceDays);
 
-  // Action count = everything that needs the VA to DO something (excludes monitor-only waiting)
-  const total = errItems.length + fixCog.length + openCaseNow.length + reviewOverdue.length +
+  // Action count = the visible action queue only. Review Queue / Import Errors
+  // are separate queues with their own counters and buttons.
+  const total = fixCog.length + openCaseNow.length + reviewOverdue.length +
                 reviewToday.length + deadlineCrit.length + caseFollowUp.length +
-                checkMsc.length + uploadDocs.length + reviewItems.length;
+                checkMsc.length + uploadDocs.length;
   document.getElementById('aq-total').textContent = total;
 
   const cogAtRisk = arr => arr.reduce((s,r)=>s+Math.abs(Math.min(0,computedNet(r))),0);
@@ -2880,6 +2914,12 @@ function renderActions() {
     main = snoozedList.length
       ? '<div class="aq-empty"><div style="font-size:12px;font-weight:600;color:var(--text2)">All caught up for today</div><div style="font-size:12px;margin-top:8px">Everything urgent is cleared for today. <span class="aq-sh-link" onclick="unsnoozeAll()">Show '+snoozedList.length+' cleared</span></div></div>'
       : '<div class="aq-empty" style="padding:14px 16px"><div style="font-size:12px;font-weight:600;color:var(--text2)">No urgent actions right now</div><div style="font-size:11.5px;margin-top:5px">Nothing time-critical'+(checkMsc.length?' — so here\'s the general queue while it\'s quiet.':'. Check back tomorrow.')+'</div></div>';
+    if (reviewItems.length || errItems.length) {
+      main += '<div class="aq-nextwork">'+
+        (reviewItems.length?'<div class="aq-nextcard" onclick="nav(\'triage\')"><div><div class="aq-next-n" style="color:#c084fc">'+reviewItems.length+'</div><div class="aq-next-t">Review Queue</div><div class="aq-next-s">Decide Active vs no action</div></div><button class="btn-sec">Open →</button></div>':'')+
+        (errItems.length?'<div class="aq-nextcard" onclick="nav(\'errors\')"><div><div class="aq-next-n" style="color:var(--red)">'+errItems.length+'</div><div class="aq-next-t">Import Errors</div><div class="aq-next-s">Add missing COG before review</div></div><button class="btn btn-red">Fix →</button></div>':'')+
+      '</div>';
+    }
     // Quiet day → promote the general queue into the main column instead of a void
     if (checkMsc.length) {
       genInMain=true;
@@ -2978,6 +3018,7 @@ function renderErrors() {
     const idJs = String(r.reimb_id).replace(/'/g,"\\'");
     const ageD = Math.floor((Date.now()-new Date(r.date).getTime())/86400000);
     const applyAll = '';
+    const sfUrl = sellerFuseCogUrl(r);
     return `<div class="rvq-card tier-md">
       <div></div>
       <div class="rvq-body">
@@ -2989,7 +3030,7 @@ function renderErrors() {
         <label class="cog-entry-l">Enter cost</label>
         <div class="cog-entry-row">
           <div class="cog-field"><span>£</span><input type="number" step="0.01" min="0.01" id="err-cog-${esc(r.reimb_id)}" placeholder="0.00" onkeydown="if(event.key==='Enter')fixCogAndMove('${idJs}')"></div>
-          <button class="btn-sec cog-find" onclick="event.stopPropagation();findPrevCost('${idJs}')" title="Search matching SKU / prior orders for a cost">Find previous cost</button>
+          <a class="btn-sec cog-find sf-cog-btn" href="${sfUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()" title="Open this product in SellerFuse COG wizard">SF COG ↗</a>
         </div>
       </div>
       <div class="rvq-act">
@@ -3128,7 +3169,7 @@ let triageSortCol = 'net';
 let triageSortDir = 'asc';
 function srtTriage(col) {
   if (triageSortCol===col) triageSortDir = triageSortDir==='asc'?'desc':'asc';
-  else { triageSortCol=col; triageSortDir = (col==='net'||col==='actual_cost')?'asc':'asc'; }
+  else { triageSortCol=col; triageSortDir = (col==='product_name'||col==='reason'||col==='net'||col==='deadline')?'asc':'desc'; }
   document.querySelectorAll('#page-triage thead th').forEach(th=>th.classList.remove('sorted'));
   const el = document.getElementById('tth-'+col);
   if (el) el.classList.add('sorted');
@@ -3137,11 +3178,34 @@ function srtTriage(col) {
 function triageSortVal(r, col) {
   if (col==='net') return computedNet(r);
   if (col==='total') return totalCost(r);
+  if (col==='deadline') return daysLeft60(r.date);
+  if (col==='product_name') return r.product_name || '';
   return r[col];
+}
+function moveTriageMissingCogToErrors() {
+  const moved = [];
+  records = records.filter(r => {
+    if (ann(r.reimb_id).workflow_status === 'triage' && r.is_reversal !== 'Yes' && (!r.actual_cost || Number(r.actual_cost) <= 0)) {
+      moved.push({...r, import_error:'Missing COG from SKU'});
+      delete annotations[r.reimb_id];
+      return false;
+    }
+    return true;
+  });
+  if (moved.length) {
+    moved.forEach(r => {
+      const exists = importErrors.find(x=>x.reimb_id===r.reimb_id) || records.find(x=>x.reimb_id===r.reimb_id) || archived.find(x=>x.reimb_id===r.reimb_id);
+      if (!exists) importErrors.push(r);
+    });
+    save();
+  }
+  return moved.length;
 }
 function renderTriage() {
   const body = document.getElementById('tbl-triage');
   if (!body) return;
+  const movedMissing = moveTriageMissingCogToErrors();
+  if (movedMissing && document.getElementById('tbl-errors')) renderErrors();
   const srch = (document.getElementById('triage-srch')?.value||'').toLowerCase();
   const filt = document.getElementById('triage-result')?.value || '';
   const reasonF = document.getElementById('triage-reason')?.value || '';
@@ -3217,7 +3281,7 @@ function renderTriage() {
     const idJs = String(r.reimb_id).replace(/'/g,"\\'");
     const grpBadge = subCount>1 ? '<span class="rvq-grp">'+subCount+' cases</span>' : '';
     return `<div class="rvq-card tier-${tier}${sel?' sel':''}" onclick="openRecord('${idJs}')">
-      <label class="rvq-check" onclick="event.stopPropagation()"><input type="checkbox" ${sel?'checked':''} onclick="toggleTriageSel('${idJs}',this)"></label>
+      <label class="rvq-check" onclick="event.stopPropagation()"><input type="checkbox" class="tsel-cb" data-rid="${idJs}" ${sel?'checked':''} onclick="toggleTriageSel('${idJs}',this)"></label>
       <div class="rvq-body">
         <div class="rvq-top">${tierTag}${grpBadge}<span class="rvq-name">${esc(r.product_name||'(no product name)')}</span></div>
         <div class="rvq-codes"><span class="rvq-code" onclick="event.stopPropagation();copyText('${esc(r.sku)}','SKU')">${esc(r.sku)}</span><span class="rvq-dot">·</span><span class="rvq-code dim" onclick="event.stopPropagation();copyText('${esc(r.asin||'')}','ASIN')">${esc(r.asin||'')}</span>${r.fnsku?'<span class="rvq-dot">·</span><span class="rvq-code dim" onclick="event.stopPropagation();copyText(\''+esc(r.fnsku)+'\',\'FNSKU\')">'+esc(r.fnsku)+'</span>':''}</div>
@@ -3266,7 +3330,16 @@ function renderTriage() {
   } else {
     listHtml = rows.map(r=>cardHtml(r,1)).join('');
   }
-  body.innerHTML = listHtml || '<div class="rvq-empty"><div class="rvq-empty-ic">✓</div><div class="rvq-empty-t">Nothing waiting for review</div><div class="rvq-empty-s">Imported cases you haven\'t triaged will appear here.</div></div>';
+  const sortIcon = col => triageSortCol===col ? (triageSortDir==='asc'?' ↑':' ↓') : '';
+  const sortbar = rows.length ? `<div class="rvq-sortbar">
+    <button class="${triageSortCol==='product_name'?'on':''}" onclick="srtTriage('product_name')">Item${sortIcon('product_name')}</button>
+    <button class="right ${triageSortCol==='actual_cost'?'on':''}" onclick="srtTriage('actual_cost')">COG${sortIcon('actual_cost')}</button>
+    <button class="right ${triageSortCol==='reimb_amount'?'on':''}" onclick="srtTriage('reimb_amount')">Reimbursed${sortIcon('reimb_amount')}</button>
+    <button class="right ${triageSortCol==='net'?'on':''}" onclick="srtTriage('net')">P/L${sortIcon('net')}</button>
+    <button class="${triageSortCol==='reason'?'on':''}" onclick="srtTriage('reason')">Reason${sortIcon('reason')}</button>
+    <button class="right ${triageSortCol==='deadline'?'on':''}" onclick="srtTriage('deadline')">Deadline${sortIcon('deadline')}</button>
+  </div>` : '';
+  body.innerHTML = (sortbar + (listHtml || '<div class="rvq-empty"><div class="rvq-empty-ic">✓</div><div class="rvq-empty-t">Nothing waiting for review</div><div class="rvq-empty-s">Imported cases you haven\'t triaged will appear here.</div></div>'));
   triageUpdateBulkBar();
 }
 function triageSortFromMenu(v){ const [col,dir]=v.split('-'); triageSortCol=col==='net'?'net':col; triageSortDir=dir; renderTriage(); }
@@ -3277,6 +3350,7 @@ function clearProfitable() {
   const profit = records.filter(r => ann(r.reimb_id).workflow_status==='triage' && r.is_reversal!=='Yes' && (r.actual_cost>0) && computedNet(r) >= -0.005);
   if (!profit.length) { toast('No profitable rows in the Review Queue'); return; }
   if (!confirm('Move '+profit.length+' already-profitable row'+(profit.length===1?'':'s')+' to History as "No action needed"?')) return;
+  pushUndo();
   profit.forEach(r => {
     setAnn(r.reimb_id,{workflow_status:'archived', outcome:'no_action'});
     const idx = records.findIndex(x=>x.reimb_id===r.reimb_id);
@@ -3284,23 +3358,23 @@ function clearProfitable() {
   });
   save();
   renderTriage(); renderActive(); renderHistory(); updateBadges(); renderCaseGen();
-  toast(profit.length+' profitable rows filed to History');
+  toast(profit.length+' profitable rows filed to History', {undo:true});
 }
 
 function triageSetFilter(v){ const sel=document.getElementById('triage-result'); if(sel) sel.value=v; triageSel.clear(); renderTriage(); }
 let triageSel = new Set();
 function triageVisibleIds(){
-  return [...document.querySelectorAll('#tbl-triage .tsel-cb')].map(cb=>cb.closest('tr')).filter(Boolean)
-    .map(tr=>{const m=tr.querySelector('.tsel-cb'); return m?m.getAttribute('data-rid'):null;});
+  return [...document.querySelectorAll('#tbl-triage .tsel-cb')].map(cb=>cb.getAttribute('data-rid')).filter(Boolean);
 }
 function toggleTriageSel(id, cb){
   if(cb.checked) triageSel.add(id); else triageSel.delete(id);
-  cb.closest('tr').classList.toggle('tr-sel', cb.checked);
+  const row = cb.closest('.rvq-card') || cb.closest('tr');
+  if (row) row.classList.toggle('sel', cb.checked);
   triageUpdateBulkBar();
 }
 function toggleTriageAll(master){
   const cbs=document.querySelectorAll('#tbl-triage .tsel-cb');
-  cbs.forEach(cb=>{ const id=cb.getAttribute('data-rid'); cb.checked=master.checked; cb.closest('tr').classList.toggle('tr-sel',master.checked); if(master.checked)triageSel.add(id); else triageSel.delete(id); });
+  cbs.forEach(cb=>{ const id=cb.getAttribute('data-rid'); cb.checked=master.checked; const row=cb.closest('.rvq-card')||cb.closest('tr'); if(row)row.classList.toggle('sel',master.checked); if(master.checked)triageSel.add(id); else triageSel.delete(id); });
   triageUpdateBulkBar();
 }
 function triageClearSel(){ triageSel.clear(); renderTriage(); }
@@ -3347,20 +3421,22 @@ function bulkTriage(action){
 
 function triageMove(reimb_id, action) {
   const rec = records.find(x=>x.reimb_id===reimb_id);
-  if (action === 'active') {
-    if (!rec || !rec.actual_cost || Number(rec.actual_cost) <= 0) {
-      toast('COG required before moving to Active');
-      openRecord(reimb_id);
+  if (!rec || !rec.actual_cost || Number(rec.actual_cost) <= 0) {
+    if (rec) {
+      pushUndo();
+      if (!importErrors.find(x=>x.reimb_id===reimb_id)) importErrors.push({...rec, import_error:'Missing COG from SKU'});
+      records = records.filter(x=>x.reimb_id!==reimb_id);
+      delete annotations[reimb_id];
+      save();
+      renderTriage(); renderErrors(); updateBadges();
+      toast('Moved to Import Errors — add COG before review');
       return;
     }
+  }
+  if (action === 'active') {
     setAnn(reimb_id,{workflow_status:'active', worked:true});
     toast('Moved to Active Reimbursements');
   } else {
-    if (!rec || !rec.actual_cost || Number(rec.actual_cost) <= 0) {
-      toast('COG required before archiving');
-      openRecord(reimb_id);
-      return;
-    }
     pushUndo();
     setAnn(reimb_id,{workflow_status:'archived', outcome:'no_action'});
     const idx = records.findIndex(x=>x.reimb_id===reimb_id);
@@ -4439,10 +4515,11 @@ function importParsedPdf(parsedPdf, fileName){
   const headers=['SKU','ASIN','FNSKU','Product Name','Date','Reason','Quantity','Reimbursement Amount','Your Cost','Net Result (Profit/Loss)','Is Reversal','Is Adjustment','Case ID','Order ID','Reimbursement ID'];
   const rawRows=recs.map(r=>{
     const rev=r.reason==='Reimbursement_Reversal'?'Yes':'No';
+    const adj=r.reason==='GeneralAdjustment'?'Yes':'No';
     return {'SKU':r.sku,'ASIN':r.asin,'FNSKU':r.fnsku,'Product Name':r.product,'Date':r.date,'Reason':r.reason,
       'Quantity':String(r.qty),'Reimbursement Amount':r.reimbursed==null?'':String(r.reimbursed),
       'Your Cost':r.your_cost==null?'':String(r.your_cost),'Net Result (Profit/Loss)':r.net==null?'':String(r.net),
-      'Is Reversal':rev,'Is Adjustment':rev,'Case ID':r.case_id,'Order ID':'','Reimbursement ID':r.reimb_id};
+      'Is Reversal':rev,'Is Adjustment':adj,'Case ID':r.case_id,'Order ID':'','Reimbursement ID':r.reimb_id};
   });
   pendingImport={fileName, headers, rawRows, mappings:detectMappings(headers), pdfTotals:totals||null};
   renderImportPreview();
@@ -4608,17 +4685,23 @@ function renderImportPreview() {
     </div>
     <div class="ip-body">
       <div class="ip-warn"><strong>Import rules:</strong> COG comes from the SKU, not SellerFuse cost columns. Missing COG rows go to <strong>Import Errors</strong>. SellerFuse CSVs do not include FNSKU, so the VA can add it later if needed.</div>
-      <div class="ip-mapstatus" id="ip-mapstatus"></div>
-      <div class="ip-group">
-        <div class="ip-group-head">Key columns <span class="ip-group-sub">· required to import</span></div>
-        <div class="ip-map">${keyHtml}</div>
+      <div class="ip-topgrid">
+        <div class="ip-mini" id="import-parse-summary"></div>
+        <div class="ip-recon" id="ip-recon"></div>
       </div>
-      <div class="ip-group">
-        <div class="ip-group-head">Other columns <span class="ip-group-sub">· optional — mapped automatically when present (FNSKU isn't in SellerFuse exports)</span></div>
-        <div class="ip-map">${otherHtml}</div>
-      </div>
-      <div class="ip-mini" id="import-parse-summary"></div>
-      <div class="ip-recon" id="ip-recon"></div>
+      <details class="ip-mapdetails" id="ip-mapdetails">
+        <summary><span id="ip-mapstatus"></span><span class="ip-group-sub">Column mapping</span></summary>
+        <div class="ip-mapdetails-body">
+          <div class="ip-group">
+            <div class="ip-group-head">Key columns <span class="ip-group-sub">· required to import</span></div>
+            <div class="ip-map">${keyHtml}</div>
+          </div>
+          <div class="ip-group">
+            <div class="ip-group-head">Other columns <span class="ip-group-sub">· optional, auto-mapped when present</span></div>
+            <div class="ip-map">${otherHtml}</div>
+          </div>
+        </div>
+      </details>
       <div class="ip-table-wrap"><table><thead><tr><th>Include</th><th>Date</th><th>Item</th><th>SKU</th><th>Reason</th><th class="td-num">Qty</th><th class="td-num">COG</th><th class="td-num">Reimbursement</th><th class="td-num">P/L</th></tr></thead><tbody id="import-preview-rows"></tbody></table></div>
     </div>
     <div class="ip-actions">
@@ -4699,7 +4782,7 @@ function checkRecon(){
 function updateImportPreviewRows() {
   if (!pendingImport) return;
   const mapped = getImportMappings();
-  const parsed = pendingImport.rawRows.map(raw=>rowToRecord(raw, mapped)).filter(r=>r.sku);
+  const parsed = pendingImport.rawRows.map(raw=>rowToRecord(raw, mapped)).filter(r=>r.sku && String(r.sku).trim().toUpperCase()!=='TOTALS');
   pendingImport.preview = parsed;
   Object.keys(mapped).forEach(k=>{
     const sel = mapped[k];
@@ -4719,12 +4802,19 @@ function updateImportPreviewRows() {
   if (statusBar) statusBar.innerHTML = missing.length
     ? '<span class="ip-ms-bad">● '+missing.length+' key column'+(missing.length===1?'':'s')+' need your attention: '+missing.join(', ')+'</span>'
     : '<span class="ip-ms-ok">● All key columns matched — ready to import</span>';
+  const mapDetails = document.getElementById('ip-mapdetails');
+  if (mapDetails && missing.length) mapDetails.setAttribute('open','open');
   const cogFromSku = parsed.filter(r=>r.cog_source==='SKU').length;
-  const missingCog = parsed.filter(r=>(!r.actual_cost || Number(r.actual_cost)<=0) && r.is_adjustment!=='Yes').length;
+  const missingCog = parsed.filter(r=>(!r.actual_cost || Number(r.actual_cost)<=0)).length;
   const dupes = parsed.filter(r=>records.find(x=>x.reimb_id===r.reimb_id)||archived.find(x=>x.reimb_id===r.reimb_id)).length;
   document.getElementById('import-parse-summary').innerHTML = missing.length
     ? '<strong style="color:var(--red)">Missing required mapping:</strong> '+missing.join(', ')
-    : `<strong>${parsed.length}</strong> rows recognised · <strong>${cogFromSku}</strong> COGs from SKU · <strong style="color:var(--red)">${missingCog}</strong> missing COG / blocked · <strong>${dupes}</strong> duplicate reimbursement IDs already exist`;
+    : `<div class="ip-summarybar">
+        <div class="ip-stat"><b>${parsed.length}</b><span>rows recognised</span></div>
+        <div class="ip-stat good"><b>${cogFromSku}</b><span>COGs from SKU</span></div>
+        <div class="ip-stat ${missingCog?'bad':'good'}"><b>${missingCog}</b><span>missing COG</span></div>
+        <div class="ip-stat ${dupes?'warn':''}"><b>${dupes}</b><span>duplicates</span></div>
+      </div>`;
   renderReconPanel(parsed);
   if (window._csvTotalsRow && !pendingImport.pdfTotals){
     // Totals,,,,,,,,,,units,cost,reimbursed,net
@@ -4742,7 +4832,6 @@ function updateImportPreviewRows() {
   const signedMoney = v => (Number(v||0) < 0 ? '-£'+Math.abs(Number(v||0)).toFixed(2) : '+£'+Math.abs(Number(v||0)).toFixed(2));
   const moneyCell = (main, sub, cls='') => '<div class="ip-money"><span class="ip-money-main '+cls+'">'+main+'</span><span class="ip-money-sub">'+sub+'</span></div>';
   const costCell = r => {
-    if (r.is_adjustment==='Yes') return moneyCell('£'+Number(r.actual_cost||0).toFixed(2),'COG context only','warn');
     if (r.actual_cost && Number(r.actual_cost)>0) return moneyCell('£'+Number(r.actual_cost).toFixed(2),'from SKU');
     return '<span class="cog-error">COG missing</span>';
   };
@@ -4768,21 +4857,22 @@ function updateImportPreviewRows() {
     const cfg = map[reason] || [reason.replace(/_/g,' '),'var(--surface3)','var(--border2)','var(--text2)',''];
     return '<div><span class="ip-reason-tile" style="--rt-bg:'+cfg[1]+';--rt-b:'+cfg[2]+';--rt-c:'+cfg[3]+'">'+esc(cfg[0])+'</span>'+(cfg[4]?'<div class="ip-reason-sub">'+esc(cfg[4])+'</div>':'')+'</div>';
   };
+  const itemMeta = r => [
+    r.asin ? 'ASIN '+r.asin : '',
+    r.fnsku ? 'FNSKU '+r.fnsku : 'FNSKU blank',
+    r.case_id ? 'Case '+r.case_id : '',
+    (r.reimb_id_real||r.reimb_id) ? 'Reimb '+(r.reimb_id_real||r.reimb_id) : ''
+  ].filter(Boolean).join('  ·  ');
   document.getElementById('import-preview-rows').innerHTML = parsed.map((r,i)=>`
     <tr class="${[
-      (!r.actual_cost || Number(r.actual_cost)<=0) && r.is_adjustment!=='Yes' ? 'ip-error-row' : '',
+      (!r.actual_cost || Number(r.actual_cost)<=0) ? 'ip-error-row' : '',
       r.is_adjustment==='Yes' ? 'ip-adj-row' : ''
     ].filter(Boolean).join(' ')}">
       <td><input type="checkbox" class="ip-row-check" data-i="${i}" checked></td>
       <td>${fmtDate(r.date)}</td>
       <td title="${esc(r.product_name||'')}">
         <div class="ip-item-name">${esc(r.product_name||'(no product name)')}</div>
-        <div class="ip-item-meta">
-          ${r.asin?'<span class="ip-mini-id">ASIN '+esc(r.asin)+'</span>':''}
-          ${r.fnsku?'<span class="ip-mini-id">FNSKU '+esc(r.fnsku)+'</span>':'<span>FNSKU blank</span>'}
-          ${r.case_id?'<span class="ip-mini-id">Case '+esc(r.case_id)+'</span>':''}
-          ${r.reimb_id_real||r.reimb_id?'<span class="ip-mini-id">Reimb '+esc(r.reimb_id_real||r.reimb_id||'')+'</span>':''}
-        </div>
+        <div class="ip-item-meta">${esc(itemMeta(r))}</div>
       </td>
       <td class="td-mono sku-cell"><span class="sku-full">${esc(r.sku)}</span></td>
       <td>${reasonTile(r)}</td>
@@ -4796,7 +4886,7 @@ function updateImportPreviewRows() {
 function confirmImportPreview() {
   if (!pendingImport) return;
   const mapped = getImportMappings();
-  const parsed = pendingImport.rawRows.map(raw=>rowToRecord(raw, mapped)).filter(r=>r.sku && r.reimb_id && String(r.sku).toUpperCase()!=='TOTALS');
+  const parsed = pendingImport.rawRows.map(raw=>rowToRecord(raw, mapped)).filter(r=>r.sku && r.reimb_id && String(r.sku).trim().toUpperCase()!=='TOTALS');
   if (!mapped.sku || !mapped.reimb_id || !mapped.reimb_amount) {
     toast('Required column mapping missing');
     return;
@@ -4809,7 +4899,7 @@ function confirmImportPreview() {
   const nonReversal = selected.filter(r => r.is_reversal !== 'Yes');
   const orphan = nonReversal.filter(r => !r.asin && !r.fnsku && !r.product_name && !extractCogFromSku(r.sku));
   const workable = nonReversal.filter(r => !(orphan.includes(r)));
-  const cogOk = r => (r.actual_cost && Number(r.actual_cost)>0) || r.is_adjustment==='Yes';
+  const cogOk = r => (r.actual_cost && Number(r.actual_cost)>0);
   const selectedValid = workable.filter(cogOk);
   const selectedMissingCog = workable.filter(r=>!cogOk(r));
   let added=0, dupes=0, skipped=0, errorsAdded=0, reversalsAdded=0, orphansSkipped=orphan.length;
@@ -4958,6 +5048,10 @@ function caseUrl(caseId) {
 }
 function asinUrl(asin) {
   return 'https://www.amazon.co.uk/dp/' + encodeURIComponent(String(asin||''));
+}
+function sellerFuseCogUrl(r) {
+  const filter = r?.asin || r?.sku || r?.fnsku || '';
+  return 'https://app.sellerfuse.com/cogs-wizard?filter=' + encodeURIComponent(String(filter)) + '&tab=with-cogs';
 }
 function reimbUrl(reimbId) {
   const id = encodeURIComponent(String(reimbId));
@@ -6252,7 +6346,7 @@ function seedSampleData(){
   // reversals -> History (they can never be worked). Nothing is pre-placed in Active or pre-settled.
   let parsed;
   try { parsed = parseCSV(SAMPLE_CSV); } catch(e){ console.error('sample parse failed',e); return; }
-  parsed = parsed.filter(r=>r.sku && r.reimb_id && String(r.sku).toUpperCase()!=='TOTALS');
+  parsed = parsed.filter(r=>r.sku && r.reimb_id && String(r.sku).trim().toUpperCase()!=='TOTALS');
   // Sample-only: the old sample CSV predates FNSKU. Real imports (native CSV / PDF)
   // carry a real FNSKU; here we synthesize a stable demo one per ASIN so the
   // preview shows the ASIN + FNSKU stack the way live data will.
@@ -6474,5 +6568,6 @@ if (cloudEnabled()) {
   });
 }
 </script>
-</body>
-</html>
+
+
+</body></html>
