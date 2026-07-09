@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-density="compact">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,12 +24,12 @@
    TOKENS
 ═══════════════════════════════════════════ */
 :root {
-  --bg:        #0c1117;
-  --surface:   #141b24;
-  --surface2:  #1b2430;
-  --surface3:  #202b38;
-  --border:    #242a37;
-  --border2:   #333b50;
+  --bg:        #05070a;
+  --surface:   #0b1016;
+  --surface2:  #111821;
+  --surface3:  #17202b;
+  --border:    #1b2531;
+  --border2:   #2a3648;
   --text:      #f4f7fb;
   --text2:     #d6dee8;
   --text3:     #b4c0ce;
@@ -553,6 +553,8 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
 .hd-verdict.bad{border-color:color-mix(in srgb,var(--red) 45%,transparent);background:linear-gradient(180deg,var(--red-dim),var(--surface))}
 .hd-verdict.bad .hv-lead{color:var(--red)}
 .hd-verdict.neutral{color:var(--text2)}
+.hd-verdict.cash-only{border-color:rgba(56,189,248,.26);background:linear-gradient(180deg,rgba(56,189,248,.07),var(--surface));color:#d5e5f3}
+.hd-verdict.cash-only .hv-lead{color:#7dd3fc}
 .ht-toolbar{display:inline-flex;gap:4px;background:var(--surface2);border:1px solid var(--border);border-radius:99px;padding:3px;margin-bottom:6px}
 .ht-mbtn{border:0;background:transparent;color:var(--text3);font-size:10.5px;font-weight:600;padding:4px 12px;border-radius:99px;cursor:pointer}
 .ht-mbtn:hover{color:var(--text)}
@@ -658,26 +660,55 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
 .hs-done{background:var(--green-dim);color:var(--green)}
 .hs-prog{background:var(--amber-dim);color:var(--amber)}
 .hs-dead{background:var(--red-dim);color:var(--red)}
-.hs-none{background:var(--surface3);color:var(--text3)}
+.hs-none{background:rgba(32,201,151,.10);color:#8fe4c5;border:1px solid rgba(32,201,151,.22)}
+.hs-adj{background:rgba(56,189,248,.10);color:#8fdcff;border:1px solid rgba(56,189,248,.28)}
 .hs-rev{background:#1a1a1a;color:#9ca3af;border:1px solid #333}
 .hs-cog{background:var(--red-dim);color:var(--red)}
 .hb-rows{border-top:1px solid var(--border)}
-.hb-row{display:grid;grid-template-columns:minmax(0,1fr) 86px 104px 116px 92px 78px 96px 92px;gap:12px;align-items:center;padding:7px 11px;border-bottom:1px solid var(--border);font-size:11.5px;cursor:pointer;border-left:4px solid transparent}
+.hb-row{display:grid;grid-template-columns:minmax(190px,1fr) 100px 78px 92px 104px 76px 66px 78px 86px;gap:8px;align-items:center;padding:7px 11px;border-bottom:1px solid var(--border);font-size:11.5px;cursor:pointer;border-left:4px solid transparent}
 .hb-row:hover:not(.hb-header){filter:brightness(1.12)}
-.hb-header{position:sticky;top:50px;z-index:4;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text2);cursor:default;background:var(--surface2);border-bottom:1px solid var(--border2);box-shadow:0 4px 10px -4px rgba(0,0,0,.45);padding-top:9px;padding-bottom:9px}
+.hb-header{position:sticky;top:34px;z-index:6;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text2);cursor:default;background:#0d141c;border-bottom:1px solid var(--border2);box-shadow:0 8px 16px -10px rgba(0,0,0,.75);padding-top:9px;padding-bottom:9px}
 .hb-h{cursor:pointer;user-select:none}
 .hb-h:hover{color:var(--accent)}
 /* outcome row colours — work in light & dark, text stays default for contrast */
-.hbr-green{background:rgba(22,169,110,.13);border-left-color:var(--green)}
+.hbr-green{background:rgba(18,122,91,.16);border-left-color:var(--green)}
+.hbr-credit{background:rgba(12,62,84,.28);border-left-color:#38bdf8}
+.hbr-credit .hb-name{color:#e5f6ff}
 .hbr-amber{background:rgba(199,125,10,.15);border-left-color:var(--amber)}
 .hbr-red{background:rgba(224,39,58,.13);border-left-color:var(--red)}
-.hbr-grey{background:rgba(130,140,155,.12);border-left-color:#8b95a5}
+.hbr-grey{background:rgba(116,125,138,.16);border-left-color:#8b95a5}
 .hbr-grey .hb-name{color:var(--text2)}
 .hb-dash{color:var(--text3)}
 .hb-n{text-align:right;font-variant-numeric:tabular-nums}
 .hb-st{text-align:center}
+.hb-type{display:flex;align-items:center;justify-content:flex-start;min-width:0}
 .hb-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
-.hb-sub{font-size:10px;color:var(--text3);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hb-sub{font-size:10px;color:#b7c4d3;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:5px;min-width:0}
+.hb-sku{font-family:var(--mono);font-size:9.5px;color:#d8e3ef;background:rgba(29,41,57,.72);border:1px solid rgba(148,163,184,.18);border-radius:5px;padding:1px 5px;max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hb-adj-note{font-size:9.5px;color:#f6c36b;background:rgba(245,158,11,.10);border:1px solid rgba(245,158,11,.24);border-radius:5px;padding:1px 5px;white-space:nowrap}
+.hb-link-note{font-size:9.5px;color:#8fe4c5;background:rgba(32,201,151,.08);border:1px solid rgba(32,201,151,.20);border-radius:5px;padding:1px 5px;white-space:nowrap}
+.hb-why{font-size:9.5px;font-weight:760;border-radius:99px;padding:1px 7px;white-space:nowrap;border:1px solid rgba(148,163,184,.18);background:rgba(148,163,184,.07);color:#cbd5e1}
+.hb-why.even{color:#8fe4c5;background:rgba(32,201,151,.08);border-color:rgba(32,201,151,.22)}
+.hb-why.profit{color:#22c984;background:rgba(34,201,132,.10);border-color:rgba(34,201,132,.24)}
+.hb-why.adj{color:#9ee7ff;background:rgba(56,189,248,.10);border-color:rgba(56,189,248,.28)}
+.hb-why.manual{color:#a8e7ff;background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.22)}
+.hb-why.rev{color:#b8c3d0;background:rgba(148,163,184,.08);border-color:rgba(148,163,184,.20)}
+.hb-help{position:sticky;top:0;z-index:7;display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:0 0 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:7px 11px;background:#0a1017;font-size:10.5px;color:var(--text3);box-shadow:0 8px 16px -12px rgba(0,0,0,.85)}
+.hb-help b{color:var(--text2)}
+.hb-info{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:99px;border:1px solid rgba(125,211,252,.36);background:rgba(56,189,248,.10);color:#9ee7ff;font-size:10px;font-weight:900;cursor:help}
+.hb-section-total{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 11px;background:rgba(15,23,42,.72);border-top:1px solid var(--border);border-bottom:1px solid var(--border);font-size:10.5px;color:var(--text2)}
+.hb-section-total.bottom{justify-content:flex-end;background:rgba(15,23,42,.46);border-bottom:0}
+.hb-total-pill{display:inline-flex;align-items:center;gap:5px;border:1px solid rgba(148,163,184,.18);background:rgba(148,163,184,.07);border-radius:999px;padding:3px 8px;font-weight:750;white-space:nowrap}
+.hb-total-pill.blue{color:#9ee7ff;border-color:rgba(56,189,248,.24);background:rgba(56,189,248,.08)}
+.hb-total-pill.green{color:#8fe4c5;border-color:rgba(32,201,151,.22);background:rgba(32,201,151,.08)}
+.hb-total-pill.grey{color:#c4ced9;border-color:rgba(148,163,184,.22);background:rgba(148,163,184,.08)}
+.hb-total-pill.red{color:#ff8a96;border-color:rgba(244,63,94,.24);background:rgba(244,63,94,.08)}
+.hb-mini{font-size:8.5px;line-height:1.1;color:var(--text3);text-transform:uppercase;letter-spacing:.04em}
+.hb-cog-missing{display:inline-block;color:#ff6b7b;background:rgba(244,63,94,.12);border:1px solid rgba(244,63,94,.28);border-radius:999px;padding:2px 7px;font-size:9.5px;font-weight:800}
+.hb-context-cog{display:inline-block;color:#9ee7ff;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.18);border-radius:999px;padding:2px 7px;font-size:9.5px;font-weight:760}
+.hb-credit-txt{color:#7dd3fc;font-weight:800}
+.hb-credit-txt small{display:block;color:#a9bfd1;font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.hb-sub a{color:#9edcff}
 
 /* ─── MODAL ─── */
 #overlay{
@@ -1225,11 +1256,19 @@ a{color:var(--accent)}
 .rvq-age.expired{color:var(--red);font-weight:600}
 .rvq-qty{color:var(--text3)}
 .rvq-adjchip{font-size:10px;font-weight:600;color:var(--amber);background:color-mix(in srgb,var(--amber) 12%,transparent);border:1px solid color-mix(in srgb,var(--amber) 30%,transparent);padding:1px 7px;border-radius:5px}
+.rvq-proof{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px;min-width:0}
+.rvq-conf{display:inline-flex;align-items:center;gap:4px;font-size:9.5px;font-weight:850;letter-spacing:.04em;text-transform:uppercase;border-radius:6px;padding:2px 7px;border:1px solid transparent;white-space:nowrap}
+.rvq-conf.clean{color:#8fe4c5;background:rgba(32,201,151,.09);border-color:rgba(32,201,151,.22)}
+.rvq-conf.adjusted{color:#f6c36b;background:rgba(245,158,11,.10);border-color:rgba(245,158,11,.26)}
+.rvq-conf.warn{color:#ff9aa2;background:rgba(245,65,79,.10);border-color:rgba(245,65,79,.28)}
+.rvq-formula{font-size:10.5px;color:#c7d1de;background:rgba(8,13,20,.34);border:1px solid rgba(148,163,184,.13);border-radius:6px;padding:2px 7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.rvq-formula b{color:var(--text)}
+.rvq-formula .neg{color:#ff6b74;font-weight:800}.rvq-formula .pos{color:var(--green);font-weight:800}.rvq-formula .adj{color:var(--amber);font-weight:800}
 .rvq-money{display:grid;grid-template-columns:92px 102px 102px;gap:6px;padding-right:0}
 .rvq-m{display:flex;flex-direction:column;align-items:flex-end;gap:1px;background:rgba(8,13,20,.30);border:1px solid rgba(148,163,184,.12);border-radius:8px;padding:6px 8px;min-width:0}
 .rvq-m-v{font-size:13.5px;font-weight:780;color:#e4ebf5;font-variant-numeric:tabular-nums}
 .rvq-m-v.net-neg{color:#ff6b74}.rvq-m-v.net-pos{color:var(--green)}.rvq-m-v.net-flat{color:var(--text3)}
-.rvq-m-l{font-size:9.5px;color:#aeb9c8;text-transform:uppercase;letter-spacing:.04em}
+.rvq-m-l{font-size:9.5px;color:#c1ccd9;text-transform:uppercase;letter-spacing:.04em}
 .rvq-act{display:flex;align-items:center;gap:5px}
 .rvq-act .btn-primary{padding:8px 13px;font-size:11.5px;border-radius:9px;box-shadow:0 8px 18px -14px var(--accent)}
 .rvq-act .btn-icon{width:30px;height:30px;font-size:15px}
@@ -1432,8 +1471,11 @@ tbody tr.row-loss:hover,tbody tr.row-profit:hover,tbody tr.row-cog-error:hover{b
 .ar-money-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
 .ar-track-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
 .ar-info-tile{min-width:0;border:1px solid rgba(148,163,184,.14);background:rgba(9,15,23,.36);border-radius:7px;padding:5px 7px}
+.ar-info-tile.wide{grid-column:1/-1}
 .ar-info-label{font-size:8.5px;text-transform:uppercase;letter-spacing:.06em;color:#aeb9c8;font-weight:760;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ar-info-value{font-size:12px;font-weight:800;color:#edf3fb;margin-top:2px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ar-info-value.formula{font-size:11px;color:#dce6f2;font-weight:700}
+.ar-info-value.formula .neg{color:#ff6b74}.ar-info-value.formula .pos{color:var(--green)}.ar-info-value.formula .adj{color:var(--amber)}
 .ar-info-sub{font-size:8.5px;color:#b8c3d0;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ar-info-input{width:100%;background:transparent;border:0;border-bottom:1px solid rgba(148,163,184,.24);color:#edf3fb;font-size:12px;font-family:inherit;padding:2px 0 1px;text-align:left}
 .ar-info-input:focus{outline:none;border-bottom-color:#7dd3fc;background:rgba(125,211,252,.05)}
@@ -1488,8 +1530,8 @@ tbody tr.row-loss:hover,tbody tr.row-profit:hover,tbody tr.row-cog-error:hover{b
 .ar-foot{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:7px 12px}
 .ar-btn{padding:5px 11px!important;font-size:10.5px!important}
 .ar-link{font-size:10.5px;color:#7dd3fc;text-decoration:underline;margin-left:auto}
-.ar-navlink{background:none;border:none;color:var(--text3);font-size:10.5px;cursor:pointer;padding:4px}
-.ar-navlink:hover{color:var(--text)}
+.ar-review-btn{display:inline-flex;align-items:center;gap:5px;border:1px solid rgba(125,211,252,.38);background:rgba(56,189,248,.08);color:#a8e7ff;border-radius:var(--rs);font-size:10.5px;font-weight:750;padding:5px 10px;cursor:pointer}
+.ar-review-btn:hover{background:rgba(56,189,248,.16);border-color:#7dd3fc;color:#e7f8ff}
 /* ── Active card v17: glance strip · compact details ── */
 .ar-glance{display:grid;grid-template-columns:1fr 1fr 1.35fr;background:rgba(8,13,20,.34);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 @media(max-width:760px){.ar-glance{grid-template-columns:1fr}}
@@ -1682,7 +1724,6 @@ thead th{padding:7px 10px}
   <div id="topbar">
     <h1 id="page-title">Overview</h1>
     <div class="tb-spacer"></div>
-    <button class="tb-btn" onclick="cycleDensity()" id="density-btn" title="UI size — click to cycle">Comfortable</button>
     <button class="tb-btn" onclick="toggleTheme()" id="theme-btn">☀ Light</button>
     <button class="tb-btn" onclick="downloadHtmlApp()" title="Download this app as a standalone HTML file">⤓ Download HTML</button>
     <button class="tb-btn" onclick="nav('import')">
@@ -1714,8 +1755,8 @@ thead th{padding:7px 10px}
   <div class="page" id="page-triage">
     <div class="page-body rvq">
       <div class="rvq-intro">
-        <div class="rvq-intro-t">Decide what's worth chasing</div>
-        <div class="rvq-intro-s">Move real SKU-based shortfalls to <b class="th-g">Active</b>. Profitable/even rows can be filed as no action. Tap a card or use filters to narrow results.</div>
+        <div class="rvq-intro-t">Decide what needs chasing</div>
+        <div class="rvq-intro-s">Move confirmed SKU-based shortfalls to <b class="th-g">Active</b>. Profitable/even rows can be filed as no action. Each row shows the maths used.</div>
       </div>
       <div class="kpi-row" id="triage-kpi"></div>
       <div class="rvq-toolbar">
@@ -1780,8 +1821,8 @@ thead th{padding:7px 10px}
     <div class="page-body rvq">
       <div class="cog-hero">
         <div class="cog-hero-l">
-          <div class="cog-hero-t"><span class="cog-hero-ic">⚠</span> Cost price required</div>
-          <div class="cog-hero-s">One row per Seller Fulfilled reimbursement line. Each needs a cost before it can move to Review — enter it, or reuse one from a prior order. Same product can have different costs, so rows stay separate.</div>
+          <div class="cog-hero-t"><span class="cog-hero-ic">⚠</span> COG required</div>
+          <div class="cog-hero-s">One row per Seller Fulfilled reimbursement line. Each needs a SKU COG before it can move to Review — enter it, or reuse one from a prior order. Same product can have different COGs, so rows stay separate.</div>
         </div>
       </div>
       <div class="kpi-row" id="errors-kpi"></div>
@@ -1858,7 +1899,7 @@ thead th{padding:7px 10px}
           <option value="wins">Wins — gained more</option>
           <option value="reached">Reached COG+</option>
           <option value="losses">Losses</option>
-          <option value="noreeval">No re-eval needed</option>
+          <option value="noreeval">No action / adjustment credits</option>
           <option value="reversal">Reversals</option>
         </select>
         <select class="fb-select" id="hist-sortsel" onchange="histSetSort(this.value)">
@@ -1909,7 +1950,7 @@ thead th{padding:7px 10px}
             </div>
             <div class="fg3" style="margin-bottom:10px">
               <div class="f">
-                <label>COG / Actual Cost (£) *</label>
+                <label>COG (£) *</label>
                 <input type="number" id="cg-cog" placeholder="e.g. 20.00" step="0.01" oninput="cgUpdate()">
               </div>
               <div class="f">
@@ -2484,16 +2525,13 @@ function now() {
 
 // ── UI density via CSS class (not browser zoom — zoom rendered inconsistently). ──
 function applyDensity(){
-  const mode=localStorage.getItem('bdl_density_mode')||'comfortable';
+  const mode='compact';
+  localStorage.setItem('bdl_density_mode', mode);
   document.documentElement.setAttribute('data-density', mode);
-  const b=document.getElementById('density-btn'); if(b) b.textContent = mode==='compact'?'Compact':'Comfortable';
 }
 function cycleDensity(){
-  const cur=localStorage.getItem('bdl_density_mode')||'comfortable';
-  const next=cur==='comfortable'?'compact':'comfortable';
-  localStorage.setItem('bdl_density_mode',next);
   applyDensity();
-  toast('Density: '+next);
+  toast('Compact layout is locked on');
 }
 
 // ════════════════════════════════════════════
@@ -2548,6 +2586,40 @@ function reviewNetLabel(r) {
   if (n > 0.005) return {text:'+£'+n.toFixed(2), cls:'pos', label:'profit'};
   if (isChaseableShortfall(r)) return {text:'−£'+Math.abs(n).toFixed(2), cls:'neg', label:'shortfall'};
   return {text:'£0.00', cls:'flat', label:'even'};
+}
+function compactMoney(v) {
+  const n = Number(v || 0);
+  return (n < -0.005 ? '-£'+Math.abs(n).toFixed(2) : '£'+n.toFixed(2));
+}
+function reviewConfidence(r) {
+  const adj = linkedAdjustmentTotal(r);
+  if (r.is_adjustment === 'Yes') {
+    return r.linked_parent_id
+      ? {text:'Linked adjustment', cls:'adjusted'}
+      : {text:'Unmatched adjustment', cls:'warn'};
+  }
+  if (!Number(r.actual_cost || 0)) return {text:'Needs COG', cls:'warn'};
+  if (adj > 0.005) return {text:'Adjustment included', cls:'adjusted'};
+  return isChaseableShortfall(r)
+    ? {text:'Confirmed shortfall', cls:'clean'}
+    : {text:'No shortfall', cls:'clean'};
+}
+function reviewFormula(r) {
+  if (r.is_adjustment === 'Yes') {
+    return r.linked_parent_id
+      ? 'Credit <span class="adj">+'+compactMoney(r.reimb_amount || 0).replace('£','£')+'</span> linked into the original claim'
+      : 'Credit only <span class="adj">+'+compactMoney(r.reimb_amount || 0).replace('£','£')+'</span> · original claim not found here';
+  }
+  const cog = totalCost(r);
+  const paid = Number(r.reimb_amount || 0);
+  const adj = linkedAdjustmentTotal(r);
+  const totalPaid = paid + adj;
+  const net = totalPaid - cog;
+  const resCls = net < -0.005 ? 'neg' : 'pos';
+  let txt = '<b>'+compactMoney(cog)+'</b> COG - <b>'+compactMoney(paid)+'</b> paid';
+  if (adj > 0.005) txt += ' - <span class="adj">'+compactMoney(adj)+'</span> adjustment';
+  txt += ' = <span class="'+resCls+'">'+(net < -0.005 ? '-£'+Math.abs(net).toFixed(2) : '+£'+net.toFixed(2))+'</span>';
+  return txt;
 }
 
 // ════════════════════════════════════════════
@@ -3166,9 +3238,9 @@ function renderErrors() {
   const repeatedGroups = Object.values(skuGroups).filter(g=>g.length>1).length;
   const kpi = document.getElementById('errors-kpi');
   if (kpi) kpi.innerHTML = [
-    {icon:'', n:rows.length, label:'Cases blocked', ctx:'need a cost price', col:'var(--amber)'},
-    {icon:'', n:'£'+totalReimb.toFixed(0), label:'Potential reimbursement', ctx:'once costs are added', col:'var(--green)'},
-    {icon:'', n:oldest+'d', label:'Oldest missing cost', ctx:'resolve older first', col:'var(--text2)'},
+    {icon:'', n:rows.length, label:'Cases blocked', ctx:'need SKU COG', col:'var(--amber)'},
+    {icon:'', n:'£'+totalReimb.toFixed(0), label:'Potential reimbursement', ctx:'once COGs are added', col:'var(--green)'},
+    {icon:'', n:oldest+'d', label:'Oldest missing COG', ctx:'resolve older first', col:'var(--text2)'},
     {icon:'', n:rows.length, label:'Reimbursement rows', ctx:'one row per SF line', col:'var(--purple)'},
   ].map(s=>`<div class="kpi-card" style="--c:${s.col};cursor:default"><span class="kpi-ico">${s.icon}</span><span class="kpi-n">${s.n}</span><span class="kpi-l">${s.label}</span><span class="kpi-ctx">${s.ctx}</span></div>`).join('');
 
@@ -3533,6 +3605,8 @@ function renderTriage() {
     const netMeta = reviewNetLabel(r);
     const netStr = netMeta.text;
     const netCls = netMeta.cls;
+    const conf = reviewConfidence(r);
+    const formula = reviewFormula(r);
     const idJs = String(r.reimb_id).replace(/'/g,"\\'");
     const grpBadge = subCount>1 ? '<span class="rvq-grp">'+subCount+' cases</span>' : '';
     return `<div class="rvq-card tier-${tier}${sel?' sel':''}" onclick="openRecord('${idJs}')">
@@ -3541,10 +3615,11 @@ function renderTriage() {
         <div class="rvq-top">${tierTag}${grpBadge}<span class="rvq-name">${esc(r.product_name||'(no product name)')}</span></div>
         <div class="rvq-codes"><span class="rvq-code" data-l="SKU" onclick="event.stopPropagation();copyText('${esc(r.sku)}','SKU')">${esc(r.sku)}</span><span class="rvq-dot">·</span><span class="rvq-code dim" data-l="ASIN" onclick="event.stopPropagation();copyText('${esc(r.asin||'')}','ASIN')">${esc(r.asin||'')}</span>${r.fnsku?'<span class="rvq-dot">·</span><span class="rvq-code dim" data-l="FNSKU" onclick="event.stopPropagation();copyText(\''+esc(r.fnsku)+'\',\'FNSKU\')">'+esc(r.fnsku)+'</span>':''}</div>
         <div class="rvq-tags">${reasonPill(r.reason)}${adjTotal>0?'<span class="rvq-adjchip" title="Adjustment credit included before deciding shortfall">Adj +£'+adjTotal.toFixed(2)+' included</span>':''}${r.is_adjustment==='Yes'?'<span class="rvq-adjchip" title="Adjustment credit — not a standalone chase item.">credit only</span>':''}${ageStr}${r.quantity>1?'<span class="rvq-qty">Qty '+r.quantity+'</span>':''}</div>
+        <div class="rvq-proof"><span class="rvq-conf ${conf.cls}">${conf.text}</span><span class="rvq-formula">${formula}</span></div>
       </div>
       <div class="rvq-money">
-        <div class="rvq-m"><span class="rvq-m-v">£${(r.actual_cost||0).toFixed(2)}</span><span class="rvq-m-l">cost</span></div>
-        <div class="rvq-m"><span class="rvq-m-v">£${reimbTotal.toFixed(2)}</span><span class="rvq-m-l">${adjTotal>0?'paid + adj':'Amazon offer'}</span></div>
+        <div class="rvq-m"><span class="rvq-m-v">£${(totalCost(r)||0).toFixed(2)}</span><span class="rvq-m-l">COG</span></div>
+        <div class="rvq-m"><span class="rvq-m-v">£${reimbTotal.toFixed(2)}</span><span class="rvq-m-l">${adjTotal>0?'paid + adj':'Amazon paid'}</span></div>
         <div class="rvq-m"><span class="rvq-m-v net-${netCls}">${netStr}</span><span class="rvq-m-l">${netMeta.label}</span></div>
       </div>
       <div class="rvq-act" onclick="event.stopPropagation()">
@@ -3689,8 +3764,9 @@ function triageMove(reimb_id, action) {
     }
   }
   if (action === 'active') {
+    pushUndo();
     setAnn(reimb_id,{workflow_status:'active', worked:true});
-    toast('Moved to Active Reimbursements');
+    toast('Moved to Active Reimbursements', {undo:true});
   } else {
     pushUndo();
     setAnn(reimb_id,{workflow_status:'archived', outcome:'no_action'});
@@ -3831,6 +3907,12 @@ function arSet(id, field, value, kind){
     setAnn(id, patch);
   }
   renderActive(); renderActions(); updateBadges();
+}
+function sendBackToReview(id){
+  pushUndo();
+  setAnn(id,{workflow_status:'triage'});
+  renderActive(); renderTriage(); renderActions(); updateBadges();
+  toast('Sent back to Review Queue', {undo:true});
 }
 
 function buildActiveCard(r){
@@ -3984,6 +4066,7 @@ function buildActiveCard(r){
       '<div class="ar-track-grid" style="margin-top:7px">'+
         '<div class="ar-info-tile"><div class="ar-info-label">Invoice</div><div class="ar-info-value">'+invCell+'</div><div class="ar-info-sub">'+(mscS==='docs'?'needed by Amazon':'optional evidence')+'</div></div>'+
         '<div class="ar-info-tile"><div class="ar-info-label">Submit amount</div><div class="ar-info-value">£'+clCog.toFixed(2)+'</div><div class="ar-info-sub">full COG claim</div></div>'+
+        '<div class="ar-info-tile wide"><div class="ar-info-label">Why this is '+(net<-0.005?'a shortfall':'covered')+'</div><div class="ar-info-value formula">'+reviewFormula(r)+'</div><div class="ar-info-sub">uses SKU COG, Amazon paid, and linked adjustments</div></div>'+
       '</div></div>'+
       '<div class="ar-tile-panel"><div class="ar-tile-head">Claim tracking</div><div class="ar-track-grid">'+
         '<div class="ar-info-tile"><div class="ar-info-label">Next MSC update</div><div class="ar-info-value">'+nextUpd+'</div><div class="ar-info-sub">'+(a.review_date?'scheduled':'not set')+'</div></div>'+
@@ -4007,7 +4090,7 @@ function buildActiveCard(r){
     '<button class="btn btn-sec ar-btn" onclick="event.stopPropagation();openRecord(\''+idJs+'\')">Details</button>'+
     '<button class="btn btn-green ar-btn" onclick="event.stopPropagation();promptReimbursed(\''+idJs+'\')">✓ Reimbursed</button>'+
     '<a class="ar-link" href="'+MSC_PORTAL_URL+'" target="_blank" onclick="event.stopPropagation()">MSC Portal ↗</a>'+
-    '<button class="ar-navlink" onclick="event.stopPropagation();arSet(\''+idJs+'\',\'workflow_status\',\'triage\',\'ann\')">← Send back to Review</button>'+
+    '<button class="ar-review-btn" onclick="event.stopPropagation();sendBackToReview(\''+idJs+'\')">← Back to Review</button>'+
   '</div></div>';
 
   const curStat = isReimb?'reimbursed':(hasCase?'caseopen':(mscS==='none'?'needs':mscS));
@@ -4177,7 +4260,7 @@ function histMatchesResult(r){
   const f = histResultFilter; if(f==='all') return true;
   const st = histItemState(r); const m = histItemMetrics(r);
   if(f==='reversal')  return st==='reversal';
-  if(f==='noreeval')  return st==='notworked';
+  if(f==='noreeval')  return st==='notworked' || st==='adjustment';
   if(f==='wins')      return (st==='completed'||st==='dead') && m.recovered>0.005;
   if(f==='reached')   return st==='completed' && m.nowNet>=-0.005;
   if(f==='losses')    return st==='dead' || (st==='completed' && m.recovered<=0.005);
@@ -4186,20 +4269,30 @@ function histMatchesResult(r){
 
 function histItemState(r){
   if (r.is_reversal === 'Yes') return 'reversal';
+  if ((ann(r.reimb_id).outcome||'') === 'adjustment_credit' || r.is_adjustment === 'Yes') return 'adjustment';
   const out = ann(r.reimb_id).outcome||'';
   if (out === 'reimbursed') return 'completed';
   if (out === 'loss_taken') return 'dead';
   return 'notworked';
 }
+function histDisplayCog(r){
+  if (r.is_reversal === 'Yes') return 0;
+  const cost = totalCost(r);
+  if (cost > 0) return cost;
+  const skuCog = extractCogFromSku(r.sku);
+  return skuCog !== null ? skuCog * (Number(r.quantity)||1) : 0;
+}
 function histItemMetrics(r){
   const a = ann(r.reimb_id);
   const cost = totalCost(r);
+  const displayCost = histDisplayCog(r);
   const orig = r.reimb_amount||0;
+  const lifecycle = lifecycleReimbursed(r);
   const finalSet = (a.final_reimb_amount!=null && a.final_reimb_amount!=='');
-  const finalReimb = finalSet ? Number(a.final_reimb_amount) : orig;
-  return {cost, orig, finalReimb, finalSet, recovered:finalReimb-orig, startNet:orig-cost, nowNet:finalReimb-cost};
+  const finalReimb = finalSet ? Number(a.final_reimb_amount) : lifecycle;
+  return {cost, displayCost, orig, finalReimb, finalSet, recovered:finalReimb-orig, startNet:orig-cost, nowNet:finalReimb-cost};
 }
-const HSTATE = {completed:['Completed','hs-done'],dead:['Dead','hs-dead'],notworked:['No re-eval','hs-none'],reversal:['Reversal','hs-rev']};
+const HSTATE = {completed:['Completed','hs-done'],dead:['Dead','hs-dead'],notworked:['No action','hs-none'],adjustment:['Credit context','hs-adj'],reversal:['Reversal','hs-rev']};
 function histMoney(v){ return v<-0.005?'−£'+Math.abs(v).toFixed(2):'+£'+v.toFixed(2); }
 
 function histMonthlyTrend(){
@@ -4289,7 +4382,9 @@ function renderHistory() {
   const monthsSet = [...new Set(archived.filter(r=>r.date).map(r=>String(r.date).slice(0,7)))].sort().reverse();
 
   const inScope = r => !scope || String(r.date).startsWith(scope);
-  const settled = archived.filter(r=>r.date && inScope(r));
+  const parentVisibleInScope = r => r && r.linked_parent_id && archived.some(p=>p.reimb_id===r.linked_parent_id && p.date && inScope(p));
+  const hiddenLinkedAdjustment = r => r && r.is_adjustment==='Yes' && parentVisibleInScope(r);
+  const settled = archived.filter(r=>r.date && inScope(r) && !hiddenLinkedAdjustment(r));
 
   let totalReimbursed=0, totalCOG=0, revSum=0, revCount=0;
   let worked=0, improved=0, reached=0, recovered=0, biggest=0, startShort=0, origReimbSum=0;
@@ -4340,7 +4435,7 @@ function renderHistory() {
   const metricBtn=(k,lbl)=>'<button class="ht-mbtn '+(histChartMetric===k?'on':'')+'" onclick="histSetMetric(\''+k+'\')">'+lbl+'</button>';
   const pctBack = startShort>0 ? Math.round(recovered/startShort*100) : 0;
   let verdict='';
-  if(!worked){ verdict='<div class="hd-verdict neutral">No worked cases settled in '+scopeLabel+' yet. Once you re-evaluate and settle cases, this tells you whether the process is paying off.</div>'; }
+  if(!worked){ verdict='<div class="hd-verdict cash-only"><span class="hv-lead">No re-evaluation work counted yet.</span> This view currently contains no-action rows, adjustment credits, and reversals only. The big total is cash impact from the imported files, not Sarah/VA process performance.</div>'; }
   else {
     const good=recovered>0.005;
     verdict='<div class="hd-verdict '+(good?'good':'bad')+'">'+
@@ -4359,9 +4454,9 @@ function renderHistory() {
     <div class="hd-head"><span class="hd-title">Dashboard</span><span class="hd-scope-lbl">Month</span>${scopeSel}</div>
     <div class="hd-hero" style="--hc:${heroCol}">
       <div class="hd-hero-main">
-        <div class="hd-hero-lbl">Overall position · ${scopeLabel}</div>
+        <div class="hd-hero-lbl">${worked?'Overall position':'Cash impact only'} · ${scopeLabel}</div>
         <div class="hd-hero-val">${histMoney(overall)}</div>
-        <div class="hd-hero-sub">reimbursed − COG − reversals</div>
+        <div class="hd-hero-sub">${worked?'reimbursed − COG − reversals':'no-action + credit context + reversals'}</div>
       </div>
       <div class="hd-hero-stats">
         <div class="hd-hs"><span class="hd-hs-l">Total reimbursed</span><span class="hd-hs-v">£${totalReimbursed.toFixed(2)}</span></div>
@@ -4385,10 +4480,10 @@ function renderHistory() {
       </div>
     </div>
     <div class="hd-group"><div class="hd-glabel">Process performance · worked cases only — did chasing beat doing nothing?</div><div class="hd-cards">
-      ${card('c-green','Recovered by process', histMoney(recovered),'extra vs Amazon first offer', recDelta)}
-      ${card('c-teal','Win rate', winPct+'%', improved+' of '+worked+' got more', winDelta)}
-      ${card('c-blue','Reached COG+', reachPct+'%', reached+' of '+worked+' made whole')}
-      ${card('c-amber','Cases worked', String(worked),'Review → Active → settled')}
+      ${card(worked&&recovered>0.005?'c-green':'','Recovered by process', histMoney(recovered),'extra vs Amazon first offer', recDelta)}
+      ${card(worked?'c-teal':'','Win rate', winPct+'%', improved+' of '+worked+' got more', winDelta)}
+      ${card(worked?'c-blue':'','Reached COG+', reachPct+'%', reached+' of '+worked+' made whole')}
+      ${card(worked?'c-amber':'','Cases worked', String(worked),'Review → Active → settled')}
       ${card('','Avg recovery / case', worked?('+£'+avgRec.toFixed(2)):'—','per worked case')}
       ${card('','Biggest win', (worked&&biggest>0)?('+£'+biggest.toFixed(2)):'—','single best recovery')}
     </div></div>
@@ -4406,18 +4501,18 @@ function renderHistory() {
   if(months.length && Object.keys(histOpen).length===0) histOpen[months[0]]=true;
 
   const cont=document.getElementById('hist-batches');
-  if(!months.length){ cont.innerHTML='<div style="text-align:center;padding:40px;color:var(--text3)">Nothing settled here yet. Items land in History once marked Completed, Dead, or No re-evaluation needed.</div>'; return; }
+  if(!months.length){ cont.innerHTML='<div style="text-align:center;padding:40px;color:var(--text3)">Nothing settled here yet. Items land in History once marked Completed, Dead, No action, or Adjustment credit.</div>'; return; }
 
   const sortArrow = c => histSort.col===c ? (histSort.dir==='asc'?' \u25B2':' \u25BC') : '';
   const colHead = (c,label,cls) => `<div class="hb-h ${cls||''}" onclick="event.stopPropagation();histSortBy('${c}')">${label}${sortArrow(c)}</div>`;
-  const headerRow = `<div class="hb-row hb-header" style="border-left:4px solid transparent">${colHead('product','Product')}${colHead('cog','Cost','hb-n')}${colHead('orig','First reimb.','hb-n')}${colHead('final','Re-eval reimb.','hb-n')}${colHead('recovered','Gained','hb-n')}${colHead('pct','Gained %','hb-n')}${colHead('vscog','vs COG','hb-n')}${colHead('state','State','hb-st')}</div>`;
+  const headerRow = `<div class="hb-row hb-header" style="border-left:4px solid transparent">${colHead('product','Product')}<div>Type</div>${colHead('cog','COG','hb-n')}${colHead('orig','First reimb.','hb-n')}${colHead('final','Re-eval reimb.','hb-n')}${colHead('recovered','Gained','hb-n')}${colHead('pct','Gained %','hb-n')}${colHead('vscog','vs COG','hb-n')}${colHead('state','State','hb-st')}</div>`;
 
   const sortRows = arr => arr.slice().sort((a,b)=>{
     const ma=histItemMetrics(a), mb=histItemMetrics(b); let av,bv;
     switch(histSort.col){
       case 'product': av=(a.product_name||'').toLowerCase(); bv=(b.product_name||'').toLowerCase(); break;
       case 'reason': av=(a.reason||''); bv=(b.reason||''); break;
-      case 'cog': av=ma.cost; bv=mb.cost; break;
+      case 'cog': av=ma.displayCost; bv=mb.displayCost; break;
       case 'orig': av=ma.orig; bv=mb.orig; break;
       case 'final': av=ma.finalReimb; bv=mb.finalReimb; break;
       case 'pct': av=ma.cost>0?ma.recovered/ma.cost:0; bv=mb.cost>0?mb.recovered/mb.cost:0; break;
@@ -4429,16 +4524,22 @@ function renderHistory() {
     return histSort.dir==='asc'? av-bv : bv-av;
   });
 
-  const histAccent = (st,mt) => {
+  const histAccent = (st,mt,r) => {
     if(st==='reversal') return ['#8b95a5','Reversal — Amazon clawed this money back. Not worked, counts in Overall only.'];
     if(st==='dead') return ['var(--red)','Dead — chased but written off. No recovery.'];
     if(st==='completed') return mt.recovered>0.005
       ? ['var(--green)','Worked & improved — chasing recovered more than Amazon first paid.']
       : ['var(--teal)','Worked — completed, but no extra recovered over the first payment.'];
-    return ['#38bdf8','No re-evaluation needed — settled at or above COG without chasing.'];
+    if(st==='adjustment') return ['#38bdf8', r.linked_parent_id
+      ? 'Credit context — GeneralAdjustment top-up linked into the original claim maths. It is not a standalone shortfall.'
+      : 'Credit context — GeneralAdjustment top-up. Original claim was not found in this tracker, so this stays visible for VA context only.'];
+    return ['#38bdf8','No action — settled at or above COG without chasing.'];
   };
   const histRowClass = (st,mt) => {
     if(st==='reversal') return 'hbr-grey';
+    if(st==='adjustment') return 'hbr-credit';
+    if(st==='dead') return 'hbr-red';
+    if(mt.cost <= 0 && st!=='adjustment') return 'hbr-red';
     if(mt.nowNet >= -0.005) return 'hbr-green';     // recovered COG or more
     if(mt.recovered > 0.005) return 'hbr-amber';    // gained extra but still under COG
     return 'hbr-red';                                // under COG, gained nothing
@@ -4448,15 +4549,39 @@ function renderHistory() {
     const rev = arr.filter(r=>histItemState(r)==='reversal');
     return sortRows(nonRev).concat(sortRows(rev));
   };
+  const histWhy = (r,st,mt) => {
+    if(st==='adjustment') return r.linked_parent_id
+      ? {txt:'credit context', cls:'adj', tip:'GeneralAdjustment credit linked into the original claim maths. It is not a standalone chase item.'}
+      : {txt:'credit context', cls:'adj', tip:'GeneralAdjustment credit. Original claim was not found in this tracker, so it stays visible for VA context only.'};
+    if(st==='notworked'){
+      if(mt.nowNet > 0.005) return {txt:'above COG', cls:'profit', tip:'Filed as no action because Amazon paid more than the SKU COG. Nothing to chase.'};
+      if(Math.abs(mt.nowNet) <= 0.005) return {txt:'paid met COG', cls:'even', tip:'Filed as no action because Amazon paid exactly the SKU COG. Break-even, nothing to chase.'};
+      return {txt:'filed no action', cls:'manual', tip:'Marked no action manually. Open details if you want to double-check why it was not chased.'};
+    }
+    if(st==='reversal') return {txt:'clawback', cls:'rev', tip:'Amazon reversal / clawback. Counts in Overall, not process performance.'};
+    if(st==='completed') return mt.recovered>0.005
+      ? {txt:'worked win', cls:'profit', tip:'Worked case: recovered more than Amazon first paid.'}
+      : {txt:'worked closed', cls:'manual', tip:'Worked case closed without extra recovery.'};
+    if(st==='dead') return {txt:'written off', cls:'rev', tip:'Worked case was chased but written off.'};
+    return {txt:'settled', cls:'manual', tip:'Settled history row.'};
+  };
   const rowHtml = r => {
     const st=histItemState(r); const mt=histItemMetrics(r);
     const sm=HSTATE[st]||['—','hs-none'];
-    const [acc,tip]=histAccent(st,mt);
+    const [acc,tip]=histAccent(st,mt,r);
     const rowCls = 'hb-row '+histRowClass(st,mt);
     const w=(st==='completed'||st==='dead');
     const rev=(st==='reversal');
     const dash='<span class="hb-dash">—</span>';
-    const cogCell = (!rev && mt.cost>0) ? '£'+mt.cost.toFixed(2) : dash;
+    const adjTotal = linkedAdjustmentTotal(r);
+    const parentAdjBadge = adjTotal>0 ? '<span class="hb-link-note">Adj +£'+adjTotal.toFixed(2)+' included</span>' : '';
+    const why = histWhy(r,st,mt);
+    const whyBadge = '<span class="hb-why '+why.cls+'" title="'+esc(why.tip)+'">'+esc(why.txt)+'</span>';
+    const cogCell = rev ? dash : (st==='adjustment'
+      ? (mt.displayCost>0
+        ? '£'+mt.displayCost.toFixed(2)+'<div class="hb-mini">context only</div>'
+        : '<span class="hb-context-cog" title="GeneralAdjustment rows have no standalone COG. The original claim holds the real COG decision.">context only</span>')
+      : (mt.displayCost>0 ? '£'+mt.displayCost.toFixed(2) : '<span class="hb-cog-missing" title="No readable COG was found from the SKU. This should be fixed before chasing.">COG missing</span>'));
     const firstCell = rev?histMoney(mt.orig):'£'+mt.orig.toFixed(2);
     const finalCell = rev?histMoney(mt.orig):'£'+mt.finalReimb.toFixed(2);
     const gainPct = mt.orig>0?Math.round(mt.recovered/mt.orig*100):0;
@@ -4465,10 +4590,13 @@ function renderHistory() {
       : dash;
     const pctCell = w ? '<span style="color:var(--text2)">'+(mt.recovered>=0?'+':'')+gainPct+'%</span>' : dash;
     const vs = mt.nowNet; // re-eval reimb − cost
-    const vsCell = rev?dash:'<span style="color:'+(vs>=-0.005?'var(--green)':'var(--red)')+'">'+(vs>=-0.005?'+£'+vs.toFixed(2):'−£'+Math.abs(vs).toFixed(2))+'</span>';
+    const vsCell = rev?dash:(st==='adjustment'
+      ? '<span class="hb-credit-txt" title="Credit context only. Check the linked/original claim for the true COG position.">context<small>credit</small></span>'
+      : '<span style="color:'+(vs>=-0.005?'var(--green)':'var(--red)')+'">'+(vs>=-0.005?'+£'+vs.toFixed(2):'−£'+Math.abs(vs).toFixed(2))+'</span>');
     const click='onclick="openRecord(\''+r.reimb_id+'\',true)"';
     return '<div class="'+rowCls+'" title="'+esc(tip)+'" '+click+'>'+
-      '<div class="hb-prod"><div class="hb-name">'+esc((r.product_name||'').substring(0,52))+'</div><div class="hb-sub">'+fmtDate(r.date)+' · '+linkId(r.reimb_id_real||r.reimb_id,'reimb')+'</div></div>'+
+      '<div class="hb-prod"><div class="hb-name">'+esc((r.product_name||'').substring(0,52))+'</div><div class="hb-sub"><span>'+fmtDate(r.date)+'</span>'+(r.sku?'<span class="hb-sku" title="SKU">'+esc(r.sku)+'</span>':'')+linkId(r.reimb_id_real||r.reimb_id,'reimb')+parentAdjBadge+'</div></div>'+
+      '<div class="hb-type">'+whyBadge+'</div>'+
       '<div class="hb-n">'+cogCell+'</div>'+
       '<div class="hb-n">'+firstCell+'</div>'+
       '<div class="hb-n">'+finalCell+'</div>'+
@@ -4510,15 +4638,35 @@ function renderHistory() {
     const workedSummary = mWorked
       ? `${mWorked} worked · ${mImproved} improved (${mImpPct}%) · ${mReached} reached COG+ (${mReachPct}%)`
       : `0 worked · ${revC?revC+' reversal'+(revC===1?'':'s')+' settled without chasing':'no re-evaluation work settled'}`;
-    const workedEmpty = '<div class="hb-empty hb-work-empty"><b>No re-evaluation work settled this month.</b><span>Reversals/no-action rows below affect Overall, but not process performance.</span></div>';
+    const workedEmpty = '<div class="hb-empty hb-work-empty"><b>No worked cases settled this month.</b><span>No-action rows, adjustment credits, and reversals below affect Overall, but not process performance.</span></div>';
+    const noStats = noRows.reduce((s,r)=>{
+      const st=histItemState(r), mt=histItemMetrics(r);
+      if(st==='adjustment'){ s.creditN++; s.creditCash+=mt.finalReimb; s.creditCog+=mt.displayCost||0; }
+      else if(st==='notworked'){ s.noN++; s.noVs+=mt.nowNet; s.noCash+=mt.finalReimb; }
+      else if(st==='reversal'){ s.revN++; s.revCash+=mt.orig; }
+      s.cash += st==='reversal' ? mt.orig : (mt.finalReimb-mt.cost);
+      return s;
+    }, {creditN:0,creditCash:0,creditCog:0,noN:0,noVs:0,noCash:0,revN:0,revCash:0,cash:0});
+    const noTotal = '<div class="hb-section-total"><b>Section total</b>'+
+      '<span class="hb-total-pill">'+noRows.length+' rows</span>'+
+      (noStats.creditN?'<span class="hb-total-pill blue">'+noStats.creditN+' credit context · £'+noStats.creditCash.toFixed(2)+' top-up</span>':'')+
+      (noStats.noN?'<span class="hb-total-pill green">'+noStats.noN+' no action · '+histMoney(noStats.noVs)+' vs COG</span>':'')+
+      (noStats.revN?'<span class="hb-total-pill grey">'+noStats.revN+' reversals · '+histMoney(noStats.revCash)+'</span>':'')+
+      '<span class="hb-total-pill '+(noStats.cash<-0.005?'red':'green')+'">cash impact '+histMoney(noStats.cash)+'</span>'+
+      '</div>';
+    const noTotalBottom = '<div class="hb-section-total bottom"><b>Total shown</b>'+
+      '<span class="hb-total-pill">'+noRows.length+' rows</span>'+
+      '<span class="hb-total-pill '+(noStats.cash<-0.005?'red':'green')+'">'+histMoney(noStats.cash)+' cash impact</span>'+
+      '</div>';
+    const noHelp = '<div class="hb-help"><b>Colour key:</b><span class="hb-info" title="This section is not Sarah/VA process performance. It shows imported no-action rows, GeneralAdjustment credit context, and Amazon reversals.">i</span><span class="hb-why even">paid met COG</span><span>break-even / no chase</span><span class="hb-why profit">above COG</span><span>green = OK/profit</span><span class="hb-why adj">credit context</span><span>blue = GeneralAdjustment top-up, not a standalone claim</span><span class="hb-why rev">clawback</span><span>grey = reversal</span></div>';
 
     return `<div class="hb-card ${reversalOnly?'is-reversal-only':''}">
       <div class="hb-head" onclick="histToggle('${m}')">
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="hb-chev">${open?'▾':'▸'}</span><span class="hb-title">${monthLabel(m)}</span><span class="hb-count">${rows.length} settled · ${mWorked} worked</span></div>
         <div class="hb-headnums">
-          <div class="hb-hn"><div class="hb-hn-v" style="color:var(--green)">+£${mRecovery.toFixed(2)}</div><div class="hb-hn-l">Recovered</div></div>
+          <div class="hb-hn"><div class="hb-hn-v" style="color:${mWorked?'var(--green)':'var(--text3)'}">+£${mRecovery.toFixed(2)}</div><div class="hb-hn-l">${mWorked?'Recovered':'Process rec.'}</div></div>
           <div class="hb-hn"><div class="hb-hn-v" style="color:${mWorked?(mImpPct>=50?'var(--green)':'var(--amber)'):'var(--text3)'}">${mWorked?mImpPct+'%':'—'}</div><div class="hb-hn-l">Win rate</div></div>
-          <div class="hb-hn"><div class="hb-hn-v hb-hn-sm" style="color:${mOverall<-0.005?'var(--red)':'var(--green)'}">${histMoney(mOverall)}</div><div class="hb-hn-l">Overall</div></div>
+          <div class="hb-hn"><div class="hb-hn-v hb-hn-sm" style="color:${mOverall<-0.005?'var(--red)':(mWorked?'var(--green)':'#7dd3fc')}">${histMoney(mOverall)}</div><div class="hb-hn-l">${mWorked?'Overall':'Cash impact'}</div></div>
         </div>
       </div>
       ${open?`
@@ -4529,8 +4677,8 @@ function renderHistory() {
       ${revC?`<div class="hb-banner"><b>${revC} Amazon reversal${revC===1?'':'s'} · ${histMoney(rev)}</b><span>Money clawed back by Amazon. Counts in Overall only.</span></div>`:''}
       <div class="hb-procnote">${workedSummary}</div>
       ${workedRows.length?`<div class="hb-sublabel">Cases we worked (${workedRows.length})</div><div class="hb-rows">${headerRow+sortRows(workedRows).map(rowHtml).join('')}</div>`:(reversalOnly?'':`<div class="hb-sublabel">Cases we worked (0)</div><div class="hb-rows">${workedEmpty}</div>`)}
-      <div class="hb-sublabel hb-sublabel-click" onclick="histNoToggle('${m}')">${noOpen?'▾':'▸'} Settled without chasing${revC?' + reversals':''} (${noRows.length}) <span class="hb-sl-sub">Overall only, not process wins</span></div>
-      ${noOpen?`${reversalOnly?`<div class="hb-reversal-list">${sortNoRows(noRows).map(reversalRowHtml).join('')}</div>`:`<div class="hb-rows">${headerRow}${sortNoRows(noRows).map(rowHtml).join('')}</div>`}`:''}
+      <div class="hb-sublabel hb-sublabel-click" onclick="histNoToggle('${m}')">${noOpen?'▾':'▸'} No action / adjustment credits${revC?' + reversals':''} (${noRows.length}) <span class="hb-sl-sub">Overall only, not process wins</span></div>
+      ${noOpen?`${noTotal}${noHelp}${reversalOnly?`<div class="hb-reversal-list">${sortNoRows(noRows).map(reversalRowHtml).join('')}</div>`:`<div class="hb-rows">${headerRow}${sortNoRows(noRows).map(rowHtml).join('')}${noTotalBottom}</div>`}`:''}
       `:''}
     </div>`;
   }).join('');
@@ -4541,12 +4689,12 @@ function renderHistory() {
 // ════════════════════════════════════════════
 function exportHistoryCsv() {
   if (!archived.length) return toast('No history to export');
-  const cols = ['Date','SKU','FNSKU','ASIN','Product','Qty','Actual Cost','Original Reimb','Final Reimb','Recovered','Outcome','Old Case ID','New Case ID','Reimb ID'];
+  const cols = ['Date','SKU','FNSKU','ASIN','Product','Qty','COG','Original Reimb','Final Reimb','Recovered','Outcome','Old Case ID','New Case ID','Reimb ID'];
   const esc2 = v => { const s=String(v??''); return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s; };
   const rows = archived.map(r=>{
     const a = ann(r.reimb_id);
-    const finalR = a.final_reimb_amount||r.reimb_amount||0;
-    return [r.date, r.sku, r.fnsku, r.asin, r.product_name, r.quantity, totalCost(r).toFixed(2),
+    const finalR = (a.final_reimb_amount!=null && a.final_reimb_amount!=='') ? Number(a.final_reimb_amount) : lifecycleReimbursed(r);
+    return [r.date, r.sku, r.fnsku, r.asin, r.product_name, r.quantity, histDisplayCog(r).toFixed(2),
       (r.reimb_amount||0).toFixed(2), finalR.toFixed(2), (finalR-(r.reimb_amount||0)).toFixed(2),
       a.outcome||'', r.case_id||'', a.new_case_id||'', r.reimb_id].map(esc2).join(',');
   });
@@ -6135,7 +6283,7 @@ I am writing to request an adjustment for Reimbursement ID: ${r.reimb_id}. On ${
 However, this reimbursement amount is significantly below the item's Managing Sourcing Cost (MSC) which is £${targetValue.toFixed(2)}. The invoice/COG value recorded for this unit is £${cog.toFixed(2)}. Per Amazon's FBA inventory reimbursement policy, when an item is lost or damaged in the warehouse, the reimbursement value should reflect the estimated proceeds of the sale of that item, taking into account the product's regular selling price and applicable FBA fees. The current reimbursement of £${(r.reimb_amount||0).toFixed(2)} does not even cover the core cost of this item, resulting in an unjustified financial loss for our business due to a fulfilment centre error.
 
 Discrepancy Breakdown:
-COG / Actual Cost: £${cog.toFixed(2)}
+COG: £${cog.toFixed(2)}
 Fair Market Value / MSC Used: £${targetValue.toFixed(2)}
 Amount Reimbursed: £${(r.reimb_amount||0).toFixed(2)}
 Shortfall Requested: £${Math.max(0, shortfallAmt).toFixed(2)}
@@ -6178,7 +6326,7 @@ function openCaseGenModal(reimb_id) {
     <div class="modal-body">
       <div class="msc-hint">Fill the values, copy the message, open the case in Seller Central, then paste the <strong>New Case ID</strong> back on the record. Closing this returns you to the same record — you won't lose your place.</div>
       <div class="fg3">
-        <div class="f"><label>COG / Actual Cost (£)</label><input type="number" id="cgm-cog" value="${cog.toFixed(2)}" step="0.01" oninput="cgmUpdate('${reimb_id}')"></div>
+        <div class="f"><label>COG (£)</label><input type="number" id="cgm-cog" value="${cog.toFixed(2)}" step="0.01" oninput="cgmUpdate('${reimb_id}')"></div>
         <div class="f"><label>MSC / Fair Value (£)</label><input type="number" id="cgm-msc" value="${msc>0?msc.toFixed(2):''}" placeholder="e.g. 60.89" step="0.01" oninput="cgmUpdate('${reimb_id}')"></div>
         <div class="f"><label>Reimbursement Date</label><input type="date" id="cgm-date" value="${r.date||''}" oninput="cgmUpdate('${reimb_id}')"></div>
       </div>
