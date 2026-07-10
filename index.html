@@ -6,7 +6,7 @@
 <title>SF Re-evaluation Reimbursements</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <!-- ── Optional cloud sync (Supabase). Leave blank to run fully standalone/offline. ── -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -30,9 +30,9 @@
   --surface3:  #17202b;
   --border:    #1b2531;
   --border2:   #2a3648;
-  --text:      #f4f7fb;
-  --text2:     #d6dee8;
-  --text3:     #b4c0ce;
+  --text:      #ffffff;
+  --text2:     #eef3fa;
+  --text3:     #d7e0eb;
   --text4:     #8e9bac;
   --green:     #22c984;
   --green-dim: #0c2b1e;
@@ -53,8 +53,8 @@
   --shadow-sm: 0 1px 2px rgba(0,0,0,.3);
   --shadow:    0 4px 16px -6px rgba(0,0,0,.55);
   --shadow-lg: 0 18px 48px -12px rgba(0,0,0,.65);
-  --mono:      'JetBrains Mono','Fira Mono',monospace;
-  --sans:      'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:      ui-monospace,'SF Mono','IBM Plex Mono',Menlo,monospace;
+  --sans:      -apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
   --r:         8px;
   --rs:        5px;
 }
@@ -106,45 +106,49 @@ input:focus,select:focus,textarea:focus,.fb-input:focus,.fb-select:focus{outline
 
 /* ─── SIDEBAR ─── */
 #sidebar{
-  width:210px;min-width:210px;
-  background:var(--surface);
-  border-right:1px solid var(--border);
+  width:226px;min-width:226px;
+  background:linear-gradient(180deg,#080d13,#05080d 72%);
+  border-right:1px solid rgba(148,163,184,.14);
   display:flex;flex-direction:column;
   overflow-y:auto;overflow-x:hidden;
 }
-.sb-logo{padding:10px 11px 11px;border-bottom:1px solid var(--border)}
-.sb-logo-text{overflow:hidden;white-space:nowrap}
-.sb-brand{display:flex;align-items:center;gap:9px;min-width:0}
+.sb-logo{padding:12px 12px 13px;border-bottom:1px solid rgba(148,163,184,.13);background:linear-gradient(180deg,rgba(34,201,132,.045),rgba(125,211,252,.02) 64%,transparent)}
+.sb-logo-text{overflow:hidden;min-width:0}
+.sb-brand{display:flex;align-items:center;gap:10px;min-width:0}
 .sf-mark{
-  width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;font-size:11px;font-weight:900;letter-spacing:.03em;color:#07130f;
-  background:linear-gradient(135deg,var(--accent),#7dd3fc);
-  box-shadow:0 0 0 1px rgba(255,255,255,.08),0 8px 18px rgba(0,0,0,.24);
+  width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:12px;font-weight:950;letter-spacing:.02em;color:#04140f;
+  background:
+    radial-gradient(circle at 30% 25%,rgba(255,255,255,.45),transparent 28%),
+    linear-gradient(135deg,#2ee59d 0%,#6ed7f3 100%);
+  box-shadow:0 0 0 1px rgba(255,255,255,.10),0 10px 24px rgba(0,0,0,.34),0 0 20px rgba(34,201,132,.10);
 }
-.sb-logo .name{font-size:13.2px;font-weight:800;letter-spacing:-.2px;color:var(--text);line-height:1.1}
-.sb-logo .sub{font-size:10.2px;color:var(--text3);margin-top:4px;display:flex;align-items:center;gap:6px}
+.sb-logo .name{font-size:14px;font-weight:900;letter-spacing:-.35px;color:#f6f9fd;line-height:1.05;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-logo .sub{font-size:10.6px;color:#b7c3d2;margin-top:5px;display:flex;align-items:center;gap:6px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .build-pill{
-  display:inline-flex;align-items:center;height:17px;padding:0 6px;border-radius:99px;
-  border:1px solid var(--border2);background:var(--surface2);color:var(--text2);
+  display:none;align-items:center;height:17px;padding:0 6px;border-radius:99px;
+  border:1px solid rgba(148,163,184,.20);background:rgba(148,163,184,.07);color:var(--text2);
   font-size:9px;font-weight:700;letter-spacing:.02em;
 }
 .sb-section{overflow:hidden}
 
-.sb-section{padding:10px 10px 4px}
-.sb-section-label{font-size:9.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);padding:0 4px 4px}
+.sb-section{padding:12px 10px 4px}
+.sb-section-label{font-size:9.2px;text-transform:uppercase;letter-spacing:.095em;color:#8f9daf;padding:0 6px 7px}
 
 .nav-btn{
   display:flex;align-items:center;gap:8px;
-  padding:8px 11px;border-radius:var(--rs);
+  padding:8.5px 10px;border-radius:8px;
   color:var(--text2);cursor:pointer;font-size:12.5px;
   border:none;background:none;width:100%;text-align:left;
-  transition:background .12s,color .12s;
+  transition:background .12s,color .12s,border-color .12s,box-shadow .12s,transform .12s;
   position:relative;
+  margin:2px 0;
+  border:1px solid transparent;
 }
-.nav-btn:hover{background:var(--surface2);color:var(--text)}
-.nav-btn.active{background:var(--accent-dim);color:var(--accent)}
-.nav-btn.active::before{content:"";position:absolute;left:0;top:6px;bottom:6px;width:3px;border-radius:0 3px 3px 0;background:linear-gradient(180deg,var(--accent),var(--accent2))}
-.nav-btn .nb-icon{width:16px;height:16px;opacity:.75;flex-shrink:0}
+.nav-btn:hover{background:rgba(148,163,184,.055);color:#eef5fb;border-color:rgba(148,163,184,.10)}
+.nav-btn.active{background:linear-gradient(90deg,rgba(34,201,132,.18),rgba(34,201,132,.08));color:#34d399;border-color:rgba(34,201,132,.18);box-shadow:inset 0 0 0 1px rgba(34,201,132,.04)}
+.nav-btn.active::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:linear-gradient(180deg,var(--accent),#7dd3fc)}
+.nav-btn .nb-icon{width:17px;height:17px;opacity:.74;flex-shrink:0}
 .nav-btn.active .nb-icon{opacity:1}
 .nav-btn .nb-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .nav-btn .nb-badge{
@@ -172,20 +176,20 @@ input:focus,select:focus,textarea:focus,.fb-input:focus,.fb-select:focus{outline
 /* ─── SIDEBAR COLLAPSE ─── */
 #sidebar{transition:width .18s ease,min-width .18s ease}
 .sb-logo{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.sb-toggle{background:none;border:1px solid var(--border2);border-radius:5px;color:var(--text3);cursor:pointer;padding:3px 7px;font-size:11px;flex-shrink:0;transition:all .15s}
-.sb-toggle:hover{color:var(--text);border-color:var(--accent)}
-#sidebar.collapsed{width:54px;min-width:54px}
+.sb-toggle{background:rgba(148,163,184,.045);border:1px solid rgba(148,163,184,.18);border-radius:8px;color:#aeb9c8;cursor:pointer;width:27px;height:27px;font-size:12px;flex-shrink:0;transition:all .15s}
+.sb-toggle:hover{color:#e9f3fb;border-color:rgba(125,211,252,.38);background:rgba(125,211,252,.08)}
+#sidebar.collapsed{width:62px;min-width:62px}
 #sidebar.collapsed .sb-logo-text,
 #sidebar.collapsed .nb-label,
 #sidebar.collapsed .nb-badge,
 #sidebar.collapsed .sb-section-label,
 #sidebar.collapsed .sq-label{display:none}
-#sidebar.collapsed .sf-mark{display:none}
 #sidebar.collapsed .sq-tile{font-size:0}
 #sidebar.collapsed .nav-btn{justify-content:center;padding:9px;gap:0}
 #sidebar.collapsed .nav-btn .nb-icon{width:18px;height:18px}
 #sidebar.collapsed .sq-tile svg{width:16px;height:16px}
-#sidebar.collapsed .sb-logo{justify-content:center}
+#sidebar.collapsed .sb-logo{justify-content:center;flex-direction:column;padding:10px 8px;gap:7px}
+#sidebar.collapsed .sf-mark{width:34px;height:34px;border-radius:10px}
 #sidebar.collapsed .sb-toggle{transform:rotate(180deg)}
 #sidebar.collapsed .sq-tiles{grid-template-columns:1fr}
 #sidebar.collapsed .sq-tile{padding:8px 4px}
@@ -533,7 +537,7 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
 /* ─── HISTORY ─── */
 .hist-scroll{flex:1;overflow:auto;padding:0;display:flex;flex-direction:column}
 .hist-kpi{display:flex;flex-direction:column;gap:10px;padding:9px 12px;border-bottom:1px solid var(--border)}
-.hist-fbar{position:sticky;top:0;z-index:6;background:var(--bg);border-bottom:1px solid var(--border)}
+.hist-fbar{position:sticky;top:0;z-index:30;background:linear-gradient(180deg,#060a0f,#05070a);border-bottom:1px solid var(--border);box-shadow:0 10px 22px -18px rgba(0,0,0,.95)}
 .hd-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .hd-title{font-size:12px;font-weight:800}
 .hd-scope-lbl{font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-left:6px}
@@ -627,7 +631,7 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
 .kill-sub{font-size:11.5px;color:var(--text2);line-height:1.5}
 
 /* ─── HISTORY MONTH BATCHES ─── */
-.hb-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden}
+.hb-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:visible}
 .hb-card.is-reversal-only{border-color:rgba(148,163,184,.22)}
 .hb-pct{font-size:10px;opacity:.8}
 .hb-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 13px;cursor:pointer;border-bottom:1px solid transparent}
@@ -667,9 +671,10 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
 .hb-rows{border-top:1px solid var(--border)}
 .hb-row{display:grid;grid-template-columns:minmax(190px,1fr) 100px 78px 92px 104px 76px 66px 78px 86px;gap:8px;align-items:center;padding:7px 11px;border-bottom:1px solid var(--border);font-size:11.5px;cursor:pointer;border-left:4px solid transparent}
 .hb-row:hover:not(.hb-header){filter:brightness(1.12)}
-.hb-header{position:sticky;top:34px;z-index:6;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text2);cursor:default;background:#0d141c;border-bottom:1px solid var(--border2);box-shadow:0 8px 16px -10px rgba(0,0,0,.75);padding-top:9px;padding-bottom:9px}
+.hb-header{position:sticky;top:116px;z-index:22;font-size:9px;font-weight:850;text-transform:uppercase;letter-spacing:.06em;color:#d3deea;cursor:default;background:linear-gradient(180deg,#101923,#0b121a);border-top:1px solid rgba(125,211,252,.14);border-bottom:1px solid rgba(125,211,252,.22);box-shadow:0 12px 24px -18px rgba(0,0,0,.9);padding-top:9px;padding-bottom:9px}
 .hb-h{cursor:pointer;user-select:none}
-.hb-h:hover{color:var(--accent)}
+.hb-h:hover{color:#7dd3fc}
+.hb-h.on{color:#7dd3fc}
 /* outcome row colours — work in light & dark, text stays default for contrast */
 .hbr-green{background:rgba(18,122,91,.16);border-left-color:var(--green)}
 .hbr-credit{background:rgba(12,62,84,.28);border-left-color:#38bdf8}
@@ -693,11 +698,14 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
 .hb-why.adj{color:#9ee7ff;background:rgba(56,189,248,.10);border-color:rgba(56,189,248,.28)}
 .hb-why.manual{color:#a8e7ff;background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.22)}
 .hb-why.rev{color:#b8c3d0;background:rgba(148,163,184,.08);border-color:rgba(148,163,184,.20)}
-.hb-help{position:sticky;top:0;z-index:7;display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:0 0 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:7px 11px;background:#0a1017;font-size:10.5px;color:var(--text3);box-shadow:0 8px 16px -12px rgba(0,0,0,.85)}
+.hb-help{position:sticky;top:82px;z-index:23;display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:0 0 0;border-top:1px solid rgba(125,211,252,.12);border-bottom:1px solid rgba(125,211,252,.12);padding:7px 11px;background:linear-gradient(180deg,#0c141d,#091018);font-size:10.5px;color:var(--text3);box-shadow:0 12px 24px -18px rgba(0,0,0,.9)}
 .hb-help b{color:var(--text2)}
 .hb-info{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:99px;border:1px solid rgba(125,211,252,.36);background:rgba(56,189,248,.10);color:#9ee7ff;font-size:10px;font-weight:900;cursor:help}
 .hb-section-total{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 11px;background:rgba(15,23,42,.72);border-top:1px solid var(--border);border-bottom:1px solid var(--border);font-size:10.5px;color:var(--text2)}
-.hb-section-total.bottom{justify-content:flex-end;background:rgba(15,23,42,.46);border-bottom:0}
+.hb-section-total.audit-top{position:sticky;top:43px;z-index:24;background:linear-gradient(180deg,#121c28,#0d1621);border-top:1px solid rgba(125,211,252,.16);border-bottom:1px solid rgba(125,211,252,.20);box-shadow:0 14px 26px -20px rgba(0,0,0,.92)}
+.hb-section-title{display:inline-flex;align-items:center;gap:6px;margin-right:2px;color:#e6edf5;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+.hb-section-title::before{content:"";width:7px;height:7px;border-radius:99px;background:#38bdf8;box-shadow:0 0 0 4px rgba(56,189,248,.10)}
+.hb-section-total.bottom{position:sticky;bottom:0;z-index:21;justify-content:flex-end;background:linear-gradient(180deg,#101923,#0b121a);border-bottom:0;box-shadow:0 -12px 24px -18px rgba(0,0,0,.9)}
 .hb-total-pill{display:inline-flex;align-items:center;gap:5px;border:1px solid rgba(148,163,184,.18);background:rgba(148,163,184,.07);border-radius:999px;padding:3px 8px;font-weight:750;white-space:nowrap}
 .hb-total-pill.blue{color:#9ee7ff;border-color:rgba(56,189,248,.24);background:rgba(56,189,248,.08)}
 .hb-total-pill.green{color:#8fe4c5;border-color:rgba(32,201,151,.22);background:rgba(32,201,151,.08)}
@@ -708,6 +716,8 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
 .hb-context-cog{display:inline-block;color:#9ee7ff;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.18);border-radius:999px;padding:2px 7px;font-size:9.5px;font-weight:760}
 .hb-credit-txt{color:#7dd3fc;font-weight:800}
 .hb-credit-txt small{display:block;color:#a9bfd1;font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.hb-na{display:inline-block;color:#aeb9c6;background:rgba(148,163,184,.08);border:1px solid rgba(148,163,184,.16);border-radius:999px;padding:2px 7px;font-size:9px;font-weight:850;letter-spacing:.04em}
+.hb-na small{display:block;font-size:8px;line-height:1;color:#8290a1;letter-spacing:.05em;text-transform:uppercase}
 .hb-sub a{color:#9edcff}
 
 /* ─── MODAL ─── */
@@ -1651,10 +1661,294 @@ thead th{padding:7px 10px}
 .dec-active{color:var(--green);border-color:var(--green);background:var(--green-dim)}
 .dec-active:hover{background:var(--green);color:#0c0e12}
 .dec-none:hover{border-color:var(--text3);color:var(--text)}
+/* ─── V17.1: History month + audit row redesign ─── */
+.hb-card{background:linear-gradient(180deg,#071017,#05080d);border-color:rgba(125,211,252,.16);border-radius:10px;box-shadow:0 18px 40px -34px rgba(0,0,0,.95);overflow:hidden}
+.hb-card.is-reversal-only{border-color:rgba(148,163,184,.22)}
+.hb-month-hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px 14px;background:linear-gradient(180deg,rgba(20,31,43,.82),rgba(8,13,20,.82));border-bottom:1px solid rgba(148,163,184,.15);cursor:pointer}
+.hb-month-hero:hover{background:linear-gradient(180deg,rgba(24,38,52,.92),rgba(9,16,24,.92))}
+.hb-month-left{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.hb-month-toggle{width:24px;height:24px;border-radius:7px;background:rgba(148,163,184,.08);border:1px solid rgba(148,163,184,.18);color:#d6e1ee;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.hb-month-titleline{display:flex;align-items:center;gap:9px;flex-wrap:wrap;min-width:0}
+.hb-month-title{font-size:14.5px;font-weight:900;color:#f3f7fb;letter-spacing:-.01em}
+.hb-month-sub{font-size:10.8px;color:#b8c4d1;margin-top:3px}
+.hb-month-pill{display:inline-flex;align-items:center;border:1px solid rgba(148,163,184,.18);background:rgba(148,163,184,.07);border-radius:999px;padding:3px 8px;font-size:10px;font-weight:780;color:#c9d5e2}
+.hb-month-pill.amber{color:#f2bd66;background:rgba(245,158,11,.10);border-color:rgba(245,158,11,.28)}
+.hb-month-pill.red{color:#ff8a96;background:rgba(244,63,94,.09);border-color:rgba(244,63,94,.24)}
+.hb-month-pill.blue{color:#9ee7ff;background:rgba(56,189,248,.09);border-color:rgba(56,189,248,.24)}
+.hb-month-metrics{display:grid;grid-template-columns:repeat(3,minmax(96px,1fr));gap:7px;min-width:390px}
+.hb-month-metric{background:rgba(6,10,16,.58);border:1px solid rgba(148,163,184,.14);border-radius:8px;padding:7px 9px;text-align:right}
+.hb-mm-value{font-size:13px;font-weight:900;font-variant-numeric:tabular-nums;color:#e8eef6}
+.hb-mm-label{font-size:8.5px;text-transform:uppercase;letter-spacing:.06em;color:#aeb9c8;margin-top:2px}
+.hb-month-story{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:9px 12px;background:rgba(5,8,13,.58);border-bottom:1px solid rgba(148,163,184,.10)}
+.hb-story{position:relative;background:rgba(148,163,184,.045);border:1px solid rgba(148,163,184,.12);border-radius:8px;padding:8px 10px;min-width:0}
+.hb-story::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:var(--story,var(--text3))}
+.hb-story.work{--story:var(--green)}.hb-story.rev{--story:var(--red)}.hb-story.open{--story:var(--amber)}
+.hb-story-k{font-size:8.5px;text-transform:uppercase;letter-spacing:.07em;color:#aeb9c8;font-weight:850}
+.hb-story-v{font-size:15px;font-weight:900;font-variant-numeric:tabular-nums;margin-top:3px;color:#edf3fb}
+.hb-story-s{font-size:10px;color:#aeb9c8;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hb-work-panel{margin:9px 12px 10px;background:rgba(148,163,184,.045);border:1px dashed rgba(148,163,184,.20);border-radius:8px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hb-work-panel b{font-size:12px;color:#eef4fa}
+.hb-work-panel span{display:block;font-size:10.5px;color:#aeb9c8;margin-top:2px}
+.hb-work-pillrow{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.hb-audit-toggle{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:9px 12px;background:linear-gradient(180deg,#0d1621,#081019);border-top:1px solid rgba(125,211,252,.12);border-bottom:1px solid rgba(125,211,252,.16);cursor:pointer}
+.hb-audit-toggle:hover{background:linear-gradient(180deg,#111d2a,#0a1420)}
+.hb-audit-main{display:flex;align-items:center;gap:8px;min-width:0}
+.hb-audit-chevron{width:22px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;background:rgba(56,189,248,.10);border:1px solid rgba(56,189,248,.20);color:#9ee7ff;font-weight:900}
+.hb-audit-title{font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:900;color:#e9f2fb}
+.hb-audit-sub{font-size:10px;color:#aeb9c8;margin-left:4px;text-transform:none;letter-spacing:0;font-weight:650}
+.hb-audit-counts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.hb-rows{border-top:0;display:flex;flex-direction:column;gap:5px;padding:6px;background:rgba(0,0,0,.12)}
+.hb-row{grid-template-columns:minmax(300px,34vw) 138px minmax(78px,.55fr) minmax(86px,.6fr) minmax(86px,.6fr) minmax(70px,.45fr) minmax(64px,.4fr) minmax(82px,.5fr) minmax(88px,.54fr);gap:8px;padding:8px 10px;border:1px solid rgba(148,163,184,.12);border-left-width:4px;border-radius:8px;background:rgba(148,163,184,.035)}
+.hb-header{top:116px;border-radius:7px;border-left:4px solid transparent!important;padding-top:8px;padding-bottom:8px;background:linear-gradient(180deg,#111b26,#0a121b);box-shadow:0 10px 24px -20px #000}
+.hb-row:not(.hb-header):hover{border-color:rgba(125,211,252,.26);transform:translateY(-1px);filter:none;background:rgba(148,163,184,.07)}
+.hbr-green{background:rgba(18,122,91,.16)}
+.hbr-credit{background:rgba(12,62,84,.26)}
+.hbr-grey{background:rgba(116,125,138,.14)}
+.hb-type{justify-content:flex-start}
+.hb-name{font-size:12px;color:#f0f5fb}
+.hb-sub{font-size:10.2px;color:#c4cfdb;gap:6px}
+.hb-n{font-size:11.8px;color:#e4edf6}
+.hb-st .hs{font-weight:800}
+@media(max-width:1180px){.hb-month-hero{grid-template-columns:1fr}.hb-month-metrics{min-width:0}.hb-month-story{grid-template-columns:1fr}.hb-row{grid-template-columns:minmax(260px,1fr) 116px 76px 82px 82px 68px 62px 74px 78px}}
+
+/* ─── V17.1: Action queue should use the full page when quiet ─── */
+.aq-cols{grid-template-columns:1fr;gap:12px}
+.aq-side{position:static;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:10px;align-items:start}
+.aq-side-h{grid-column:1/-1;margin:4px 0 0;color:#d5dfeb}
+.aq-side .aq-section{margin-bottom:0}
+.aq-side .aq-band{grid-column:1/-1;margin:4px 0 0}
+.aq-row{border-radius:8px;margin:5px 6px;background:rgba(148,163,184,.035);border:1px solid rgba(148,163,184,.11);border-left:3px solid var(--_accent,transparent)}
+.aq-row::before{display:none}
+.aq-row:hover{border-color:rgba(125,211,252,.22)}
+.aq-main .aq-section{border-radius:10px}
+.aq-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:74px;text-align:center}
+.aq-nextwork{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+
+/* ─── V17.2: Action Centre command layout ─── */
+#aq-body{max-width:none;padding:14px 18px 18px}
+.aq-header{background:#080d13;border-bottom-color:#172232;padding:10px 14px}
+.aq-title{font-size:13px;font-weight:850;color:#f2f6fb}
+.aq-sub{font-size:12px;color:#b9c4d2}
+.aq-count{margin-left:auto;min-width:24px;text-align:center;box-shadow:0 0 0 1px rgba(255,255,255,.08) inset}
+.aq-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;background:transparent;border:0;border-radius:0;margin:0 0 10px;overflow:visible}
+.aqs-stat{min-width:0;border:1px solid #1b2838;border-radius:12px;background:#0a1119;padding:10px 13px}
+.aqs-stat:first-child{border-color:#2c4058;box-shadow:inset 3px 0 0 #b7c4d4}
+.aqs-num{font-size:22px}
+.aqs-lbl{font-size:10.5px;margin-top:5px;color:#aeb9c8}
+.aqs-legend{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:0}
+.aqs-leg{background:#0a1119;border:1px solid #172232;border-radius:10px;padding:8px 10px;color:#cbd5e1;justify-content:space-between}
+.aqs-leg i{border-radius:50%}
+.aq-worktop{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(330px,.65fr);gap:10px;margin:0 0 12px}
+.aq-focus{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;background:linear-gradient(135deg,#101821,#080d13 70%);border:1px solid #26364a;border-radius:14px;padding:16px 18px;overflow:hidden;min-height:118px;box-shadow:0 18px 46px -34px rgba(0,0,0,.95)}
+.aq-focus::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--_focus,#38bdf8)}
+.aq-focus-k{font-size:10px;font-weight:850;letter-spacing:.08em;text-transform:uppercase;color:#8fa0b4}
+.aq-focus-title{font-size:16px;font-weight:850;color:#f4f7fb;margin-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.aq-focus-sub{font-size:12px;color:#c4cfdb;margin-top:7px;line-height:1.4}
+.aq-focus-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.aq-focus-chip{display:inline-flex;align-items:center;gap:4px;border:1px solid #2d4055;background:#111a25;color:#d6dee8;border-radius:999px;padding:3px 8px;font-size:10.5px;font-weight:720;font-variant-numeric:tabular-nums}
+.aq-focus-chip.red{border-color:rgba(245,65,79,.45);background:rgba(245,65,79,.10);color:#ff8d96}
+.aq-focus-chip.green{border-color:rgba(32,201,151,.40);background:rgba(32,201,151,.10);color:#8fe4c5}
+.aq-focus-chip.amber{border-color:rgba(245,166,35,.45);background:rgba(245,166,35,.10);color:#ffd37b}
+.aq-focus-actions{display:flex;align-items:center;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.aq-focus-btn{border-radius:10px;border:1px solid #2e4055;background:#121d29;color:#dfe8f2;padding:9px 13px;font-weight:820;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap;min-width:110px}
+.aq-focus-btn:hover{border-color:#7dd3fc;color:#e8f7ff;background:#132638}
+.aq-focus-btn.primary{border-color:var(--_focus,#20c997);background:color-mix(in srgb,var(--_focus,#20c997) 20%,#0b1513);color:#eafff6}
+.aq-focus-btn.primary:hover{background:var(--_focus,#20c997);color:#05120d}
+.aq-queuecards{display:grid;grid-template-columns:1fr;gap:8px}
+.aq-qcard{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;background:#0a1119;border:1px solid #1b2838;border-radius:12px;padding:11px 12px;cursor:pointer;min-height:55px}
+.aq-qcard:hover{border-color:#30445c;background:#0d1621}
+.aq-qn{font-size:20px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
+.aq-qt{font-size:12px;font-weight:820;color:#eef3f8}
+.aq-qs{font-size:10.5px;color:#aeb9c8;margin-top:2px}
+.aq-qgo{border:1px solid #2c3d51;background:#111a25;color:#cfd8e4;border-radius:9px;padding:7px 10px;font-size:11px;font-weight:800}
+.aq-centre-note{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#071017;border:1px solid #172232;border-radius:12px;padding:10px 12px;margin-bottom:10px;color:#b9c4d2;font-size:12px}
+.aq-centre-note b{color:#eff5fb}
+.aq-section{background:#0a1119;border-color:#1b2838;border-radius:12px}
+.aq-section-head{background:#0d1620;padding:10px 12px}
+.aq-sh-title{font-size:13px}
+.aq-row{margin:6px 7px;border-radius:10px;background:#081018;border-color:#162333;padding:10px 12px}
+.aq-row:hover{background:#0d1721;border-color:#2b4057}
+.aq-row-name{font-size:13px;color:#f2f6fb}
+.aq-row-sub{font-size:11.5px;color:#b7c2d0}
+.aq-id{background:#121b27;border-color:#2a394b;color:#cbd5e1}
+.aq-id-sku{color:#aeb9c8}
+.aq-cta{border-radius:10px;background:#111b27;font-size:11.5px}
+.aq-empty{background:#081018;border-color:#26364a;color:#b7c2d0;min-height:58px}
+@media(max-width:980px){.aq-worktop{grid-template-columns:1fr}.aq-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.aq-focus{grid-template-columns:1fr}.aq-focus-actions{justify-content:flex-start}.aqs-legend{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* ─── V17.1: Active cards, remove dead bottom strip ─── */
+.ar-workgrid{padding-bottom:5px;gap:6px}
+
+/* ─── V17.3: Active case-file polish ─── */
+.ar-list{gap:10px;padding:8px 10px 12px}
+.ar-card{border-radius:13px;background:#070b10;border-color:#26364a;box-shadow:0 18px 44px -34px rgba(0,0,0,.95)}
+.ar-card:hover{transform:none;border-color:#36516b;box-shadow:0 18px 52px -34px rgba(0,0,0,.98)}
+.ar-card::before{width:5px}
+.ar-card.rs-amber{background:#070b10;border-color:rgba(245,166,35,.72)}
+.ar-card.rs-red{background:#070b10;border-color:rgba(245,65,79,.72)}
+.ar-card.rs-blue{background:#070b10;border-color:rgba(56,189,248,.72)}
+.ar-card.rs-purple{background:#070b10;border-color:rgba(192,132,252,.72)}
+.ar-card.rs-green{background:#070b10;border-color:rgba(32,201,151,.72)}
+.ar-card.rs-amber .ar-zhead,
+.ar-card.rs-red .ar-zhead,
+.ar-card.rs-blue .ar-zhead,
+.ar-card.rs-purple .ar-zhead,
+.ar-card.rs-green .ar-zhead{background:linear-gradient(180deg,#111923,#0b1118)}
+.ar-zhead{padding:10px 14px 11px;background:#0b1118;align-items:flex-start;border-bottom:1px solid #172536}
+.ar-name{font-size:14.5px;line-height:1.26;margin-bottom:8px;letter-spacing:-.015em;color:#f5f8fc}
+.ar-chips{gap:7px}
+.id-chip{font-size:11px;border-radius:8px;background:#111a25;border-color:#2c3c50;color:#dce5ef;padding:4px 10px}
+.id-lbl{font-size:8px;color:#8fa0b4}
+.id-chip-link .id-open-in{color:#8fe4c5}
+.ar-tags{gap:7px;padding-top:1px}
+.ar-statsel{border-radius:8px;background:#101b28;border-color:#31465d;color:#f0f5fb;font-size:11px;padding:5px 10px;min-width:118px}
+.ar-sa .na-pill{font-size:10px;padding:3px 8px;border-radius:999px}
+.ar-glance{background:#070b10;border-color:#172536}
+.ar-gc{padding:10px 14px}
+.ar-gc-lbl,.ar-tile-head,.ar-info-label{color:#c6d1df}
+.ar-gc-big{font-size:17px}
+.ar-gc-sub,.ar-info-sub{color:#aeb9c8}
+.ar-zprog{background:#071018;padding:9px 13px;border-color:#172536}
+.ar-seg{font-size:10.5px;padding-top:5px;padding-bottom:5px}
+.ar-workgrid{grid-template-columns:minmax(0,1.08fr) minmax(420px,.92fr);gap:9px;padding:9px 11px;background:#080c11;border-top:1px solid #172536}
+.ar-tile-panel{background:#0b1118;border-color:#243244;border-radius:12px;padding:9px}
+.ar-tile-head{font-size:9.5px;margin-bottom:7px}
+.ar-money-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.ar-track-grid{gap:7px}
+.ar-info-tile{background:#070b10;border-color:#243244;border-radius:10px;padding:8px 10px;min-height:48px}
+.ar-info-tile:hover{border-color:#34506a}
+.ar-info-value{font-size:13px;margin-top:3px}
+.ar-info-value.formula{font-size:12px;white-space:normal;line-height:1.35}
+.ar-info-input,.ar-inp{color:#f4f7fb}
+.ar-details{background:#070b10;padding:0 11px 9px;border-top:1px solid #172536}
+.ar-ladder-band{margin-top:0;padding-top:9px}
+.ar-footer{background:#070b10;border-color:#172536}
+.ar-foot{padding:8px 12px}
+.ar-review-btn{border-radius:9px}
+@media(max-width:1200px){.ar-workgrid{grid-template-columns:1fr}.ar-money-grid,.ar-track-grid{grid-template-columns:1fr 1fr}}
+.ar-tile-panel{padding:6px 7px}
+.ar-money-grid,.ar-track-grid{gap:5px}
+.ar-info-tile{padding:5px 7px}
+.ar-details{padding:0 10px 5px;background:rgba(148,163,184,.025)}
+.ar-dcol-full{margin-top:0!important;padding-top:5px!important;border-top:1px solid rgba(148,163,184,.10)!important}
+.ar-footer{margin-top:0}
+.ar-summary{padding:5px 12px}
+.ar-foot{padding:6px 10px}
+.att-rung{padding:2px 7px}
+
 /* slightly more vertical breathing between active rows */
 #page-active tbody tr{border-bottom:1px solid var(--border)}
 #page-active tbody td{padding-top:8px;padding-bottom:8px}
 
+/* ── Case Generator v2 + MSC clarity ── */
+.msc-flow-hint{font-size:10.5px;color:var(--text2);background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-bottom:10px;line-height:1.6}
+.msc-flow-hint b{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:var(--amber-dim);color:var(--amber);font-size:9px;margin:0 2px}
+.msc-claim-strip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--amber-dim);border:1px solid color-mix(in srgb,var(--amber) 40%,var(--border));border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:11px}
+.msc-claim-strip .mcs-big{font-size:14px;font-weight:800;color:var(--amber)}
+.msc-claim-strip .mcs-src{background:var(--bg2);border:1px solid var(--border2);border-radius:99px;padding:1px 8px;font-size:9.5px;font-weight:700;letter-spacing:.03em}
+.msc-claim-strip .mcs-sub{color:var(--text2);font-size:10.5px}
+.field-help{font-size:9.5px;color:var(--text3);margin-top:3px;line-height:1.45}
+.cgr-panel{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:10px 0}
+.cgr-head{display:flex;align-items:center;gap:8px;padding:8px 12px;font-size:11px;font-weight:800;letter-spacing:.02em}
+.cgr-head.ok{background:var(--green-dim);color:var(--green)}
+.cgr-head.warn{background:var(--amber-dim);color:var(--amber)}
+.cgr-head.block{background:var(--red-dim);color:var(--red)}
+.cgr-rows{padding:8px 12px;display:flex;flex-direction:column;gap:5px;background:var(--bg2)}
+.cgr-row{display:flex;justify-content:space-between;gap:10px;font-size:10.5px;color:var(--text2)}
+.cgr-row b{color:var(--text);font-variant-numeric:tabular-nums}
+.cgr-src{background:var(--accent-dim,rgba(96,165,250,.12));border:1px solid var(--border2);color:var(--accent);border-radius:99px;padding:0 7px;font-size:9px;font-weight:700;margin-left:5px;vertical-align:1px}
+.cgr-warn{display:flex;gap:7px;font-size:10px;line-height:1.5;padding:5px 8px;border-radius:6px;border:1px solid var(--border)}
+.cgr-warn.info{color:var(--text2);background:var(--bg3)}
+.cgr-warn.warn{color:var(--amber);background:var(--amber-dim);border-color:color-mix(in srgb,var(--amber) 35%,var(--border))}
+.cgr-warn.block{color:var(--red);background:var(--red-dim);border-color:color-mix(in srgb,var(--red) 35%,var(--border))}
+.cgm-data{display:grid;grid-template-columns:repeat(3,1fr);gap:6px 10px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+.cgm-data .cgd{min-width:0}
+.cgm-data .cgd-l{font-size:8.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);font-weight:700}
+.cgm-data .cgd-v{font-size:10.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cgm-data .cgd-v.mono{font-family:var(--mono);font-size:10px}
+.cgm-mode{display:inline-flex;border:1px solid var(--border2);border-radius:8px;overflow:hidden;margin-left:auto}
+.cgm-mode button{background:var(--bg2);border:0;color:var(--text3);font-size:9.5px;font-weight:700;padding:3px 10px;cursor:pointer}
+.cgm-mode button.on{background:var(--accent);color:#fff}
+.cgm-caseid-row{display:flex;gap:8px;align-items:center;background:var(--bg2);border:1px dashed var(--border2);border-radius:10px;padding:8px 10px;margin-top:10px}
+.cgm-caseid-row input{flex:1;min-width:0}
+.cgm-caseid-row .ccr-l{font-size:10px;font-weight:700;color:var(--text2);white-space:nowrap}
+.ov2-sched-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);cursor:pointer;font-size:10.5px}
+.ov2-sched-row:last-child{border-bottom:0}
+.ov2-sched-row:hover{background:var(--bg3)}
+.ov2-sched-date{font-family:var(--mono);font-size:9.5px;font-weight:700;border-radius:6px;padding:2px 6px;white-space:nowrap}
+.ov2-sched-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text2)}
+.ar-note-inp{flex:1 1 140px;min-width:110px;max-width:260px;margin-left:auto}
+.att-row.docs{border-left-color:#c084fc}
+
+/* ── 2026-07-10 polish v2: white text, readable sizes, zero grey-on-dark ── */
+html:not([data-theme="light"]){--text2:#eef3fa;--text3:#d7e0eb;--code:#e6eef9}
+body{font-size:13px}
+.ar-info-label{font-size:10px;color:#f2f6fc;font-weight:800}
+.ar-info-sub{font-size:10px;color:#dde6f1}
+.ar-info-value{font-size:14px}
+.ar-tile-head{font-size:10.5px;color:#ffffff;letter-spacing:.08em}
+.ar-gc-lbl{font-size:10.5px;color:#f2f6fc}
+.ar-gc-sub{font-size:11px;color:#dde6f1}
+.ar-sec-h{font-size:10.5px;color:#f2f6fc}
+.ar-gc-lbl,.ar-tile-head,.ar-info-label{color:#f2f6fc}
+.ar-gc-sub,.ar-info-sub{color:#dde6f1}
+.ar-name{font-size:14px}
+.ar-gc-big{font-size:18px}
+/* tighter vertical rhythm — same info, less air */
+.ar-zhead{padding:7px 12px 8px}
+.ar-name{margin-bottom:4px}
+.ar-tags{gap:4px}
+@media (min-width:1100px){ .ar-sa{flex-direction:row;gap:5px;align-items:center;flex-wrap:wrap;justify-content:flex-end} }
+.ar-gc{padding:8px 12px}
+.ar-info-tile{min-height:0;padding:6px 9px}
+.ar-workgrid{padding:7px 10px;gap:7px}
+.ar-tile-panel{padding:7px}
+.ar-details{padding:6px 12px 7px}
+.ar-dcol-full.ar-ladder-band{margin-top:5px;padding-top:5px}
+.ar-foot{padding:6px 10px;gap:6px}
+
+/* ── Overview scroll fix: ONE scroll container for the whole page.
+   Two stacked .page-body scrollers (ov-body + aq-body) each grabbed half the
+   viewport and scrolled independently — that was the mess. ── */
+#page-overview.active{display:block;overflow-y:auto}
+#page-overview .page-body{overflow:visible;flex:none;height:auto}
+#page-overview .aq-header{position:sticky;top:0;z-index:5;background:var(--bg);border-top:1px solid var(--border2);border-bottom:1px solid var(--border);padding:10px 24px}
+
+/* ── Typography & colour pass: system SF Pro, white text, bright chips ── */
+body{letter-spacing:0}
+.aq-row-name{font-weight:700;font-size:13px}
+.aq-row-sub{color:#dde6f1;font-size:12px}
+.aq-id{color:#f2f7fd;background:#1a2634;border-color:#3d5471;font-size:11px;font-weight:500}
+.aq-id-sku{color:#e0e9f4}
+.aq-dl-lbl{color:#d7e0eb}
+.aq-dl-days{font-size:13px}
+.aq-amt{color:#f0f5fb;font-size:13px}
+.td-mono{color:#e6eef9;font-size:11px}
+.aq-band-label{color:#ffffff}
+.aq-band-sub{color:#dde6f1}
+.aq-sh-title{color:#ffffff}
+.aq-side-h{color:#e6eef9}
+.aq-sub{color:#dde6f1}
+
+/* Overview focus list — 2-column grid so 12 tasks fill the panel, no void */
+.ov2-taskgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 22px}
+.ov2-task-reason{color:#dde6f1}
+.ov2-task-name{color:#f7fafd}
+.ov2-loss-sub,.ov2-sstat-l,.ov2-sstat-s,.ov2-bar-head span,.ov2-hero-r-foot,.ov2-node-label,.ov2-eyebrow{color:#dde6f1}
+.ov2-side-losses-h{color:#ffffff}
+.ov2-reason-l{color:#e8eff8}
+
+/* ── Settings — modern cards, comfortable single column ── */
+#page-settings .page-body{max-width:940px}
+.settings-section{border-radius:14px;border:1px solid #26364a;background:linear-gradient(180deg,rgba(148,163,184,.05),rgba(148,163,184,.015));box-shadow:0 14px 34px -28px rgba(0,0,0,.9);transition:border-color .15s}
+.settings-section:hover{border-color:#354962}
+.ss-header{background:transparent;border-bottom:1px solid #1c2a3c;padding:12px 16px 10px;position:relative}
+.ss-header::before{content:'';position:absolute;left:0;top:12px;bottom:10px;width:3px;border-radius:3px;background:var(--accent)}
+.ss-header h3{font-size:13px;font-weight:800;color:#ffffff;letter-spacing:-.01em}
+.ss-header p{font-size:11px;color:#dde6f1;margin-top:3px;line-height:1.5}
+.ss-body{padding:12px 16px 14px;gap:12px}
+#page-settings label{font-size:11px;color:#e8eff8;font-weight:600}
+#page-settings input[type="number"],#page-settings input[type="text"],#page-settings select{font-size:12.5px}
 </style>
 </head>
 <body>
@@ -1666,7 +1960,7 @@ thead th{padding:7px 10px}
       <div class="sf-mark">SF</div>
       <div class="sb-logo-text">
         <div class="name">Reimbursements</div>
-        <div class="sub"><span>Re-evaluation tracker</span><span class="build-pill">Build 16.35</span></div>
+        <div class="sub"><span>Re-evaluation tracker</span></div>
       </div>
     </div>
     <button class="sb-toggle" onclick="toggleSidebar()" title="Collapse sidebar">‹</button>
@@ -1677,21 +1971,7 @@ thead th{padding:7px 10px}
     <button class="nav-btn active" onclick="nav('overview')">
       <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
       <span class="nb-label">Overview</span>
-    </button>
-    <button class="nav-btn" onclick="nav('actions')">
-      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      <span class="nb-label">Actions</span>
       <span class="nb-badge hot" id="badge-actions">0</span>
-    </button>
-    <button class="nav-btn" onclick="nav('triage')">
-      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 4h18"/><path d="M7 12h10"/><path d="M10 20h4"/></svg>
-      <span class="nb-label">Review Queue</span>
-      <span class="nb-badge" id="badge-triage">0</span>
-    </button>
-    <button class="nav-btn" onclick="nav('errors')">
-      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      <span class="nb-label">Import Errors</span>
-      <span class="nb-badge hot" id="badge-errors">0</span>
     </button>
     <button class="nav-btn" onclick="nav('active')">
       <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
@@ -1710,6 +1990,16 @@ thead th{padding:7px 10px}
     <button class="nav-btn" onclick="nav('import')">
       <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
       <span class="nb-label">Import</span>
+    </button>
+    <button class="nav-btn" onclick="nav('triage')">
+      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 4h18"/><path d="M7 12h10"/><path d="M10 20h4"/></svg>
+      <span class="nb-label">Review Queue</span>
+      <span class="nb-badge" id="badge-triage">0</span>
+    </button>
+    <button class="nav-btn" onclick="nav('errors')">
+      <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span class="nb-label">Import Errors</span>
+      <span class="nb-badge hot" id="badge-errors">0</span>
     </button>
     <button class="nav-btn" onclick="nav('settings')">
       <svg class="nb-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
@@ -1730,20 +2020,16 @@ thead th{padding:7px 10px}
       <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
       Import
     </button>
-    <button class="tb-btn primary" onclick="nav('actions')">⚡ Actions</button>
+    <button class="tb-btn primary" onclick="nav('overview');setTimeout(()=>{const e=document.getElementById('aq-anchor');if(e)e.scrollIntoView({behavior:'smooth'})},80)">⚡ Actions</button>
   </div>
 
-  <!-- OVERVIEW — coming soon -->
+  <!-- OVERVIEW + ACTION CENTRE (merged — Actions is no longer a separate tab) -->
   <div class="page active" id="page-overview">
     <div class="page-body" id="ov-body"></div>
-  </div>
-
-  <!-- ACTIONS -->
-  <div class="page" id="page-actions">
-    <div class="aq-header">
+    <div class="aq-header" id="aq-anchor">
       <div>
-        <div class="aq-title">Action Queue</div>
-        <div class="aq-sub">Your to-do list, top to bottom. Clear "Do Today" first — each one is money to recover.</div>
+        <div class="aq-title">⚡ Action Centre</div>
+        <div class="aq-sub">Morning check first. Time-sensitive work lives here; day-to-day case work stays in Active.</div>
       </div>
       <div class="tb-spacer"></div>
       <span class="aq-count" id="aq-total">0</span>
@@ -1922,7 +2208,7 @@ thead th{padding:7px 10px}
     <div class="page-body">
       <div style="margin-bottom:14px">
         <h2 style="font-size:12px;font-weight:700;margin-bottom:4px">Case Generator</h2>
-        <p style="font-size:11.5px;color:var(--text2)">Select a reimbursement record, enter the MSC amount, and the case message builds automatically.</p>
+        <p style="font-size:11.5px;color:var(--text2)">Pick a record — the app decides the claim value (<strong>MSC Amount if set, otherwise COG</strong>), checks the case is worth opening, and builds the message. You just copy, submit, and paste the new Case ID back.</p>
       </div>
       <div class="cg-wrap">
         <div class="cg-left">
@@ -1954,8 +2240,8 @@ thead th{padding:7px 10px}
                 <input type="number" id="cg-cog" placeholder="e.g. 20.00" step="0.01" oninput="cgUpdate()">
               </div>
               <div class="f">
-                <label>MSC / Fair Value (£) *</label>
-                <input type="number" id="cg-msc" placeholder="e.g. 60.89" step="0.01" oninput="cgUpdate()">
+                <label>MSC Amount (£) — wins over COG</label>
+                <input type="number" id="cg-msc" placeholder="empty → COG is used" step="0.01" oninput="cgUpdate()" onchange="cgPersistMsc()">
               </div>
               <div class="f">
                 <label>Reason / Scenario</label>
@@ -1978,6 +2264,12 @@ thead th{padding:7px 10px}
                 <input type="text" id="cg-reimb-id" readonly style="opacity:.6">
               </div>
             </div>
+            <div id="cg-ready"></div>
+            <div class="cgm-caseid-row">
+              <span class="ccr-l">New Case ID</span>
+              <input type="text" id="cg-case-id" placeholder="paste after submitting in Seller Central">
+              <button class="btn btn-green" onclick="cgSaveCase()">Save ID — mark Case Open</button>
+            </div>
           </div>
         </div>
         <div class="cg-right">
@@ -1987,8 +2279,8 @@ thead th{padding:7px 10px}
           </div>
           <div class="cg-preview-body" id="cg-preview">Select a record and enter MSC amount to generate the case message.</div>
           <div class="cg-preview-footer">
-            <button class="btn btn-primary" onclick="cgCopy()">📋 Copy Message</button>
-            <a class="btn btn-sec" href="https://sellercentral.amazon.co.uk/help/center?redirectSource=Hill" target="_blank" style="text-decoration:none;display:inline-flex;align-items:center">Open Case in SC ↗</a>
+            <button class="btn btn-primary" onclick="cgCopyOpen()">📋 Copy + Open Seller Central ↗</button>
+            <button class="btn btn-sec" onclick="cgCopy()">Copy only</button>
             <button class="btn btn-sec" onclick="cgReset()">Reset</button>
           </div>
         </div>
@@ -2098,6 +2390,7 @@ thead th{padding:7px 10px}
         <div class="ss-body">
           <div class="fg3">
             <div class="f"><label>Amazon expected to respond within (days)</label><input type="number" id="s-response-days" value="5" min="1" step="1"></div>
+            <div class="f"><label>Verify a new payout within (days)</label><input type="number" id="s-verify-days" value="3" min="1" step="1" title="After a new reimbursement ID is logged, verifying the funds becomes urgent after this many days"></div>
             <div class="f"><label>Follow up after (days of silence)</label><input type="number" id="s-followup-days" value="10" min="1" step="1"></div>
             <div class="f"><label>Escalate after (days of silence)</label><input type="number" id="s-escalation-days" value="20" min="1" step="1"></div>
           </div>
@@ -2257,6 +2550,7 @@ let settings = {
   msc_wait_days: 30,            // wait between MSC re-submissions
   deadline_risk_days: 7,        // "deadline risk" threshold
   amazon_response_days: 5,      // expected Amazon reply window after a case is opened
+  reimb_verify_days: 3,         // days after a new reimb ID before verifying it becomes urgent
   followup_days: 10,            // follow up after this many days of silence
   escalation_days: 20,          // escalate after this many days of silence
   // ── MSC logic ──
@@ -2516,6 +2810,24 @@ function setAnn(id, data) {
   const log = prev.audit || [];
   if (changes.length) log.push({ts: now(), action: changes.join(', ')});
   annotations[id] = {...prev, ...data, audit: log};
+  // ── Status automation ──
+  // The workflow status follows the data, so nobody has to remember to bump it:
+  // a new reimb ID means Amazon paid out → Reimb Pending; a case ID / case attempt
+  // means a case is live → Case / Claim. Only runs when the caller didn't set the
+  // status explicitly (manual dropdowns and "back to review" always win).
+  if (!('workflow_status' in data)) {
+    const m = annotations[id];
+    const wf = m.workflow_status || 'active';
+    const hasNewReimb = String(m.new_reimb_id||'').trim() !== '';
+    const hasCaseData = String(m.new_case_id||'').trim() !== '' || (m.case_attempts && m.case_attempts.length);
+    if (hasNewReimb && (m.outcome||'')!=='reimbursed' && wf!=='reimb_pending' && wf!=='triage') {
+      m.workflow_status = 'reimb_pending';
+      log.push({ts: now(), action: 'auto → reimb_pending (new reimb ID present)'});
+    } else if (!hasNewReimb && hasCaseData && (wf==='active' || wf==='msc_submitted')) {
+      m.workflow_status = 'case_open';
+      log.push({ts: now(), action: 'auto → case_open (case logged)'});
+    }
+  }
   save();
 }
 
@@ -2665,6 +2977,7 @@ const PAGE_TITLES = {
 };
 function nav(id) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  if (id==='actions') id='overview'; // Actions tab merged into Overview — old links land there
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   // activate nav btn
@@ -2673,8 +2986,7 @@ function nav(id) {
     if (b.getAttribute('onclick') === "nav('"+id+"')") b.classList.add('active');
   });
   document.getElementById('page-title').textContent = PAGE_TITLES[id]||id;
-  if (id==='overview') renderOverview();
-  if (id==='actions') renderActions();
+  if (id==='overview') { renderOverview(); renderActions(); }
   if (id==='triage') renderTriage();
   if (id==='errors') renderErrors();
   if (id==='active') renderActive();
@@ -2872,7 +3184,8 @@ function renderOverview() {
     {k:'done',label:'Reimbursed',n:reimbursed.length,col:'var(--green)',nav:'history'},
   ];
 
-  const focusRows = focusItems.slice(0,6).map(f=>`
+  // two-column grid, up to 12 — the old 6-row single column left half the panel empty
+  const focusRows = focusItems.slice(0,16).map(f=>`
     <div class="ov2-task" onclick="openRecord('${esc(f.r.reimb_id)}')">
       <span class="ov2-task-tag" style="color:${f.col};border-color:${f.col}">${f.tag}</span>
       <div class="ov2-task-main"><div class="ov2-task-name">${esc((f.r.product_name||'').substring(0,46))}</div><div class="ov2-task-reason">${f.reason}</div></div>
@@ -2892,6 +3205,24 @@ function renderOverview() {
       <span class="ov2-reason-v">-£${v.sum.toFixed(2)}</span>
       <span class="ov2-reason-n">×${v.n}</span>
     </div>`).join(''):'';
+  // MSC re-submission schedule — when each claim must be re-pushed to Amazon.
+  // Additive card: overdue first, red; approved/reduced records drop off (they move to the case stage).
+  const schedItems = active.filter(r=>{
+    const a=ann(r.reimb_id);
+    return a.review_date && !vaCaseOpen(r) && a.msc_status!=='approved' && a.msc_status!=='reduced';
+  }).sort((x,y)=>ann(x.reimb_id).review_date.localeCompare(ann(y.reimb_id).review_date));
+  const schedOverdue = schedItems.filter(r=>ann(r.reimb_id).review_date<today).length;
+  const schedList = schedItems.slice(0,5).map(r=>{
+    const rd=ann(r.reimb_id).review_date;
+    const dd=Math.round((new Date(rd)-new Date(today))/86400000);
+    const col = dd<0?'var(--red)':dd===0?'var(--amber)':'var(--text3)';
+    const bg = dd<0?'var(--red-dim)':dd===0?'var(--amber-dim)':'var(--bg3)';
+    const lbl = dd<0?Math.abs(dd)+'d overdue':dd===0?'today':fmtDate(rd);
+    return '<div class="ov2-sched-row" onclick="openRecord(\''+esc(r.reimb_id)+'\')">'
+      +'<span class="ov2-sched-date" style="color:'+col+';background:'+bg+'">'+lbl+'</span>'
+      +'<span class="ov2-sched-name">'+esc((r.product_name||'').substring(0,38))+'</span></div>';
+  }).join('');
+
   const lossList = topLosses.length ? topLosses.map((r,i)=>`
     <div class="ov2-loss" onclick="openRecord('${esc(r.reimb_id)}')">
       <span class="ov2-loss-rank">${i+1}</span>
@@ -2928,9 +3259,10 @@ function renderOverview() {
       <div class="ov2-focus">
         <div class="ov2-focus-head">
           <div><span class="ov2-focus-title">Today's focus</span> <span class="ov2-focus-sub">${actionTotal} to do${reviewItems.length?' · '+reviewItems.length+' also in review queue':''}</span></div>
-          <button class="ov2-cta" onclick="event.stopPropagation();nav('actions')">Open action queue →</button>
+          <button class="ov2-cta" onclick="event.stopPropagation();document.getElementById('aq-anchor').scrollIntoView({behavior:'smooth'})">Action queue below ↓</button>
         </div>
-        ${focusRows || '<div class="ov2-allclear">Nothing urgent right now.'+(reviewItems.length?' Work the '+reviewItems.length+'-item review queue when you can.':' You\'re all caught up.')+'</div>'}
+        ${focusRows ? '<div class="ov2-taskgrid">'+focusRows+'</div>' : '<div class="ov2-allclear">Nothing urgent right now.'+(reviewItems.length?' Work the '+reviewItems.length+'-item review queue when you can.':' You\'re all caught up.')+'</div>'}
+        ${focusItems.length>16?'<div class="ov2-focus-note" onclick="document.getElementById(\'aq-anchor\').scrollIntoView({behavior:\'smooth\'})">+ '+(focusItems.length-16)+' more in the action queue below ↓</div>':''}
         ${errCount?`<div class="ov2-focus-note" onclick="nav('errors')">⚠ ${errCount} import error${errCount===1?'':'s'} blocked out of the workflow — fix COG to bring them in →</div>`:''}
       </div>
       <div class="ov2-side">
@@ -2939,6 +3271,11 @@ function renderOverview() {
           <div class="ov2-sstat" onclick="ovPop('oldest')"><div class="ov2-sstat-l">Oldest claim</div><div class="ov2-sstat-v ${oldest!=null&&oldest>=50?'red':''}">${oldest!=null?oldest+'d':'—'}</div><div class="ov2-sstat-s">${oldest!=null&&oldest>=50?'near limit':'of 60d'}</div></div>
           <div class="ov2-sstat" onclick="ovPop('reversals')"><div class="ov2-sstat-l">Reversals</div><div class="ov2-sstat-v ${reversals.length?'red':''}">${reversals.length}</div><div class="ov2-sstat-s">${revSum>0?money(revSum):'clawed back'}</div></div>
         </div>
+        ${schedItems.length?`<div class="ov2-side-losses">
+          <div class="ov2-side-losses-h">MSC re-submission schedule${schedOverdue?' · <span style="color:var(--red)">'+schedOverdue+' overdue</span>':''}</div>
+          ${schedList}
+          ${schedItems.length>5?'<div class="ov2-sched-row" onclick="document.getElementById(\'aq-anchor\').scrollIntoView({behavior:\'smooth\'})" style="color:var(--text3);justify-content:center">+ '+(schedItems.length-5)+' more — action queue below ↓</div>':''}
+        </div>`:''}
         <div class="ov2-side-losses">
           <div class="ov2-side-losses-h">Biggest active losses</div>
           ${lossList}
@@ -2976,6 +3313,7 @@ function renderActions() {
   // Buckets
   const fixCog        = [];  // COG missing on an active record
   const openCaseNow   = [];  // MSC approved/reduced, no case yet → reimbursement ASAP
+  const verifyReimb   = [];  // new reimb ID on record → verify funds, mark reimbursed
   const reviewOverdue = [];  // MSC re-submission date passed
   const reviewToday   = [];  // MSC re-submission due today
   const deadlineCrit  = [];  // <=7d to claim window, still a loss
@@ -2983,12 +3321,18 @@ function renderActions() {
   const checkMsc      = [];  // loss, no MSC checked yet
   const uploadDocs    = [];  // MSC needs docs
   const waitingAmazon = [];  // monitor only
+  const VERIFY_D = settings.reimb_verify_days||3;
 
   active.forEach(r => {
     const a = ann(r.reimb_id);
     const d = daysLeft60(r.date);
     const net = computedNet(r);
     if (!r.actual_cost || Number(r.actual_cost)<=0) { fixCog.push(r); return; }
+    // a new reimb ID means Amazon paid — verifying that money comes before anything else on this record
+    if (String(a.new_reimb_id||'').trim() || a.workflow_status==='reimb_pending') {
+      const since = a.reimb_date ? Math.round((todayMs - new Date(a.reimb_date).getTime())/86400000) : (a.status_changed_at ? Math.round((todayMs - new Date(a.status_changed_at).getTime())/86400000) : 0);
+      verifyReimb.push({...r, sinceDays: Math.max(0, since)}); return;
+    }
     if ((a.msc_status==='approved'||a.msc_status==='reduced') && !vaCaseOpen(r)) { openCaseNow.push(r); return; }
     if (a.review_date && a.review_date < today) { reviewOverdue.push(r); return; }
     if (a.review_date && a.review_date === today) { reviewToday.push(r); return; }
@@ -3004,11 +3348,22 @@ function renderActions() {
     if (a.msc_status==='review' || a.msc_status==='pending') { waitingAmazon.push(r); return; }
     if (net < -0.01 && (!a.msc_status || a.msc_status==='none')) { checkMsc.push(r); return; }
   });
-  caseFollowUp.sort((a,b)=>b.sinceDays-a.sinceDays);
+  // ── Priority inside every bucket: most overdue / closest deadline first,
+  //    then the biggest loss. No more 47-days-listed-above-27-days. ──
+  const lossOf = r => computedNet(r); // negative = loss, ascending = biggest loss first
+  caseFollowUp.sort((a,b)=>b.sinceDays-a.sinceDays || lossOf(a)-lossOf(b));
+  verifyReimb.sort((a,b)=>b.sinceDays-a.sinceDays || lossOf(a)-lossOf(b));
+  reviewOverdue.sort((a,b)=>(ann(a.reimb_id).review_date||'').localeCompare(ann(b.reimb_id).review_date||'') || lossOf(a)-lossOf(b));
+  reviewToday.sort((a,b)=>lossOf(a)-lossOf(b));
+  deadlineCrit.sort((a,b)=>a.daysLeft-b.daysLeft || lossOf(a)-lossOf(b));
+  openCaseNow.sort((a,b)=>lossOf(a)-lossOf(b));
+  uploadDocs.sort((a,b)=>lossOf(a)-lossOf(b));
+  fixCog.sort((a,b)=>daysLeft60(a.date)-daysLeft60(b.date));
+  checkMsc.sort((a,b)=>daysLeft60(a.date)-daysLeft60(b.date) || lossOf(a)-lossOf(b));
 
   // Action count = the visible action queue only. Review Queue / Import Errors
   // are separate queues with their own counters and buttons.
-  const total = fixCog.length + openCaseNow.length + reviewOverdue.length +
+  const total = fixCog.length + openCaseNow.length + verifyReimb.length + reviewOverdue.length +
                 reviewToday.length + deadlineCrit.length + caseFollowUp.length +
                 checkMsc.length + uploadDocs.length;
   document.getElementById('aq-total').textContent = total;
@@ -3087,6 +3442,45 @@ function renderActions() {
 
   const band = (dot, label, sub) => `<div class="aq-band"><span class="aq-band-dot" style="background:${dot}"></span><span class="aq-band-label">${label}</span>${sub?'<span class="aq-band-sub">'+sub+'</span>':''}</div>`;
 
+  const focusFrom = () => {
+    if (fixCog.length) return {r:fixCog[0], tone:'var(--red)', kicker:'Blocked in Active', step:'Fix the missing COG so this can be reviewed/worked.', primary:'Fix COG', primaryClick:"openRecord('"+fixCog[0].reimb_id+"')"};
+    if (verifyReimb.length) return {r:verifyReimb[0], tone:'#22d3ee', kicker:'Money landed?', step:'A new reimbursement ID is on record. Verify the funds in Amazon, then mark it reimbursed.', primary:'Verify & close', primaryClick:"promptReimbursed('"+verifyReimb[0].reimb_id+"')"};
+    if (openCaseNow.length) return {r:openCaseNow[0], tone:'#38bdf8', kicker:'Amazon replied', step:'MSC is approved/reduced. Open the case and claim the remaining money.', primary:'Open case', primaryClick:"openCaseGenModal('"+openCaseNow[0].reimb_id+"')"};
+    if (reviewOverdue.length) return {r:reviewOverdue[0], tone:'var(--red)', kicker:'Overdue re-submit', step:'Re-submit MSC now. It was due '+fmtDate(ann(reviewOverdue[0].reimb_id).review_date)+'.', primary:'Re-submit', primaryClick:"addMscAtt('"+reviewOverdue[0].reimb_id+"')"};
+    if (deadlineCrit.length) return {r:deadlineCrit[0], tone:'var(--red)', kicker:'Deadline risk', step:'Claim window is closing. Work this before it expires.', primary:'Work claim', primaryClick:"openRecord('"+deadlineCrit[0].reimb_id+"')"};
+    if (caseFollowUp.length) return {r:caseFollowUp[0], tone:'var(--red)', kicker:'Amazon follow-up', step:'Case has been open '+caseFollowUp[0].sinceDays+' days with no reply. Chase it.', primary:'Follow up', primaryClick:"openRecord('"+caseFollowUp[0].reimb_id+"')"};
+    if (uploadDocs.length) return {r:uploadDocs[0], tone:'#38bdf8', kicker:'Needs evidence', step:'Amazon needs an invoice/document before the claim can move.', primary:'Add docs', primaryClick:"openRecord('"+uploadDocs[0].reimb_id+"')"};
+    if (reviewToday.length) return {r:reviewToday[0], tone:'var(--amber)', kicker:'Due today', step:'MSC re-submission is due today. Clear it before tomorrow.', primary:'Re-submit', primaryClick:"addMscAtt('"+reviewToday[0].reimb_id+"')"};
+    if (checkMsc.length) return {r:checkMsc[0], tone:'#7dd3fc', kicker:'Next active task', step:'Not time-critical yet, but it is a real shortfall in Active. Open MSC, submit at full SKU COG, then log the result.', primary:'Check MSC', primaryClick:"openRecord('"+checkMsc[0].reimb_id+"')"};
+    if (reviewItems.length) return {r:reviewItems[0], tone:'#c084fc', kicker:'Review Queue waiting', step:'Imported rows need a decision: move real shortfalls to Active, file profitable/even rows to History.', primary:'Open Review', primaryClick:"nav('triage')"};
+    if (errItems.length) return {r:errItems[0], tone:'var(--red)', kicker:'Import errors', step:'Rows with no readable COG are blocked until the COG is added.', primary:'Fix Errors', primaryClick:"nav('errors')"};
+    return null;
+  };
+  const focusPanel = () => {
+    const f = focusFrom();
+    if (!f) return '<div class="aq-focus" style="--_focus:#20c997"><div><div class="aq-focus-k">All clear</div><div class="aq-focus-title">Nothing time-sensitive right now</div><div class="aq-focus-sub">Action Centre is quiet. Sarah can move into Active and carry on with normal case work.</div><div class="aq-focus-chips"><span class="aq-focus-chip green">Morning check complete</span><span class="aq-focus-chip">Active is the main workspace</span></div></div><div class="aq-focus-actions"><button class="aq-focus-btn primary" onclick="nav(\'active\')">Open Active</button></div></div>';
+    const r = f.r, net = computedNet(r), dl = r.date ? daysLeft60(r.date) : null, cleanReimb = displayReimbId(r.reimb_id_real||r.reimb_id);
+    return `<div class="aq-focus" style="--_focus:${f.tone}">
+      <div>
+        <div class="aq-focus-k">${esc(f.kicker)}</div>
+        <div class="aq-focus-title">${esc(r.product_name||'Untitled reimbursement')}</div>
+        <div class="aq-focus-sub">${esc(f.step)}</div>
+        <div class="aq-focus-chips">
+          ${r.sku?'<span class="aq-focus-chip">'+esc(r.sku)+'</span>':''}
+          ${cleanReimb?'<span class="aq-focus-chip">Reimb '+esc(cleanReimb)+'</span>':''}
+          ${dl!=null?'<span class="aq-focus-chip '+(dl<=RISK_D?'red':'green')+'">'+(dl<=0?'expired':dl+'d left')+'</span>':''}
+          <span class="aq-focus-chip ${net<0?'red':'green'}">${net<0?'-£'+Math.abs(net).toFixed(2):'+£'+net.toFixed(2)}</span>
+        </div>
+      </div>
+      <div class="aq-focus-actions">
+        <button class="aq-focus-btn primary" onclick="event.stopPropagation();${f.primaryClick}">${esc(f.primary)}</button>
+        <button class="aq-focus-btn" onclick="event.stopPropagation();openRecord('${esc(r.reimb_id)}')">Details</button>
+        <button class="aq-focus-btn" onclick="event.stopPropagation();nav('active')">Active</button>
+      </div>
+    </div>`;
+  };
+  const queueCard = (n, title, sub, color, click) => `<div class="aq-qcard" onclick="${click}"><div class="aq-qn" style="color:${color}">${n}</div><div><div class="aq-qt">${title}</div><div class="aq-qs">${sub}</div></div><button class="aq-qgo">Open</button></div>`;
+
   let html = '';
   const urgentCount = errItems.length+fixCog.length+openCaseNow.length+reviewOverdue.length+reviewToday.length+deadlineCrit.length+caseFollowUp.length;
   const keepCount = checkMsc.length+uploadDocs.length;
@@ -3096,7 +3490,7 @@ function renderActions() {
 
   // ── Summary strip ──
   const overdueCount = reviewOverdue.length+deadlineCrit.length+caseFollowUp.length+fixCog.length;
-  const moveCount = openCaseNow.length+uploadDocs.length;
+  const moveCount = openCaseNow.length+verifyReimb.length+uploadDocs.length;
   const dueCount = reviewToday.length;
   const genCount = checkMsc.length+waitingAmazon.length;
   html += `<div class="aq-summary">
@@ -3110,6 +3504,16 @@ function renderActions() {
       <span class="aqs-leg"><i style="background:var(--text3)"></i>Monitor <b>${waitingAmazon.length}</b></span>
     </div>
   </div>`;
+
+  html += `<div class="aq-worktop">
+    ${focusPanel()}
+    <div class="aq-queuecards">
+      ${queueCard(reviewItems.length,'Review Queue','Decide Active vs no action','#c084fc',"nav('triage')")}
+      ${queueCard(errItems.length,'Import Errors','Missing COG rows are blocked','var(--red)',"nav('errors')")}
+      ${queueCard(active.length,'Active work','Sarah works live cases here','#20c997',"nav('active')")}
+    </div>
+  </div>
+  <div class="aq-centre-note"><span><b>Process:</b> check Action Centre first, then work Active. Review/import queues are shown here as notices, not mixed into urgent work.</span><span>${total ? total+' live action'+(total===1?'':'s') : 'No urgent actions'}</span></div>`;
 
   let main = '', side = '';
 
@@ -3128,6 +3532,8 @@ function renderActions() {
 
   // TIER 2 — AMAZON REPLIED, YOUR MOVE
   if (moveCount) main += band('#38bdf8','Amazon replied — your move', 'Amazon came back with a result. Take the next step.');
+  main += section('blue','eye','Reimbursement issued — verify the money landed', verifyReimb,
+    r=>row(r,{sub:(r.sinceDays>=VERIFY_D?('New reimb ID on record '+r.sinceDays+'d — verify in Amazon NOW, then mark reimbursed'):'New reimb ID on record — check the funds arrived, then mark reimbursed'), cta:'Verify', ctaIcon:'eye', accent:'#22d3ee', snooze:true, click:"promptReimbursed('"+r.reimb_id+"')"}));
   main += section('blue','send','MSC approved — open the case now', openCaseNow,
     r=>row(r,{sub:'MSC approved — open the Seller Support case to claim the rest', cta:'Open case', ctaIcon:'send', accent:'#38bdf8', snooze:true, click:"openCaseGenModal('"+r.reimb_id+"')"}));
   main += section('blue','file','Blocked — upload the invoice/document', uploadDocs,
@@ -3143,19 +3549,15 @@ function renderActions() {
   if (!hasMain) {
     main = snoozedList.length
       ? '<div class="aq-empty"><div style="font-size:12px;font-weight:600;color:var(--text2)">All caught up for today</div><div style="font-size:12px;margin-top:8px">Everything urgent is cleared for today. <span class="aq-sh-link" onclick="unsnoozeAll()">Show '+snoozedList.length+' cleared</span></div></div>'
-      : '<div class="aq-empty" style="padding:14px 16px"><div style="font-size:12px;font-weight:600;color:var(--text2)">No urgent actions right now</div><div style="font-size:11.5px;margin-top:5px">Nothing time-critical'+(checkMsc.length?' — so here\'s the general queue while it\'s quiet.':'. Check back tomorrow.')+'</div></div>';
-    if (reviewItems.length || errItems.length) {
-      main += '<div class="aq-nextwork">'+
-        (reviewItems.length?'<div class="aq-nextcard" onclick="nav(\'triage\')"><div><div class="aq-next-n" style="color:#c084fc">'+reviewItems.length+'</div><div class="aq-next-t">Review Queue</div><div class="aq-next-s">Decide Active vs no action</div></div><button class="btn-sec">Open →</button></div>':'')+
-        (errItems.length?'<div class="aq-nextcard" onclick="nav(\'errors\')"><div><div class="aq-next-n" style="color:var(--red)">'+errItems.length+'</div><div class="aq-next-t">Import Errors</div><div class="aq-next-s">Add missing COG before review</div></div><button class="btn btn-red">Fix →</button></div>':'')+
-      '</div>';
-    }
+      : '';
     // Quiet day → promote the general queue into the main column instead of a void
     if (checkMsc.length) {
       genInMain=true;
-      main += band('var(--text3)','General — when you have time', 'Not time-critical, but each one is money to recover.');
-      main += section('grey','search','Check MSC — not yet submitted', checkMsc,
+      if (checkMsc.length > 1) {
+      main += band('#7dd3fc','More Active tasks — ready when you are', 'These are not deadline-critical yet, but they are real shortfalls.');
+      main += section('grey','search','More MSC checks — not yet submitted', checkMsc.slice(1),
         r=>row(r,{sub:'Open MSC, submit at full COG, then log it', cta:'Check', ctaIcon:'search', accent:'var(--text3)', snooze:true}));
+      }
     }
   }
 
@@ -3172,10 +3574,12 @@ function renderActions() {
       '<div class="aq-errcard-sub">Rows with no readable COG are blocked — enter the COG to bring them in.</div></div>'+
       '<button class="btn btn-red aq-errbtn" onclick="event.stopPropagation();nav(\'errors\')">Fix Errors →</button></div></div>';
   }
+  // Check-MSC backlog is often the BIGGEST list — it belongs in the full-width
+  // main column, never squeezed into the 366px side rail (that was the dead-space mess).
   if (checkMsc.length && !genInMain) {
-    side += band('var(--text3)','General — when you have time', 'Not time-critical, but worth clearing.');
-    side += section('grey','search','Check MSC — not yet submitted', checkMsc,
-      r=>row(r,{sub:'Open MSC, submit at full COG, then log it', cta:'Check', ctaIcon:'search', accent:'var(--text3)', snooze:true}));
+    main += band('#7dd3fc','Active tasks — ready when you are', 'Not deadline-critical yet, but worth clearing. Closest deadline first.');
+    main += section('blue','search','Check MSC — not yet submitted', checkMsc,
+      r=>row(r,{sub:'Open MSC, submit £'+claimCog(r).toFixed(2)+' (full COG), then log it', cta:'Check', ctaIcon:'search', accent:'#7dd3fc', snooze:true}));
   }
   if (waitingAmazon.length) {
     side += band('var(--text3)','Monitor — waiting on Amazon', `Auto-promotes after ${FLAG_D} days of silence.`);
@@ -3188,10 +3592,12 @@ function renderActions() {
     html += snoozedList.length
       ? '<div class="aq-empty"><div style="font-size:12px;font-weight:600;color:var(--text2)">All caught up for today</div><div style="font-size:12px;margin-top:8px">Everything left is cleared for today. <span class="aq-sh-link" onclick="unsnoozeAll()">Show '+snoozedList.length+' cleared</span></div></div>'
       : '<div class="aq-empty"><div style="font-size:12px;font-weight:600;color:var(--text2)">Action queue clear</div><div style="font-size:12px;margin-top:8px">Nothing needs doing right now. Import a new month, or check back tomorrow.</div></div>';
-  } else {
+  } else if (side) {
     html += '<div class="aq-cols"><div class="aq-main">'+main+'</div>'+
-      '<aside class="aq-side"><div class="aq-side-h">Queues &amp; monitoring</div>'+
-      (side || '<div class="aq-side-empty">Queues clear — nothing waiting.</div>')+'</aside></div>';
+      '<aside class="aq-side"><div class="aq-side-h">Queues &amp; monitoring</div>'+side+'</aside></div>';
+  } else {
+    // nothing to monitor → no side rail, main takes the full width
+    html += '<div class="aq-cols" style="grid-template-columns:1fr"><div class="aq-main">'+main+'</div></div>';
   }
   if (snoozedList.length && anything) {
     html += '<div class="aq-snoozed-bar">'+snoozedList.length+' cleared for today — <span class="aq-sh-link" onclick="unsnoozeAll()">show / undo all</span></div>';
@@ -3840,11 +4246,12 @@ function renderActive() {
     approved: r=>mscOf(r)==='approved' && !caseOpenOf(r),
     reduced: r=>mscOf(r)==='reduced',
     denied: r=>mscOf(r)==='denied',
-    caseopen: r=>caseOpenOf(r),
-    reimbpending: r=>wfOf(r)==='reimb_pending',
+    // A record with a new reimb ID has been PAID — it lives in Reimb Pending, not Case / Claim.
+    caseopen: r=>caseOpenOf(r) && wfOf(r)!=='reimb_pending' && !String(ann(r.reimb_id).new_reimb_id||'').trim(),
+    reimbpending: r=>wfOf(r)==='reimb_pending' || !!String(ann(r.reimb_id).new_reimb_id||'').trim(),
     escalated: r=>wfOf(r)==='escalated',
   };
-  const AR_TAGS = [['all','All'],['overdue','Overdue re-updates'],['submitted','MSC submitted'],['review','MSC under review'],['docs','Needs document'],['approved','MSC approved'],['reduced','Reduced MSC approved'],['denied','MSC denied'],['caseopen','Case opened'],['reimbpending','Reimbursement pending'],['escalated','Escalated to Jack']];
+  const AR_TAGS = [['all','All'],['overdue','Overdue re-updates'],['submitted','MSC submitted'],['review','MSC under review'],['docs','Needs document'],['approved','MSC approved'],['reduced','Reduced MSC approved'],['denied','MSC denied'],['caseopen','Case / Claim'],['reimbpending','Reimbursement pending'],['escalated','Escalated to Jack']];
   const tagEl = document.getElementById('active-tags');
   if (tagEl) {
     tagEl.innerHTML = AR_TAGS.map(([k,label])=>{
@@ -3930,14 +4337,16 @@ function buildActiveCard(r){
   const asinChip=(val)=> val?'<span class="id-chip id-chip-link"><span class="id-lbl">ASIN</span><button type="button" class="id-copy-in" onclick="event.stopPropagation();copyText(\''+esc(val)+'\',\'ASIN\',event)" title="Copy ASIN">'+esc(val)+'</button><a href="'+asinUrl(val)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="id-open-in" title="Open on Amazon ↗">↗</a></span>':'';
   const reimbChip=(val)=> val?'<span class="id-chip id-chip-link"><span class="id-lbl">REIMB</span><button type="button" class="id-copy-in" onclick="event.stopPropagation();copyText(\''+esc(val)+'\',\'Reimbursement ID\',event)" title="Copy reimbursement ID">'+esc(val)+'</button><a href="'+reimbUrl(val)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="id-open-in" title="Open reimbursement report ↗">↗</a></span>':'';
 
-  // progress segments
+  // progress segments — a new reimb ID means Amazon paid: the claim is past "Case / Claim"
+  const isPend = !isReimb && (String(a.new_reimb_id||'').trim()!=='' || a.workflow_status==='reimb_pending');
   let reached=0;
   if(atts.length>0||mscS!=='none') reached=1;
   if(['approved','reduced','denied','error','review','pending'].includes(mscS)) reached=2;
   if(hasCase) reached=3;
-  if(isReimb) reached=4;
+  if(isPend) reached=4;
+  if(isReimb) reached=5;
   const denied=(mscS==='denied'||mscS==='error');
-  const steps=['Needs MSC','MSC submitted','Result','Case open','Reimbursed'];
+  const steps=['Needs MSC','MSC submitted','Result','Case / Claim','Reimb pending','Reimbursed'];
   const segs=steps.map((s,i)=>{
     let cls=i<reached?'done':(i===reached?'current':'');
     if(i===2&&denied&&reached>=2) cls='err';
@@ -3980,6 +4389,7 @@ function buildActiveCard(r){
   let eyebrow,ebCol,metric='',metricCol='var(--text2)',note='',cta='',ctaAct='',ctaCol='var(--accent)';
   if(cogMissing){ eyebrow='Blocked'; ebCol='var(--red)'; note='No COG on this row — pull it from the SKU, then submit at full cost.'; cta='MSC Portal ↗'; ctaAct="window.open(MSC_PORTAL_URL,'_blank')"; ctaCol='var(--red)'; }
   else if(isReimb){ eyebrow='Reimbursed'; ebCol='var(--green)'; note='Paid back — mark it complete to file in History.'; cta='✓ Mark reimbursed'; ctaAct="archiveRecord('"+idJs+"','reimbursed')"; ctaCol='var(--green)'; }
+  else if(isPend){ const _pd=a.reimb_date||null; eyebrow='Reimb pending'; ebCol='#22d3ee'; if(_pd){ metric='paid '+fmtDate(_pd); metricCol='#22d3ee'; } note='Amazon issued a new reimbursement — verify the funds landed, then mark it reimbursed.'; cta=(a.new_reimb_id?'View reimb ↗':'✓ Mark reimbursed'); ctaAct=(a.new_reimb_id?"window.open('"+reimbUrl(a.new_reimb_id)+"','_blank')":"promptReimbursed('"+idJs+"')"); ctaCol='#22d3ee'; }
   else if(hasCase){ const opened=a.case_opened_date||(atts.length?atts[atts.length-1].date:null); const dO=opened?Math.round((Date.now()-new Date(opened).getTime())/86400000):null; const sla=settings.amazon_response_days||5; eyebrow='Case open'; ebCol='#c084fc'; if(dO!=null){ metric=dO+'d waiting'; metricCol=(dO>=sla)?'var(--amber)':'#c084fc'; } note=(dO!=null&&dO>=sla)?('Past Amazon\u2019s ~'+sla+'-day reply window — chase the case.'):'Waiting on Amazon. Log the reimb ID when it pays.'; cta='Open case ↗'; ctaAct=(a.new_case_id?"window.open('"+caseUrl(a.new_case_id)+"','_blank')":"openCaseGenModal('"+idJs+"')"); ctaCol='#c084fc'; }
   else if(mscS==='reduced'){ const recPct=clCog>0?Math.round((Number(a.msc_amount||r.reimb_amount||0)/clCog)*100):0; eyebrow='Reduced offer'; ebCol='var(--amber)'; metric=recPct+'% of COG offered'; metricCol='var(--amber)'; note='Amazon came back low — open a case to claim the rest'+(suggestNext!=null?', or resubmit at ~£'+suggestNext.toFixed(2)+'.':'.'); cta='Build case message'; ctaAct="openCaseGenModal('"+idJs+"')"; ctaCol='var(--amber)'; }
   else if(mscS==='approved'){ eyebrow='MSC approved'; ebCol='var(--green)'; note='Approved at full COG — open a re-evaluation case to claim it.'; cta='Build case message'; ctaAct="openCaseGenModal('"+idJs+"')"; ctaCol='var(--green)'; }
@@ -3991,7 +4401,8 @@ function buildActiveCard(r){
   // one-tap actions per state — arQuick logs the attempt & sets the next review/resubmit date
   let quickBtns=[];
   if(!cogMissing && !isReimb){
-    if(hasCase){ quickBtns=[['✓ Reimbursed','reimbursed','g']]; }
+    if(isPend){ quickBtns=[['✓ Reimbursed','reimbursed','g']]; }
+    else if(hasCase){ quickBtns=[['✓ Reimbursed','reimbursed','g']]; }
     else if(mscS==='approved'||mscS==='reduced'){ quickBtns=[['Case opened','caseopen','p']]; if(suggestNext!=null) quickBtns.push(['Resubmit £'+suggestNext.toFixed(2),'resubmit','a']); }
     else if(denied){ quickBtns=[['Resubmit'+(suggestNext!=null?' £'+suggestNext.toFixed(2):''),'resubmit','a']]; }
     else if(mscS==='docs'){ quickBtns=[['Resubmit','resubmit','a'],['✓ Approved','approved','g']]; }
@@ -4058,44 +4469,82 @@ function buildActiveCard(r){
   }
   const moneyTiles =
     '<div class="ar-workgrid">'+
-      '<div class="ar-tile-panel"><div class="ar-tile-head">Money</div><div class="ar-money-grid">'+
+      '<div class="ar-tile-panel"><div class="ar-tile-head">Shortfall maths</div><div class="ar-money-grid">'+
         '<div class="ar-info-tile"><div class="ar-info-label">COG from SKU</div><div class="ar-info-value" style="color:var(--green)">£'+cog.toFixed(2)+'</div><div class="ar-info-sub">'+(cogAutoFromSku?'auto parsed':'editable')+'</div></div>'+
         '<div class="ar-info-tile"><div class="ar-info-label">Amazon paid</div><div class="ar-info-value">£'+Number(r.reimb_amount||0).toFixed(2)+'</div><div class="ar-info-sub">'+fmtDate(r.date)+'</div></div>'+
-        '<div class="ar-info-tile"><div class="ar-info-label">Shortfall</div><div class="ar-info-value" style="color:'+(net<-0.005?'var(--red)':'var(--green)')+'">'+(net<-0.005?'−£'+Math.abs(net).toFixed(2):'✓ covered')+'</div><div class="ar-info-sub">'+(net<-0.005?'work this':'no chase needed')+'</div></div>'+
+        '<div class="ar-info-tile"><div class="ar-info-label">Gap to recover</div><div class="ar-info-value" style="color:'+(net<-0.005?'var(--red)':'var(--green)')+'">'+(net<-0.005?'−£'+Math.abs(net).toFixed(2):'✓ covered')+'</div><div class="ar-info-sub">'+(net<-0.005?'this is the chase amount':'no chase needed')+'</div></div>'+
       '</div>'+
       '<div class="ar-track-grid" style="margin-top:7px">'+
         '<div class="ar-info-tile"><div class="ar-info-label">Invoice</div><div class="ar-info-value">'+invCell+'</div><div class="ar-info-sub">'+(mscS==='docs'?'needed by Amazon':'optional evidence')+'</div></div>'+
-        '<div class="ar-info-tile"><div class="ar-info-label">Submit amount</div><div class="ar-info-value">£'+clCog.toFixed(2)+'</div><div class="ar-info-sub">full COG claim</div></div>'+
-        '<div class="ar-info-tile wide"><div class="ar-info-label">Why this is '+(net<-0.005?'a shortfall':'covered')+'</div><div class="ar-info-value formula">'+reviewFormula(r)+'</div><div class="ar-info-sub">uses SKU COG, Amazon paid, and linked adjustments</div></div>'+
+        '<div class="ar-info-tile"><div class="ar-info-label">Submit to MSC</div><div class="ar-info-value">£'+clCog.toFixed(2)+'</div><div class="ar-info-sub">full SKU COG claim</div></div>'+
+        (()=>{ // case maths at a glance — same MSC-over-COG rule as the Case Generator
+          const _mscAmt = Number(a.msc_amount||0);
+          const _target = _mscAmt>0 ? _mscAmt : clCog;
+          const _sfCase = Math.max(0, _target-(r.reimb_amount||0));
+          const _pct = clCog>0 ? Math.round(((r.reimb_amount||0)+_sfCase)/clCog*100) : 0;
+          return '<div class="ar-info-tile"><div class="ar-info-label">Case will claim</div><div class="ar-info-value" style="color:var(--amber)">£'+_target.toFixed(2)+'</div><div class="ar-info-sub">using '+(_mscAmt>0?'MSC Amount':'COG')+' · ask +£'+_sfCase.toFixed(2)+'</div></div>'
+            + '<div class="ar-info-tile"><div class="ar-info-label">Recovery if case wins</div><div class="ar-info-value" style="color:'+(_pct>=100?'var(--green)':'var(--amber)')+'">'+_pct+'% of COG</div><div class="ar-info-sub">£'+((r.reimb_amount||0)+_sfCase).toFixed(2)+' of £'+clCog.toFixed(2)+'</div></div>';
+        })()+
+        '<div class="ar-info-tile wide"><div class="ar-info-label">Proof used by app</div><div class="ar-info-value formula">'+reviewFormula(r)+'</div><div class="ar-info-sub">SKU COG minus Amazon paid; includes linked adjustments if found</div></div>'+
       '</div></div>'+
-      '<div class="ar-tile-panel"><div class="ar-tile-head">Claim tracking</div><div class="ar-track-grid">'+
+      '<div class="ar-tile-panel"><div class="ar-tile-head">Claim tracking / what to fill in</div><div class="ar-track-grid">'+
         '<div class="ar-info-tile"><div class="ar-info-label">Next MSC update</div><div class="ar-info-value">'+nextUpd+'</div><div class="ar-info-sub">'+(a.review_date?'scheduled':'not set')+'</div></div>'+
+        '<div class="ar-info-tile"><div class="ar-info-label">Last MSC result</div><div class="ar-info-value" style="color:'+(lastAtt?dotCol(lastAtt.status):'var(--text3)')+'">'+(lastAtt?cap(lastAtt.status):'—')+'</div><div class="ar-info-sub">'+(lastAtt?('#'+atts.length+' · £'+Number(lastAtt.cog||0).toFixed(2)+' · '+fmtDate(lastAtt.date)):'nothing logged yet')+'</div></div>'+
+        '<div class="ar-info-tile"><div class="ar-info-label">Next try / suggestion</div><div class="ar-info-value" style="color:'+(suggestNext!=null?'var(--amber)':'var(--text3)')+'">'+(suggestNext!=null?'£'+suggestNext.toFixed(2):(atts.length===0?'£'+clCog.toFixed(2):'—'))+'</div><div class="ar-info-sub">'+(suggestNext!=null?(redPct+'% below attempt #'+atts.length):(atts.length===0?'first submit — full COG':'no resubmit due'))+'</div></div>'+
+        '<div class="ar-info-tile"><div class="ar-info-label">Case opened</div><div class="ar-info-value">'+(a.case_opened_date?fmtDate(a.case_opened_date):'—')+'</div><div class="ar-info-sub">'+(a.case_opened_date?(Math.round((Date.now()-new Date(a.case_opened_date).getTime())/86400000)+'d waiting on Amazon'):'no case yet')+'</div></div>'+
         '<div class="ar-info-tile"><div class="ar-info-label">Old reimb ID</div><div class="ar-info-value">'+linkId(reimbDisplay,'reimb')+'</div><div class="ar-info-sub">original payment</div></div>'+
+        '<div class="ar-info-tile"><div class="ar-info-label">New payout date</div><div class="ar-info-value" style="color:'+(a.reimb_date?'var(--green)':'var(--text3)')+'">'+(a.reimb_date?fmtDate(a.reimb_date):'—')+'</div><div class="ar-info-sub">'+(a.reimb_date?'money received':'not paid yet')+'</div></div>'+
         '<div class="ar-info-tile"><div class="ar-info-label">New case ID '+caseOpenLink+'</div><input class="ar-info-input" value="'+esc(a.new_case_id||'')+'" placeholder="paste case ID" onclick="event.stopPropagation()" onchange="arSet(\''+idJs+'\',\'new_case_id\',this.value,\'ann\')"><div class="ar-info-sub">re-eval case</div></div>'+
         '<div class="ar-info-tile"><div class="ar-info-label">New reimb ID '+reimbViewLink+'</div><input class="ar-info-input" value="'+esc(a.new_reimb_id||'')+'" placeholder="paste when paid" onclick="event.stopPropagation()" onchange="arSet(\''+idJs+'\',\'new_reimb_id\',this.value,\'ann\')"><div class="ar-info-sub">final payout</div></div>'+
       '</div></div>'+
     '</div>';
+  // ── cases & appeals ladder — a claim can have several case IDs / appeals ──
+  const catts = a.case_attempts||[];
+  let caseLog='';
+  if (catts.length || hasCase) {
+    const caseRungs = catts.map((t,i)=>{
+      const oc = t.outcome||'open';
+      const ocLbl = oc==='won'?'✓ won / paid':oc==='denied'?'✕ denied':oc==='closed'?'— closed':oc==='docs'?'📄 docs needed':'⋯ open';
+      const ocCls = oc==='won'?'approved':oc==='denied'?'denied':oc==='docs'?'docs':'pending';
+      return '<div class="att-rung att-'+ocCls+'">'
+        +'<span class="att-n">'+(t.type==='appeal'?'APL':t.type==='followup'?'F/U':'#'+(i+1))+'</span>'
+        +(t.case_id?'<a class="att-amt" style="text-decoration:underline" href="'+caseUrl(t.case_id)+'" target="_blank" onclick="event.stopPropagation()" title="Open case in Seller Central">'+esc(t.case_id)+' ↗</a>':'<span class="att-amt">no ID</span>')
+        +'<span class="att-arrow">→</span>'
+        +'<span class="att-out">'+ocLbl+(t.notes?' · '+esc(t.notes).substring(0,40):'')+'</span>'
+        +'<span class="att-date">'+fmtDate(t.date)+'</span>'
+      +'</div>';
+    }).join('');
+    const legacy = (!catts.length && a.new_case_id)
+      ? '<div class="att-rung att-pending"><span class="att-n">#1</span><a class="att-amt" style="text-decoration:underline" href="'+caseUrl(a.new_case_id)+'" target="_blank" onclick="event.stopPropagation()">'+esc(a.new_case_id)+' ↗</a><span class="att-arrow">→</span><span class="att-out">⋯ open'+(a.case_opened_date?' since '+fmtDate(a.case_opened_date):'')+'</span></div>'
+      : '';
+    caseLog='<div class="ar-sec-h" style="margin-top:7px">Cases &amp; appeals <span class="ar-sec-n">'+(catts.length||(a.new_case_id?1:0))+'</span><button class="att-go" style="margin-left:8px" onclick="event.stopPropagation();openAddCase(\''+idJs+'\')">+ Log case / appeal</button></div>'
+      +'<div class="ar-ladder">'+caseRungs+legacy+'</div>';
+  }
   const details=moneyTiles+'<div class="ar-details">'+
     '<div class="ar-dcol ar-dcol-full ar-ladder-band">'+
       (atts.length?'<div class="ar-sec-h">MSC log <span class="ar-sec-n">'+atts.length+' attempt'+(atts.length===1?'':'s')+'</span></div>':'')+
       attLog+
+      caseLog+
     '</div>'+
     relatedBand(r)+
   '</div>';
 
-  // footer
+  // footer — VA workflow order: message → case → MSC → details → review → reimbursed → notes
   const foot='<div class="ar-footer"><div class="ar-foot">'+
+    '<button class="btn btn-primary ar-btn" onclick="event.stopPropagation();openCaseGenModal(\''+idJs+'\')">Case message</button>'+
+    '<button class="btn btn-sec ar-btn" onclick="event.stopPropagation();openAddCase(\''+idJs+'\')">+ Case</button>'+
     '<button class="btn btn-amber ar-btn" onclick="event.stopPropagation();addMscAtt(\''+idJs+'\')">+ MSC</button>'+
-    '<button class="btn btn-sec ar-btn" onclick="event.stopPropagation();openCaseGenModal(\''+idJs+'\')">Case msg</button>'+
     '<button class="btn btn-sec ar-btn" onclick="event.stopPropagation();openRecord(\''+idJs+'\')">Details</button>'+
+    '<button class="ar-review-btn" onclick="event.stopPropagation();sendBackToReview(\''+idJs+'\')">← Review queue</button>'+
     '<button class="btn btn-green ar-btn" onclick="event.stopPropagation();promptReimbursed(\''+idJs+'\')">✓ Reimbursed</button>'+
+    '<input class="ar-inp ar-note-inp" type="text" value="'+esc(a.notes||'')+'" placeholder="quick note…" onclick="event.stopPropagation()" onchange="arSet(\''+idJs+'\',\'notes\',this.value,\'ann\')">'+
     '<a class="ar-link" href="'+MSC_PORTAL_URL+'" target="_blank" onclick="event.stopPropagation()">MSC Portal ↗</a>'+
-    '<button class="ar-review-btn" onclick="event.stopPropagation();sendBackToReview(\''+idJs+'\')">← Back to Review</button>'+
+    (a.new_case_id?'<a class="ar-link" href="'+caseUrl(a.new_case_id)+'" target="_blank" onclick="event.stopPropagation()">Case ↗</a>':'')+
   '</div></div>';
 
-  const curStat = isReimb?'reimbursed':(hasCase?'caseopen':(mscS==='none'?'needs':mscS));
+  const curStat = isReimb?'reimbursed':(isPend?'reimbpending':(hasCase?'caseopen':(mscS==='none'?'needs':mscS)));
   const statusSel='<select class="ar-statsel" onclick="event.stopPropagation()" onchange="arStatus(\''+idJs+'\',this.value)">'+
-    [['needs','Needs MSC'],['review','MSC submitted'],['denied','MSC denied'],['approved','MSC approved'],['reduced','MSC reduced'],['docs','Needs doc'],['caseopen','Case open'],['reimbursed','Reimbursed']]
+    [['needs','Needs MSC'],['review','MSC submitted'],['denied','MSC denied'],['approved','MSC approved'],['reduced','MSC reduced'],['docs','Needs doc'],['caseopen','Case / Claim'],['reimbpending','Reimb pending'],['reimbursed','Reimbursed']]
     .map(o=>'<option value="'+o[0]+'"'+(curStat===o[0]?' selected':'')+'>'+o[1]+'</option>').join('')+'</select>';
   const open = arOpen[id]!==false;   // workshop card open by default; bar is the opt-in compact view
   // compact one-line summary bar (collapsed state)
@@ -4138,7 +4587,9 @@ function setActiveSort(col){
 }
 function arStatus(id, val){
   if (val==='reimbursed'){ promptReimbursed(id); return; }
-  if (val==='caseopen'){
+  if (val==='reimbpending'){
+    setAnn(id,{workflow_status:'reimb_pending'});
+  } else if (val==='caseopen'){
     const a=ann(id);
     setAnn(id,{msc_status:'approved', case_status:'open', case_opened_date:a.case_opened_date||new Date().toISOString().split('T')[0]});
   } else {
@@ -4504,10 +4955,11 @@ function renderHistory() {
   if(!months.length){ cont.innerHTML='<div style="text-align:center;padding:40px;color:var(--text3)">Nothing settled here yet. Items land in History once marked Completed, Dead, No action, or Adjustment credit.</div>'; return; }
 
   const sortArrow = c => histSort.col===c ? (histSort.dir==='asc'?' \u25B2':' \u25BC') : '';
-  const colHead = (c,label,cls) => `<div class="hb-h ${cls||''}" onclick="event.stopPropagation();histSortBy('${c}')">${label}${sortArrow(c)}</div>`;
-  const headerRow = `<div class="hb-row hb-header" style="border-left:4px solid transparent">${colHead('product','Product')}<div>Type</div>${colHead('cog','COG','hb-n')}${colHead('orig','First reimb.','hb-n')}${colHead('final','Re-eval reimb.','hb-n')}${colHead('recovered','Gained','hb-n')}${colHead('pct','Gained %','hb-n')}${colHead('vscog','vs COG','hb-n')}${colHead('state','State','hb-st')}</div>`;
+  const colHead = (c,label,cls,tip) => `<div class="hb-h ${cls||''} ${histSort.col===c?'on':''}" title="${esc(tip||'Click to sort')}" onclick="event.stopPropagation();histSortBy('${c}')">${label}${sortArrow(c)}</div>`;
+  const headerRow = `<div class="hb-row hb-header" style="border-left:4px solid transparent">${colHead('product','Item','','Product, date, SKU and reimbursement ID')}<div title="Why this row is here">Why</div>${colHead('cog','COG','hb-n','SKU COG or context-only COG for adjustments')}${colHead('orig','Paid','hb-n','Original SellerFuse reimbursement amount')}${colHead('final','Final','hb-n','Final settled reimbursement in the tracker')}${colHead('recovered','Gain','hb-n','Extra recovered by re-evaluation work only. In no-action rows this sorts by COG result.')}${colHead('pct','Gain %','hb-n','Worked gain as a percentage')}${colHead('vscog','Vs COG','hb-n','Final paid minus COG; context rows stay below real COG rows')}${colHead('state','Outcome','hb-st','Final row state')}</div>`;
 
-  const sortRows = arr => arr.slice().sort((a,b)=>{
+  const sortRows = (arr, opts) => arr.slice().sort((a,b)=>{
+    opts = opts || {};
     const ma=histItemMetrics(a), mb=histItemMetrics(b); let av,bv;
     switch(histSort.col){
       case 'product': av=(a.product_name||'').toLowerCase(); bv=(b.product_name||'').toLowerCase(); break;
@@ -4515,10 +4967,10 @@ function renderHistory() {
       case 'cog': av=ma.displayCost; bv=mb.displayCost; break;
       case 'orig': av=ma.orig; bv=mb.orig; break;
       case 'final': av=ma.finalReimb; bv=mb.finalReimb; break;
-      case 'pct': av=ma.cost>0?ma.recovered/ma.cost:0; bv=mb.cost>0?mb.recovered/mb.cost:0; break;
+      case 'pct': av=opts.cogResult?(ma.cost>0?ma.nowNet/ma.cost:0):(ma.cost>0?ma.recovered/ma.cost:0); bv=opts.cogResult?(mb.cost>0?mb.nowNet/mb.cost:0):(mb.cost>0?mb.recovered/mb.cost:0); break;
       case 'vscog': av=ma.nowNet; bv=mb.nowNet; break;
       case 'state': av=histItemState(a); bv=histItemState(b); break;
-      default: av=ma.recovered; bv=mb.recovered;
+      default: av=opts.cogResult?ma.nowNet:ma.recovered; bv=opts.cogResult?mb.nowNet:mb.recovered;
     }
     if(typeof av==='string') return histSort.dir==='asc'? av.localeCompare(bv): bv.localeCompare(av);
     return histSort.dir==='asc'? av-bv : bv-av;
@@ -4544,10 +4996,17 @@ function renderHistory() {
     if(mt.recovered > 0.005) return 'hbr-amber';    // gained extra but still under COG
     return 'hbr-red';                                // under COG, gained nothing
   };
+  const noActionBucket = r => {
+    const st = histItemState(r);
+    if(st==='notworked') return 0;      // real COG/no-action rows first, including £0.00
+    if(st==='adjustment') return 1;     // context/N-A rows stay below real outcomes
+    if(st==='reversal') return 2;       // clawbacks always last in this section
+    return 0;
+  };
   const sortNoRows = arr => {
-    const nonRev = arr.filter(r=>histItemState(r)!=='reversal');
-    const rev = arr.filter(r=>histItemState(r)==='reversal');
-    return sortRows(nonRev).concat(sortRows(rev));
+    const groups = [[],[],[]];
+    arr.forEach(r=>{ groups[noActionBucket(r)].push(r); });
+    return sortRows(groups[0], {cogResult:true}).concat(sortRows(groups[1]), sortRows(groups[2]));
   };
   const histWhy = (r,st,mt) => {
     if(st==='adjustment') return r.linked_parent_id
@@ -4590,8 +5049,8 @@ function renderHistory() {
       : dash;
     const pctCell = w ? '<span style="color:var(--text2)">'+(mt.recovered>=0?'+':'')+gainPct+'%</span>' : dash;
     const vs = mt.nowNet; // re-eval reimb − cost
-    const vsCell = rev?dash:(st==='adjustment'
-      ? '<span class="hb-credit-txt" title="Credit context only. Check the linked/original claim for the true COG position.">context<small>credit</small></span>'
+    const vsCell = rev?'<span class="hb-na" title="Reversal/clawback is not a COG improvement result.">N/A<small>reversal</small></span>':(st==='adjustment'
+      ? '<span class="hb-na" title="Credit context only. Check the linked/original claim for the true COG position.">N/A<small>context</small></span>'
       : '<span style="color:'+(vs>=-0.005?'var(--green)':'var(--red)')+'">'+(vs>=-0.005?'+£'+vs.toFixed(2):'−£'+Math.abs(vs).toFixed(2))+'</span>');
     const click='onclick="openRecord(\''+r.reimb_id+'\',true)"';
     return '<div class="'+rowCls+'" title="'+esc(tip)+'" '+click+'>'+
@@ -4647,37 +5106,74 @@ function renderHistory() {
       s.cash += st==='reversal' ? mt.orig : (mt.finalReimb-mt.cost);
       return s;
     }, {creditN:0,creditCash:0,creditCog:0,noN:0,noVs:0,noCash:0,revN:0,revCash:0,cash:0});
-    const noTotal = '<div class="hb-section-total"><b>Section total</b>'+
+    const noTotal = '<div class="hb-section-total audit-top"><span class="hb-section-title">Audit totals</span>'+
       '<span class="hb-total-pill">'+noRows.length+' rows</span>'+
       (noStats.creditN?'<span class="hb-total-pill blue">'+noStats.creditN+' credit context · £'+noStats.creditCash.toFixed(2)+' top-up</span>':'')+
       (noStats.noN?'<span class="hb-total-pill green">'+noStats.noN+' no action · '+histMoney(noStats.noVs)+' vs COG</span>':'')+
       (noStats.revN?'<span class="hb-total-pill grey">'+noStats.revN+' reversals · '+histMoney(noStats.revCash)+'</span>':'')+
       '<span class="hb-total-pill '+(noStats.cash<-0.005?'red':'green')+'">cash impact '+histMoney(noStats.cash)+'</span>'+
+      '<span class="hb-total-pill grey" title="Sorting keeps real COG/no-action rows above credit context and reversals.">COG rows pinned first</span>'+
       '</div>';
     const noTotalBottom = '<div class="hb-section-total bottom"><b>Total shown</b>'+
       '<span class="hb-total-pill">'+noRows.length+' rows</span>'+
       '<span class="hb-total-pill '+(noStats.cash<-0.005?'red':'green')+'">'+histMoney(noStats.cash)+' cash impact</span>'+
       '</div>';
-    const noHelp = '<div class="hb-help"><b>Colour key:</b><span class="hb-info" title="This section is not Sarah/VA process performance. It shows imported no-action rows, GeneralAdjustment credit context, and Amazon reversals.">i</span><span class="hb-why even">paid met COG</span><span>break-even / no chase</span><span class="hb-why profit">above COG</span><span>green = OK/profit</span><span class="hb-why adj">credit context</span><span>blue = GeneralAdjustment top-up, not a standalone claim</span><span class="hb-why rev">clawback</span><span>grey = reversal</span></div>';
+    const noHelp = '<div class="hb-help"><b>Audit key:</b><span class="hb-info" title="Sorting in this section keeps actual COG outcomes first. Credit context and reversals are N/A for COG improvement and remain below the real COG rows.">i</span><span class="hb-why even">paid met COG</span><span>£0.00 result, no chase</span><span class="hb-why profit">above COG</span><span>green = real overpayment/OK</span><span class="hb-why adj">credit context</span><span>blue = GeneralAdjustment context only</span><span class="hb-why rev">clawback</span><span>grey = reversal / not COG performance</span></div>';
+    const processValue = '+£'+mRecovery.toFixed(2);
+    const cashCol = mOverall < -0.005 ? 'var(--red)' : (mWorked ? 'var(--green)' : '#7dd3fc');
+    const workLabel = mWorked ? `${mWorked} worked · ${mImproved} improved · ${mReached} COG+` : 'No re-evaluation work settled';
+    const auditLead = [
+      noStats.noN ? `${noStats.noN} no action` : '',
+      noStats.creditN ? `${noStats.creditN} credit context` : '',
+      noStats.revN ? `${noStats.revN} reversals` : ''
+    ].filter(Boolean).join(' · ');
+    const workedBlock = workedRows.length
+      ? `<div class="hb-sublabel">Cases we worked (${workedRows.length})</div><div class="hb-rows">${headerRow+sortRows(workedRows).map(rowHtml).join('')}</div>`
+      : `<div class="hb-work-panel">
+          <div><b>No worked cases settled this month.</b><span>${revC ? 'This is an audit-only month: no-action rows, adjustment credits and reversals are below.' : 'Nothing was re-evaluated here yet.'}</span></div>
+          <div class="hb-work-pillrow">
+            <span class="hb-total-pill grey">${mWorked} worked</span>
+            ${revC?`<span class="hb-total-pill red">${revC} reversals · ${histMoney(rev)}</span>`:''}
+            <span class="hb-total-pill ${mOverall<-0.005?'red':'green'}">${histMoney(mOverall)} cash impact</span>
+          </div>
+        </div>`;
 
     return `<div class="hb-card ${reversalOnly?'is-reversal-only':''}">
-      <div class="hb-head" onclick="histToggle('${m}')">
-        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="hb-chev">${open?'▾':'▸'}</span><span class="hb-title">${monthLabel(m)}</span><span class="hb-count">${rows.length} settled · ${mWorked} worked</span></div>
-        <div class="hb-headnums">
-          <div class="hb-hn"><div class="hb-hn-v" style="color:${mWorked?'var(--green)':'var(--text3)'}">+£${mRecovery.toFixed(2)}</div><div class="hb-hn-l">${mWorked?'Recovered':'Process rec.'}</div></div>
-          <div class="hb-hn"><div class="hb-hn-v" style="color:${mWorked?(mImpPct>=50?'var(--green)':'var(--amber)'):'var(--text3)'}">${mWorked?mImpPct+'%':'—'}</div><div class="hb-hn-l">Win rate</div></div>
-          <div class="hb-hn"><div class="hb-hn-v hb-hn-sm" style="color:${mOverall<-0.005?'var(--red)':(mWorked?'var(--green)':'#7dd3fc')}">${histMoney(mOverall)}</div><div class="hb-hn-l">${mWorked?'Overall':'Cash impact'}</div></div>
+      <div class="hb-month-hero" onclick="histToggle('${m}')">
+        <div class="hb-month-left">
+          <span class="hb-month-toggle">${open?'▾':'▸'}</span>
+          <div>
+            <div class="hb-month-titleline">
+              <span class="hb-month-title">${monthLabel(m)}</span>
+              <span class="hb-month-pill blue">${rows.length} settled</span>
+              <span class="hb-month-pill ${mWorked?'blue':'amber'}">${mWorked} worked</span>
+              ${stillActive?`<span class="hb-month-pill amber">${stillActive} still active</span>`:''}
+            </div>
+            <div class="hb-month-sub">${workLabel}${mWorked?'':' · overall rows below are audit/cash context, not process wins'}</div>
+          </div>
+        </div>
+        <div class="hb-month-metrics">
+          <div class="hb-month-metric"><div class="hb-mm-value" style="color:${mWorked?'var(--green)':'var(--text3)'}">${processValue}</div><div class="hb-mm-label">${mWorked?'Process recovered':'Process recovered'}</div></div>
+          <div class="hb-month-metric"><div class="hb-mm-value" style="color:${mWorked?(mImpPct>=50?'var(--green)':'var(--amber)'):'var(--text3)'}">${mWorked?mImpPct+'%':'—'}</div><div class="hb-mm-label">Win rate</div></div>
+          <div class="hb-month-metric"><div class="hb-mm-value" style="color:${cashCol}">${histMoney(mOverall)}</div><div class="hb-mm-label">${mWorked?'Overall cash':'Cash impact'}</div></div>
         </div>
       </div>
       ${open?`
-      ${(stillActive||revC)?`<div class="hb-ctxbar">
-        ${stillActive?`<span class="hb-ctx-pill amber">${stillActive} still in Active — not in these figures</span>`:''}
-        ${revC?`<span class="hb-ctx-pill red">${revC} reversal${revC===1?'':'s'} · ${histMoney(rev)} overall impact</span>`:''}
-      </div>`:''}
-      ${revC?`<div class="hb-banner"><b>${revC} Amazon reversal${revC===1?'':'s'} · ${histMoney(rev)}</b><span>Money clawed back by Amazon. Counts in Overall only.</span></div>`:''}
-      <div class="hb-procnote">${workedSummary}</div>
-      ${workedRows.length?`<div class="hb-sublabel">Cases we worked (${workedRows.length})</div><div class="hb-rows">${headerRow+sortRows(workedRows).map(rowHtml).join('')}</div>`:(reversalOnly?'':`<div class="hb-sublabel">Cases we worked (0)</div><div class="hb-rows">${workedEmpty}</div>`)}
-      <div class="hb-sublabel hb-sublabel-click" onclick="histNoToggle('${m}')">${noOpen?'▾':'▸'} No action / adjustment credits${revC?' + reversals':''} (${noRows.length}) <span class="hb-sl-sub">Overall only, not process wins</span></div>
+      <div class="hb-month-story">
+        <div class="hb-story work"><div class="hb-story-k">Process work</div><div class="hb-story-v" style="color:${mWorked?'var(--green)':'var(--text3)'}">${mWorked}</div><div class="hb-story-s">${mWorked?`${mImproved} improved · ${mReached} reached COG+`:'No worked cases settled'}</div></div>
+        <div class="hb-story rev"><div class="hb-story-k">Amazon reversals</div><div class="hb-story-v" style="color:${revC?'var(--red)':'var(--text3)'}">${revC}</div><div class="hb-story-s">${revC?`${histMoney(rev)} clawed back · Overall only`:'None'}</div></div>
+        <div class="hb-story open"><div class="hb-story-k">Audit rows</div><div class="hb-story-v" style="color:${noRows.length?'#9ee7ff':'var(--text3)'}">${noRows.length}</div><div class="hb-story-s">${auditLead || 'Nothing in no-action/context'}</div></div>
+      </div>
+      ${workedBlock}
+      <div class="hb-audit-toggle" onclick="event.stopPropagation();histNoToggle('${m}')">
+        <div class="hb-audit-main"><span class="hb-audit-chevron">${noOpen?'▾':'▸'}</span><span class="hb-audit-title">${noOpen?'Hide':'Open'} audit rows</span><span class="hb-audit-sub">No action, adjustment credits and reversals · not process wins</span></div>
+        <div class="hb-audit-counts">
+          <span class="hb-total-pill">${noRows.length} rows</span>
+          ${noStats.noN?`<span class="hb-total-pill green">${noStats.noN} no action</span>`:''}
+          ${noStats.creditN?`<span class="hb-total-pill blue">${noStats.creditN} credit context</span>`:''}
+          ${noStats.revN?`<span class="hb-total-pill grey">${noStats.revN} reversals</span>`:''}
+        </div>
+      </div>
       ${noOpen?`${noTotal}${noHelp}${reversalOnly?`<div class="hb-reversal-list">${sortNoRows(noRows).map(reversalRowHtml).join('')}</div>`:`<div class="hb-rows">${headerRow}${sortNoRows(noRows).map(rowHtml).join('')}${noTotalBottom}</div>`}`:''}
       `:''}
     </div>`;
@@ -4753,11 +5249,17 @@ function cgUpdate() {
   info.setAttribute('data-current-id', id);
   document.getElementById('cg-asin').textContent = r.asin;
   document.getElementById('cg-reimb-show').textContent = '£'+(r.reimb_amount||0).toFixed(2);
-  document.getElementById('cg-reimb-id').value = r.reimb_id;
+  document.getElementById('cg-reimb-id').value = displayReimbId(r.reimb_id_real||r.reimb_id);
   if (changedRecord) {
-    document.getElementById('cg-cog').value = (r.actual_cost||0).toFixed(2);
-    document.getElementById('cg-msc').value = '';
+    document.getElementById('cg-cog').value = claimCog(r) > 0 ? claimCog(r).toFixed(2) : '';
+    // MSC Amount lives on the record — pull it in, never make the VA re-type it.
+    // (An empty field with an approved/reduced attempt triggers a yes/no ask below.)
+    const _storedMsc = Number(ann(id).msc_amount||0);
+    document.getElementById('cg-msc').value = _storedMsc > 0 ? _storedMsc.toFixed(2) : '';
+    info.removeAttribute('data-msc-ask-declined');
     document.getElementById('cg-date').value = r.date;
+    const _cid = document.getElementById('cg-case-id');
+    if (_cid) _cid.value = ann(id).new_case_id || '';
   }
   // set date from record
   if (!document.getElementById('cg-date').value) {
@@ -4779,12 +5281,30 @@ function cgUpdate() {
 
   const cog = parseFloat(document.getElementById('cg-cog').value)||0;
   const msc = parseFloat(document.getElementById('cg-msc').value)||0;
-  const targetValue = Math.max(cog, msc);
-  const shortfallAmt = targetValue - (r.reimb_amount||0);
-  document.getElementById('cg-shortfall-show').textContent = msc > 0 ? (shortfallAmt > 0 ? '+£'+shortfallAmt.toFixed(2) : '-£'+Math.abs(shortfallAmt).toFixed(2)) : '—';
-  document.getElementById('cg-shortfall-show').style.color = shortfallAmt > 0 ? 'var(--red)' : 'var(--green)';
+  const az = cgAnalyse(r, cog, msc);
+  document.getElementById('cg-shortfall-show').textContent = az.target > 0 ? (az.shortfall > 0.005 ? '£'+az.shortfall.toFixed(2) : 'covered ✓') : '—';
+  document.getElementById('cg-shortfall-show').style.color = az.shortfall > 0.005 ? 'var(--red)' : 'var(--green)';
+  const readyEl = document.getElementById('cg-ready');
+  if (readyEl) {
+    // Empty MSC field + an approved/reduced attempt on record → ask before using it
+    let askStrip = '';
+    const _offer = !msc ? cgMscOffer(ann(id)) : null;
+    if (_offer && !info.getAttribute('data-msc-ask-declined')) {
+      const amt = _offer.amt.toFixed(2);
+      askStrip = '<div class="cgr-warn warn" style="margin-bottom:8px;align-items:center"><span style="flex:1">⚠ MSC Amount is empty — attempt #'+_offer.idx+' has <strong>£'+amt+'</strong> ('+_offer.status+'). Use it? Or type your own amount above.</span>'
+        + '<button class="btn btn-green" style="padding:3px 10px;font-size:10px" onclick="cgMscAsk(true)">Yes — claim £'+amt+'</button>'
+        + '<button class="btn btn-sec" style="padding:3px 10px;font-size:10px" onclick="cgMscAsk(false)">No — use COG</button></div>';
+    }
+    readyEl.innerHTML = askStrip + cgReadyPanel(az);
+  }
 
-  if (!cog && !msc) { document.getElementById('cg-preview').textContent = 'Enter COG and/or MSC amount to generate the case message.'; document.getElementById('cg-char-count').textContent='—'; return; }
+  if (az.blocked) {
+    document.getElementById('cg-preview').textContent = az.missing.length
+      ? 'Case not ready — fill in the missing info flagged above.'
+      : 'No case needed for this record — the reimbursement already covers the target value.';
+    document.getElementById('cg-char-count').textContent='—';
+    return;
+  }
 
   const dateStr = document.getElementById('cg-date').value;
   const prettyDate = prettyDateStr(dateStr);
@@ -4795,21 +5315,65 @@ function cgUpdate() {
   document.getElementById('cg-preview').textContent = msg;
   document.getElementById('cg-char-count').textContent = msg.length+' chars';
 }
+function cgSaveCase() {
+  const id = document.getElementById('cg-record').value;
+  if (!id) return toast('Pick a record first');
+  const v = (document.getElementById('cg-case-id').value||'').trim();
+  if (!v) return toast('Paste the new Case ID first');
+  const prev = ann(id);
+  const today = new Date().toISOString().split('T')[0];
+  setAnn(id, {new_case_id:v, case_opened_date: prev.case_opened_date||today, reeval_date: prev.reeval_date||today, workflow_status:'case_open'});
+  renderActive(); renderActions(); updateBadges(); cgUpdate();
+  toast('Case '+v+' saved — marked as Case Open ✓');
+}
 
 function cgCopy() {
   const txt = document.getElementById('cg-preview').textContent;
   if (!txt || txt.includes('Select a record')) return toast('Generate a message first');
   copyToClipboard(txt).then(ok=>toast(ok?'Message copied ✓':'Copy failed — select the text and copy manually'));
 }
+function cgCopyOpen() {
+  const txt = document.getElementById('cg-preview').textContent;
+  if (!txt || txt.includes('Select a record') || txt.includes('Case not ready') || txt.includes('No case needed')) return toast('Nothing to copy — check the readiness box');
+  copyToClipboard(txt).then(ok=>{
+    toast(ok?'Copied ✓ — opening Seller Central, paste the message there':'Copy failed — select the text and copy manually');
+    window.open('https://sellercentral.amazon.co.uk/help/center?redirectSource=Hill','_blank');
+  });
+}
 function cgOpenCase() {
   window.open('https://sellercentral.amazon.co.uk/help/center?redirectSource=Hill','_blank');
+}
+function cgPersistMsc() {
+  const id = document.getElementById('cg-record').value;
+  if (!id) return;
+  const v = parseFloat(document.getElementById('cg-msc').value);
+  setAnn(id, {msc_amount: (!isNaN(v) && v>0) ? v : null});
+}
+// Page version of the yes/no ask on the auto-pulled MSC amount.
+function cgMscAsk(useIt) {
+  const id = document.getElementById('cg-record').value;
+  const info = document.getElementById('cg-record-info');
+  if (!id) return;
+  if (useIt) {
+    const _offer = cgMscOffer(ann(id));
+    if (_offer) {
+      document.getElementById('cg-msc').value = _offer.amt.toFixed(2);
+      setAnn(id, {msc_amount: _offer.amt});
+      toast('MSC £'+_offer.amt.toFixed(2)+' saved to the record ✓');
+    }
+  } else {
+    info.setAttribute('data-msc-ask-declined','1');
+    toast('Using COG as the claim value');
+  }
+  cgUpdate();
 }
 function cgReset() {
   const sel = document.getElementById('cg-record');
   if (sel) sel.value = '';
   const info = document.getElementById('cg-record-info');
   if (info) info.removeAttribute('data-current-id');
-  ['cg-cog','cg-msc','cg-date','cg-reimb-id'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  ['cg-cog','cg-msc','cg-date','cg-reimb-id','cg-case-id'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  const rd=document.getElementById('cg-ready'); if(rd) rd.innerHTML='';
   const prev=document.getElementById('cg-preview'); if(prev) prev.textContent='Select a record and enter MSC amount to generate the case message.';
   const cc=document.getElementById('cg-char-count'); if(cc) cc.textContent='—';
 }
@@ -5662,6 +6226,7 @@ function renderSettings() {
   setv('s-msc-reduction', settings.msc_reduction_pct);
   setv('s-currency', settings.currency);
   setv('s-response-days', settings.amazon_response_days);
+  setv('s-verify-days', settings.reimb_verify_days||3);
   setv('s-followup-days', settings.followup_days);
   setv('s-escalation-days', settings.escalation_days);
   setv('s-auto-archive', settings.auto_archive_days);
@@ -5688,6 +6253,7 @@ function saveSettings() {
   settings.msc_reduction_pct = num('s-msc-reduction',20,0);
   settings.currency = (document.getElementById('s-currency').value||'£').trim()||'£';
   settings.amazon_response_days = num('s-response-days',5,1);
+  settings.reimb_verify_days = num('s-verify-days',3,1);
   settings.followup_days = num('s-followup-days',10,1);
   settings.escalation_days = num('s-escalation-days',20,1);
   settings.auto_archive_days = num('s-auto-archive',0,0);
@@ -5927,11 +6493,13 @@ function openRecord(reimb_id, isArchive) {
   const mscS = a.msc_status||'none';
   const hasCase = !!(a.new_case_id || a.case_id || (a.case_attempts && a.case_attempts.length) || a.workflow_status==='case_open');
   const isReimb = (a.outcome||'')==='reimbursed';
+  const isPend = !isReimb && (String(a.new_reimb_id||'').trim()!=='' || a.workflow_status==='reimb_pending');
   const steps = [
     {label:'MSC Check', done: mscS!=='none', active: mscS==='none'},
     {label:'MSC Result', done: mscS==='approved'||mscS==='reduced'||mscS==='denied', active: mscS==='review'||mscS==='pending'},
-    {label:'Case Open', done: hasCase, active: !hasCase && (mscS==='approved'||mscS==='reduced')},
-    {label:'Reimbursed', done: isReimb, active: hasCase && !isReimb},
+    {label:'Case / Claim', done: hasCase, active: !hasCase && (mscS==='approved'||mscS==='reduced')},
+    {label:'Reimb Pending', done: isPend||isReimb, active: hasCase && !isPend && !isReimb},
+    {label:'Reimbursed', done: isReimb, active: isPend && !isReimb},
   ];
 
   const stepBar = steps.map((s,i)=>{
@@ -5948,7 +6516,8 @@ function openRecord(reimb_id, isArchive) {
   if (mscS==='review') nsText = '<strong>MSC Under Review</strong> — wait for Amazon response. Check the portal for updates.';
   if (mscS==='approved'||mscS==='reduced') nsText = '<strong>MSC '+mscS.charAt(0).toUpperCase()+mscS.slice(1)+'</strong> — open a Seller Support case. Use the <strong>Case Generator</strong> to build the message.';
   if (mscS==='docs') nsText = '<strong>Docs Needed</strong> — upload the invoice/evidence to Seller Central to unblock the claim.';
-  if (hasCase) nsText = '<strong>Case Opened</strong> — wait for Amazon response. Log the outcome below when received.';
+  if (hasCase) nsText = '<strong>Case / Claim open</strong> — wait for Amazon response. Log the outcome below when received.';
+  if (isPend) nsText = '<strong>Reimb Pending</strong> — Amazon issued a new reimbursement. Verify the funds landed, then <strong>Mark Reimbursed</strong>.';
   if (isReimb) nsText = '<strong>Reimbursed ✓</strong> — this record can be archived to History.';
 
   const caseId = a.new_case_id||a.case_id||r.case_id;
@@ -5987,6 +6556,7 @@ function openRecord(reimb_id, isArchive) {
     else statusLine = 'MSC: '+mscAttempts.length+' attempt'+(mscAttempts.length===1?'':'s')+' logged · last on '+fmtDate(lastAtt.date)+' ('+sd+(sd===1?' day':' days')+' ago)';
   }
 
+  document.getElementById('modal-inner').setAttribute('data-record-id', reimb_id);
   document.getElementById('modal-inner').innerHTML = `
     <div style="padding:18px 22px 12px;border-bottom:1px solid var(--border)">
       <div style="font-size:12px;font-weight:700;line-height:1.45;padding-right:34px;letter-spacing:-.01em">${r.product_name}</div>
@@ -6000,8 +6570,10 @@ function openRecord(reimb_id, isArchive) {
         <span style="margin-left:auto">${deadlineChip(r.date)}</span>
       </div>
       <div class="modal-quick">
-        <a class="mq-btn" href="${MSC_PORTAL_URL}" target="_blank" rel="noopener">Open MSC ↗</a>
+        <a class="mq-btn" href="${MSC_PORTAL_URL}" target="_blank" rel="noopener">MSC Portal ↗</a>
+        ${caseId?`<a class="mq-btn" href="${caseUrl(caseId)}" target="_blank" rel="noopener">Case ${esc(String(caseId))} ↗</a>`:''}
         <button class="mq-btn" onclick="addMscAtt('${reimb_id}')">+ Log MSC</button>
+        <button class="mq-btn" onclick="openAddCase('${reimb_id}')">+ Log Case</button>
         <button class="mq-btn mq-primary" onclick="openCaseGenModal('${reimb_id}')">Case Generator</button>
       </div>
     </div>
@@ -6023,6 +6595,23 @@ function openRecord(reimb_id, isArchive) {
       </div>
       <div class="claim-bar-track"><div class="claim-bar-fill" style="width:${dlPct}%;background:${dlCol}"></div></div>
     </div>
+
+    <!-- KEY DATES — every deadline in one strip, colour-coded -->
+    ${(()=>{
+      const _t = new Date().toISOString().split('T')[0];
+      const _winClose = r.date ? new Date(new Date(r.date).getTime()+CW*86400000).toISOString().split('T')[0] : '';
+      const _lastDenied = [...mscAttempts].reverse().find(x=>x.status==='denied'||x.status==='error');
+      const _dd = a.review_date ? Math.round((new Date(a.review_date)-new Date(_t))/86400000) : null;
+      const tile = (lbl, val, sub, col) => '<div class="cgd"><div class="cgd-l">'+lbl+'</div><div class="cgd-v"'+(col?' style="color:'+col+'"':'')+'>'+val+'</div>'+(sub?'<div class="cgd-l" style="text-transform:none;letter-spacing:0">'+sub+'</div>':'')+'</div>';
+      return '<div class="cgm-data" style="margin:10px 14px 0">'
+        + tile('Original payout', fmtDate(r.date), 'reimbursement date', '')
+        + tile('Claim window', dl>0?fmtDate(_winClose):'CLOSED', dl>0?dl+'d left':'window shut', dl<=0?'var(--red)':dl<=7?'var(--red)':dl<=14?'var(--amber)':'var(--green)')
+        + tile('Denial date', _lastDenied?fmtDate(_lastDenied.date):'—', _lastDenied?'attempt #'+(mscAttempts.indexOf(_lastDenied)+1):'no denial', _lastDenied?'var(--red)':'')
+        + tile('Next resubmit', a.review_date?fmtDate(a.review_date):'—', _dd==null?'not scheduled':(_dd<0?Math.abs(_dd)+'d OVERDUE':_dd===0?'due today':'in '+_dd+'d'), _dd==null?'':(_dd<=0?'var(--red)':'var(--amber)'))
+        + tile('Case opened', a.case_opened_date?fmtDate(a.case_opened_date):'—', a.case_opened_date?Math.round((new Date(_t)-new Date(a.case_opened_date))/86400000)+'d ago':'no case yet', '')
+        + tile('New payout', a.reimb_date?fmtDate(a.reimb_date):'—', a.new_reimb_id?('ID '+esc(a.new_reimb_id)):'not paid yet', a.reimb_date?'var(--green)':'')
+        + '</div>';
+    })()}
 
     <div class="modal-body">
       ${(!r.actual_cost || Number(r.actual_cost)<=0)?'<div class="ip-warn" style="border-color:var(--red);color:var(--red);background:var(--red-dim)"><strong>COG missing:</strong> this record cannot be moved into Active or worked until the SKU/COG is fixed.</div>':''}
@@ -6071,6 +6660,18 @@ function openRecord(reimb_id, isArchive) {
       <!-- MSC -->
       <div class="ms">
         <div class="ms-title mt-amber">MSC Status</div>
+        <div class="msc-flow-hint">How this flow works: <b>1</b> Submit on the MSC portal &amp; log it below → <b>2</b> <span style="color:var(--red)">Denied?</span> 30-day wait is set automatically, resubmit ~20% lower → <b>3</b> <span style="color:var(--green)">Approved / Reduced?</span> Amazon's amount saves into <strong>MSC Amount</strong> → <b>4</b> The <strong>Case Generator</strong> claims that amount (or COG if there's no MSC).</div>
+        ${(()=>{
+          const _mscAmt = Number(a.msc_amount||0);
+          const _target = _mscAmt>0 ? _mscAmt : claimCog(r);
+          const _src = _mscAmt>0 ? 'MSC Amount' : 'COG';
+          const _sf2 = _target - (r.reimb_amount||0);
+          if (_target<=0) return '<div class="msc-claim-strip"><span class="mcs-sub">⛔ No claim value yet — enter a COG or MSC Amount so a case can be built.</span></div>';
+          return '<div class="msc-claim-strip"><span class="mcs-sub">A case on this record will claim</span><span class="mcs-big">£'+_target.toFixed(2)+'</span><span class="mcs-src">'+_src+'</span>'
+            + (_sf2>0.005
+              ? '<span class="mcs-sub">→ shortfall to request: <b style="color:var(--red)">£'+_sf2.toFixed(2)+'</b></span>'
+              : '<span class="mcs-sub" style="color:var(--green)">→ fully covered — no case needed ✓</span>');
+        })()}
         <div class="fg">
           <div class="f"><label>MSC Status</label>
             <select id="m-msc-status">
@@ -6084,8 +6685,16 @@ function openRecord(reimb_id, isArchive) {
             </select>
           </div>
           <div class="f"><label>Denial / Reason</label><input type="text" id="m-msc-reason" value="${a.msc_reason||''}" placeholder="e.g. Number of attempts exceeded"></div>
-          <div class="f"><label>Re-review Date <span style="color:var(--text3);font-weight:400">· auto</span></label><div class="ro" title="Auto: 30 days after the last MSC submission / denial">${a.review_date?fmtDate(a.review_date):'— set when you log an MSC'}</div><input type="hidden" id="m-review-date" value="${a.review_date||''}"></div>
-          <div class="f"><label>MSC Amount (£)</label><input type="number" id="m-msc-amount" value="${a.msc_amount||''}" step="0.01" placeholder="Approved MSC value"></div>
+          <div class="f"><label>Re-review Date <span style="color:var(--text3);font-weight:400">· auto</span></label><div class="ro" title="Auto: 30 days after the last MSC submission / denial. Cleared once the MSC is approved or reduced.">${(()=>{
+            const _t = new Date().toISOString().split('T')[0];
+            if (mscS==='approved'||mscS==='reduced') return '<span style="color:var(--green)">— done · MSC settled, open the case</span>';
+            if (!a.review_date) return '— set when you log an MSC';
+            if (a.review_date < _t) return '<span style="color:var(--red);font-weight:700">'+fmtDate(a.review_date)+' · OVERDUE — resubmit now</span>';
+            if (a.review_date === _t) return '<span style="color:var(--amber);font-weight:700">'+fmtDate(a.review_date)+' · due today</span>';
+            return fmtDate(a.review_date);
+          })()}</div><input type="hidden" id="m-review-date" value="${a.review_date||''}"></div>
+          <div class="f"><label>MSC Amount (£) <span style="color:var(--amber);font-weight:700">· the value cases claim</span></label><input type="number" id="m-msc-amount" value="${a.msc_amount||''}" step="0.01" placeholder="auto-fills from an Approved/Reduced MSC">
+            <div class="field-help">Amazon's approved or reduced figure. Fills itself when you log an Approved/Reduced MSC below. Empty = the Case Generator claims the COG instead.</div></div>
         </div>
         <div class="ms-title mt-amber" style="margin-top:4px">MSC Submissions (30-day wait between attempts)</div>
         <div class="att-list" id="m-att-list">
@@ -6094,7 +6703,8 @@ function openRecord(reimb_id, isArchive) {
               <span class="att-num">#${i+1}</span>
               ${mscBadge(att.status)}
               <span class="att-cog">£${att.cog}</span>
-              ${att.notes?'<span class="att-next">'+esc(att.notes).substring(0,80)+'</span>':(att.next_date?'<span class="att-next">→ Next: '+fmtDate(att.next_date)+'</span>':'')}
+              ${att.approved_amt?'<span class="att-next" style="color:var(--green);font-weight:700">→ Amazon offered £'+Number(att.approved_amt).toFixed(2)+'</span>':''}
+              ${att.notes?'<span class="att-next">'+esc(att.notes).substring(0,80)+'</span>':((att.next_date&&!att.approved_amt)?'<span class="att-next">→ Next: '+fmtDate(att.next_date)+'</span>':'')}
               <span class="att-date">${fmtDate(att.date)}</span>
               <button class="att-del" onclick="delMscAtt('${reimb_id}',${i})">✕</button>
             </div>`).join('')}
@@ -6104,7 +6714,18 @@ function openRecord(reimb_id, isArchive) {
 
       <!-- CASE -->
       <div class="ms">
-        <div class="ms-title mt-purple">Amazon Case</div>
+        <div class="ms-title mt-purple">Amazon Case / Claim ${caseId?`<a class="m-openlink" href="${caseUrl(caseId)}" target="_blank" rel="noopener">Open latest ↗</a>`:''}</div>
+        ${(a.case_attempts&&a.case_attempts.length)?`<div class="att-list" style="margin-bottom:8px">
+          ${a.case_attempts.map((ct,i)=>`
+            <div class="att-row ${ct.outcome==='won'?'approved':ct.outcome==='denied'?'denied':ct.outcome==='docs'?'docs':'pending'}">
+              <span class="att-num">${ct.type==='appeal'?'APL':ct.type==='followup'?'F/U':ct.type==='escalation'?'ESC':'#'+(i+1)}</span>
+              ${ct.case_id?'<a class="att-cog" style="text-decoration:underline" href="'+caseUrl(ct.case_id)+'" target="_blank" rel="noopener">'+esc(ct.case_id)+' ↗</a>':'<span class="att-cog">no ID</span>'}
+              <span class="att-next">${ct.outcome==='won'?'✓ won / paid':ct.outcome==='denied'?'✕ denied':ct.outcome==='docs'?'📄 docs requested':ct.outcome==='closed'?'— closed':'⋯ open'}${ct.notes?' · '+esc(ct.notes).substring(0,60):''}</span>
+              <span class="att-date">${fmtDate(ct.date)}</span>
+              <button class="att-del" onclick="delCaseAtt('${reimb_id}',${i})">✕</button>
+            </div>`).join('')}
+        </div>`:''}
+        <button class="add-att-btn" style="margin-bottom:10px" onclick="openAddCase('${reimb_id}')">+ Log Case / Appeal</button>
         <div class="fg">
           <div class="f"><label>Old Case ID — from SellerFuse import (read-only)</label><input type="text" id="m-old-case-id" value="${esc(r.case_id||'')}" placeholder="None imported" readonly style="opacity:.6;font-family:var(--mono)" title="This is the original case reference from the SellerFuse import. It is not editable."></div>
           <div class="f"><label>New Case ID — the re-evaluation case you open &amp; track ${(a.new_case_id||a.case_id)?`<a class="m-openlink" href="${caseUrl(a.new_case_id||a.case_id)}" target="_blank" rel="noopener">Open ↗</a>`:''}</label><input type="text" id="m-new-case-id" value="${esc(a.new_case_id||a.case_id||'')}" placeholder="e.g. 12874884642"></div>
@@ -6164,11 +6785,20 @@ function openRecord(reimb_id, isArchive) {
   document.getElementById('overlay').classList.add('open');
 }
 
-function saveRecord(reimb_id) {
+// Silently read every editable field off the open record modal into the data —
+// no close, no toast. Called before ANY modal swap (Case Generator, + Log MSC)
+// so a value the VA just typed (e.g. MSC Amount) is never thrown away.
+function captureRecordFields(reimb_id) {
   const r = records.find(x=>x.reimb_id===reimb_id)||archived.find(x=>x.reimb_id===reimb_id);
-  if (!r) return;
-  // If the detail modal isn't open, there are no fields to read — skip silently.
-  if (!document.getElementById('m-actual-cost')) return;
+  if (!r) return false;
+  // Only capture when the record modal is actually OPEN and showing THIS record.
+  // A closed overlay still has the old fields in the DOM — reading those would
+  // silently overwrite this record with stale (or another record's) values.
+  const _ov = document.getElementById('overlay');
+  const _mi = document.getElementById('modal-inner');
+  if (!_ov || !_ov.classList.contains('open')) return false;
+  if (!_mi || _mi.getAttribute('data-record-id') !== reimb_id) return false;
+  if (!document.getElementById('m-actual-cost')) return false;
   const gv=(id,d='')=>{const e=document.getElementById(id);return e?e.value:d;};
   // update record fields if changed
   const newActual = parseFloat(gv('m-actual-cost'));
@@ -6183,6 +6813,12 @@ function saveRecord(reimb_id) {
   const _newCase = gv('m-new-case-id').trim();
   const _prevAnn = ann(reimb_id);
   const _caseOpened = (_newCase && !_prevAnn.case_opened_date) ? new Date().toISOString().split('T')[0] : _prevAnn.case_opened_date;
+  // Status automation on save: pasting a new reimb ID moves the record to Reimb
+  // Pending; a case ID moves it to Case / Claim — no manual dropdown step needed.
+  const _newReimbId = (gv('m-new-reimb-id', _prevAnn.new_reimb_id||'')).trim();
+  let _wf = gv('m-wf-status', _prevAnn.workflow_status||'active');
+  if (_newReimbId && ['active','msc_submitted','case_open'].includes(_wf)) _wf = 'reimb_pending';
+  else if (_newCase && ['active','msc_submitted'].includes(_wf)) _wf = 'case_open';
   setAnn(reimb_id, {
     msc_status: gv('m-msc-status', _prevAnn.msc_status||'none'),
     msc_reason: gv('m-msc-reason'),
@@ -6192,15 +6828,20 @@ function saveRecord(reimb_id) {
     case_opened_date: _caseOpened,
     final_reimb_amount: parseFloat(gv('m-final-reimb'))||null,
     reimb_date: gv('m-reimb-date'),
-    new_reimb_id: (gv('m-new-reimb-id', _prevAnn.new_reimb_id||'')).trim(),
+    new_reimb_id: _newReimbId,
     reeval_date: gv('m-reeval-date', _prevAnn.reeval_date||''),
     eval_id: gv('m-eval-id'),
-    workflow_status: gv('m-wf-status', _prevAnn.workflow_status||'active'),
+    workflow_status: _wf,
     invoice_link: gv('m-invoice-link'),
     invoice_notes: gv('m-invoice-notes'),
     notes: gv('m-notes'),
   });
   save();
+  return true;
+}
+
+function saveRecord(reimb_id) {
+  if (!captureRecordFields(reimb_id)) return;
   closeModal();
   renderActive();
   renderTriage();
@@ -6272,25 +6913,129 @@ function deleteRecord(reimb_id) {
   toast('Deleted');
 }
 
-function caseMessageText(r, cog, msc, reason, prettyDate) {
-  const targetValue = Math.max(cog, msc);
-  const shortfallAmt = targetValue - (r.reimb_amount||0);
-  return (
-`Dear Amazon Seller Support Team,
-
-I am writing to request an adjustment for Reimbursement ID: ${r.reimb_id}. On ${prettyDate}, Amazon processed a reimbursement of £${(r.reimb_amount||0).toFixed(2)} for a unit of ASIN: ${r.asin} (${r.product_name}) that was ${reason}.
-
-However, this reimbursement amount is significantly below the item's Managing Sourcing Cost (MSC) which is £${targetValue.toFixed(2)}. The invoice/COG value recorded for this unit is £${cog.toFixed(2)}. Per Amazon's FBA inventory reimbursement policy, when an item is lost or damaged in the warehouse, the reimbursement value should reflect the estimated proceeds of the sale of that item, taking into account the product's regular selling price and applicable FBA fees. The current reimbursement of £${(r.reimb_amount||0).toFixed(2)} does not even cover the core cost of this item, resulting in an unjustified financial loss for our business due to a fulfilment centre error.
-
-Discrepancy Breakdown:
-COG: £${cog.toFixed(2)}
-Fair Market Value / MSC Used: £${targetValue.toFixed(2)}
-Amount Reimbursed: £${(r.reimb_amount||0).toFixed(2)}
-Shortfall Requested: £${Math.max(0, shortfallAmt).toFixed(2)}
-
-Please review the standard net payout value for this ASIN and adjust the reimbursement by the remaining £${Math.max(0, shortfallAmt).toFixed(2)} to align with Amazon's policy on fair market value.
-
-Thank you for your prompt attention to correcting this error.`);
+// ── Case Generator engine ──
+// ONE rule for the claim value: use MSC Amount if it exists, otherwise COG.
+// Never Math.max — if Amazon set a reduced MSC of £110 against a £126 COG,
+// the case must claim £110 or Seller Support rejects the numbers.
+function cgFnsku(r) {
+  if (r.fnsku) return r.fnsku;
+  const raw = String(r.reimb_id_real||r.reimb_id||'');
+  return raw.includes('::') ? raw.split('::')[1] : '';
+}
+// The best guess at Amazon's accepted MSC value from attempt history:
+// prefer an explicit approved amount; fall back to the submitted value of a
+// reduced/approved attempt (how older attempts were logged). Callers ALWAYS
+// confirm with the VA before using it — never saved silently.
+function cgMscOffer(a) {
+  const atts = [...(a.msc_attempts||[])].reverse();
+  const hit = atts.find(x=>Number(x.approved_amt)>0)
+           || atts.find(x=>(x.status==='reduced'||x.status==='approved') && Number(x.cog)>0);
+  if (!hit) return null;
+  return {amt: Number(hit.approved_amt||hit.cog), status: hit.status, idx: (a.msc_attempts||[]).indexOf(hit)+1};
+}
+function cgCaseType(r) {
+  const a = ann(r.reimb_id);
+  if (vaCaseOpen(r)) return 'followup';
+  const s = a.msc_status||'none';
+  if (s==='reduced') return 'reduced';
+  if (s==='denied'||s==='error') return 'denied';
+  return 'first';
+}
+function cgAnalyse(r, cog, msc) {
+  const a = ann(r.reimb_id);
+  const reimbursed = Number(r.reimb_amount||0);
+  const useMsc = msc > 0;
+  const target = useMsc ? msc : (cog||0);
+  const source = useMsc ? 'MSC Amount' : 'COG';
+  const shortfallAmt = target - reimbursed;
+  const atts = a.msc_attempts||[];
+  const lastAtt = atts.length ? atts[atts.length-1] : null;
+  const today = new Date().toISOString().split('T')[0];
+  const warnings = [];   // {lv:'info'|'warn'|'block', t}
+  const missing = [];
+  if (target <= 0) missing.push('Claim value — enter an MSC Amount or COG');
+  if (!r.date) missing.push('Reimbursement date');
+  if (!cgFnsku(r)) warnings.push({lv:'info', t:'No FNSKU on record — add it if you have it; Seller Support finds the unit faster.'});
+  let blocked = missing.length > 0;
+  if (!blocked && shortfallAmt <= 0.005) {
+    blocked = true;
+    warnings.unshift({lv:'block', t:'No case needed — Amazon reimbursed £'+reimbursed.toFixed(2)+', which already meets or exceeds the target value of £'+target.toFixed(2)+'.'});
+  }
+  if (!useMsc && target > 0) warnings.push({lv:'info', t:'No MSC Amount on record — using COG £'+target.toFixed(2)+' as the claim value.'});
+  if (useMsc && cog > 0 && msc < cog - 0.005) warnings.push({lv:'info', t:'MSC (£'+msc.toFixed(2)+') is below COG (£'+cog.toFixed(2)+'). Claiming the MSC — that is the value Amazon accepted, so the case numbers must match it.'});
+  if (useMsc && cog > 0 && msc > cog + 0.005) warnings.push({lv:'warn', t:'MSC (£'+msc.toFixed(2)+') is HIGHER than COG (£'+cog.toFixed(2)+') — double-check the value before submitting.'});
+  if (lastAtt && lastAtt.next_date && lastAtt.next_date > today && (lastAtt.status==='denied'||lastAtt.status==='error')) {
+    warnings.push({lv:'warn', t:'30-day wait not over — no new MSC before '+fmtDate(lastAtt.next_date)+'. (A Seller Support case about the existing result CAN still be opened.)'});
+  }
+  return {
+    target, source, reimbursed, shortfall: shortfallAmt, blocked, warnings, missing,
+    caseType: cgCaseType(r), attempts: atts, lastAtt,
+    reimbIdClean: displayReimbId(r.reimb_id_real||r.reimb_id), fnsku: cgFnsku(r),
+    ready: !blocked,
+  };
+}
+// Readiness panel — the "app has decided, here's why" box shown above the message.
+function cgReadyPanel(az) {
+  const typeLabel = {first:'First case', reduced:'Reduced-MSC case', denied:'Post-denial review', followup:'Follow-up on existing case'}[az.caseType];
+  const head = az.ready
+    ? '<div class="cgr-head ok">✓ Case ready — using '+az.source+'</div>'
+    : '<div class="cgr-head block">✕ Case not ready'+(az.missing.length?' — missing info':'')+'</div>';
+  // Previous-MSC context — old Removals-style history the VA needs at a glance:
+  // what was submitted, at what COG, what came back, and what to try next.
+  let history = '';
+  if (az.attempts.length) {
+    const stLbl = s => s==='approved'?'✓ approved':s==='reduced'?'◑ reduced':s==='denied'?'✕ denied':s==='error'?'✕ error':s==='docs'?'📄 docs':s==='review'?'⋯ review':'⋯ pending';
+    const stCol = s => (s==='approved')?'var(--green)':(s==='reduced')?'var(--amber)':(s==='denied'||s==='error')?'var(--red)':'var(--text2)';
+    history = '<div class="cgr-row" style="margin-top:3px"><span style="font-weight:700;color:var(--text2)">MSC history</span><b></b></div>'
+      + az.attempts.map((t,i)=>'<div class="cgr-row"><span>#'+(i+1)+' · '+fmtDate(t.date)+'</span><b>£'+Number(t.cog||0).toFixed(2)+' → <span style="color:'+stCol(t.status)+'">'+stLbl(t.status)+'</span>'+(t.approved_amt?' at £'+Number(t.approved_amt).toFixed(2):'')+'</b></div>').join('');
+    const la = az.lastAtt;
+    if (la && ['denied','error'].includes(la.status)) {
+      const redPct = (typeof settings!=='undefined'&&settings.msc_reduction_pct)||20;
+      const sugg = Math.round(Number(la.cog||0)*(100-redPct)/100*100)/100;
+      history += '<div class="cgr-row"><span>Next MSC suggestion</span><b style="color:var(--amber)">£'+sugg.toFixed(2)+' ('+redPct+'% below #'+az.attempts.length+')'+(la.next_date?' · from '+fmtDate(la.next_date):'')+'</b></div>';
+    }
+  }
+  const rows =
+    '<div class="cgr-row"><span>Case type</span><b>'+typeLabel+'</b></div>'
+    + '<div class="cgr-row"><span>Target claim value</span><b>£'+az.target.toFixed(2)+'<span class="cgr-src">'+az.source+'</span></b></div>'
+    + '<div class="cgr-row"><span>Amount reimbursed</span><b>£'+az.reimbursed.toFixed(2)+'</b></div>'
+    + '<div class="cgr-row"><span>Shortfall requested</span><b style="color:'+(az.shortfall>0.005?'var(--red)':'var(--green)')+'">£'+Math.max(0,az.shortfall).toFixed(2)+'</b></div>'
+    + history
+    + az.missing.map(m=>'<div class="cgr-warn block">⛔ Missing: '+m+'</div>').join('')
+    + az.warnings.map(w=>'<div class="cgr-warn '+w.lv+'">'+(w.lv==='block'?'⛔':w.lv==='warn'?'⚠':'ℹ')+' '+w.t+'</div>').join('');
+  return '<div class="cgr-panel">'+head+'<div class="cgr-rows">'+rows+'</div></div>';
+}
+function caseMessageText(r, cog, msc, reason, prettyDate, detailed) {
+  const az = cgAnalyse(r, cog, msc);
+  const money = v => '£'+Number(v||0).toFixed(2);
+  const qty = Number(r.quantity||1);
+  const dataLines = [
+    'Reimbursement ID: '+az.reimbIdClean,
+    'ASIN: '+(r.asin||'—'),
+    az.fnsku ? 'FNSKU: '+az.fnsku : null,
+    'Product: '+(r.product_name||''),
+    qty>1 ? 'Quantity: '+qty : null,
+    'Reason: '+reason.charAt(0).toUpperCase()+reason.slice(1),
+    'Reimbursement Date: '+prettyDate,
+  ].filter(Boolean).join('\n');
+  const valueLabel = az.source==='MSC Amount' ? 'fair market value / MSC' : 'invoice / cost value (COG)';
+  const bdLabel = az.source==='MSC Amount' ? 'Fair Market Value / MSC' : 'Invoice / Cost Value (COG)';
+  let context = '';
+  if (az.caseType==='reduced') context = 'Amazon previously reduced the reimbursement value for this item. I am requesting a review of the remaining shortfall based on the '+valueLabel+' recorded for this item.\n\n';
+  else if (az.caseType==='denied') context = 'A previous review of this item was not successful; however, the reimbursement remains below the '+valueLabel+' for this item. Please review the reimbursement again using the item\'s standard net payout value.\n\n';
+  else if (az.caseType==='followup') context = 'I am following up on the previous reimbursement review for this item, as the reimbursement remains below the recorded '+valueLabel+'.\n\n';
+  const policy = detailed ? 'Per Amazon\'s FBA inventory reimbursement policy, when an item is lost or damaged in the fulfilment process, the reimbursement value should reflect the estimated proceeds of the sale of that item, taking into account the product\'s regular selling price and applicable FBA fees. ' : '';
+  return 'Dear Amazon Seller Support Team,\n\n'
+    + 'I am requesting a review of the reimbursement amount for the following item:\n\n'
+    + dataLines + '\n\n'
+    + context
+    + 'Amazon reimbursed '+money(az.reimbursed)+(qty>1?' for '+qty+' units':'')+'. '+policy+'However, the '+valueLabel+' for this item is '+money(az.target)+', leaving a shortfall of '+money(Math.max(0,az.shortfall))+'.\n\n'
+    + 'Discrepancy Breakdown:\n'
+    + bdLabel+': '+money(az.target)+'\n'
+    + 'Amount Reimbursed: '+money(az.reimbursed)+'\n'
+    + 'Shortfall Requested: '+money(Math.max(0,az.shortfall))+'\n\n'
+    + 'Please review the reimbursement value for this ASIN and adjust the reimbursement by the remaining '+money(Math.max(0,az.shortfall))+'.\n\n'
+    + 'Thank you.';
 }
 
 const CG_REASON_MAP = {
@@ -6309,13 +7054,32 @@ function prettyDateStr(dateStr) {
 }
 
 // Case Generator as a mini-popup launched from a record — keeps the VA's place.
+// It does the thinking: pulls every value from the record, decides MSC-vs-COG,
+// computes the shortfall, and blocks/warns on bad data. The VA just checks,
+// copies, submits, and pastes the new Case ID straight back in here.
+let CGM_DETAILED = false;
 function openCaseGenModal(reimb_id) {
+  captureRecordFields(reimb_id); // grab unsaved edits (e.g. a just-typed MSC Amount) BEFORE swapping the modal
   const r = records.find(x=>x.reimb_id===reimb_id) || archived.find(x=>x.reimb_id===reimb_id);
   if (!r) return;
   const a = ann(reimb_id);
   const cog = claimCog(r);
-  const msc = Number(a.msc_amount||0);
+  // MSC Amount, or fall back to the last approved/reduced attempt's amount —
+  // one less thing to re-type if the amount field was never filled. The fallback
+  // is NOT saved silently: a yes/no strip asks first, and typing over it always wins.
+  const _offer = !Number(a.msc_amount) ? cgMscOffer(a) : null;
+  const _mscFallback = _offer ? _offer.amt : 0;
+  const msc = Number(a.msc_amount || _mscFallback || 0);
+  const _fallbackStrip = _offer ? `
+      <div class="cgr-warn warn" id="cgm-msc-ask" style="margin-bottom:8px;align-items:center">
+        <span style="flex:1">⚠ MSC Amount was empty — pulled <strong>£${_offer.amt.toFixed(2)}</strong> from MSC attempt #${_offer.idx} (${_offer.status}). Use it? You can also just type a different amount above.</span>
+        <button class="btn btn-green" style="padding:3px 10px;font-size:10px" onclick="cgmMscAsk('${reimb_id}',true)">Yes — claim £${_offer.amt.toFixed(2)}</button>
+        <button class="btn btn-sec" style="padding:3px 10px;font-size:10px" onclick="cgmMscAsk('${reimb_id}',false)">No — use COG</button>
+      </div>` : '';
   const reason = CG_REASON_MAP[r.reason]||'damaged in the warehouse';
+  const fnsku = cgFnsku(r);
+  const cleanId = displayReimbId(r.reimb_id_real||r.reimb_id);
+  CGM_DETAILED = false;
   setModalSize('mid');
   document.getElementById('modal-inner').innerHTML = `
     <button class="modal-close" onclick="openRecord('${reimb_id}')">✕</button>
@@ -6324,10 +7088,18 @@ function openCaseGenModal(reimb_id) {
       <div class="util-sub">${esc((r.product_name||'').substring(0,52))}${(r.product_name||'').length>52?'…':''}</div>
     </div>
     <div class="modal-body">
-      <div class="msc-hint">Fill the values, copy the message, open the case in Seller Central, then paste the <strong>New Case ID</strong> back on the record. Closing this returns you to the same record — you won't lose your place.</div>
+      <div class="msc-hint">Everything below is pulled from the record. <strong>1</strong> Check the readiness box · <strong>2</strong> Copy the message · <strong>3</strong> Open the case in Seller Central · <strong>4</strong> Paste the <strong>New Case ID</strong> at the bottom and save. Closing this returns you to the record.</div>
+      <div class="cgm-data">
+        <div class="cgd"><div class="cgd-l">Reimbursement ID</div><div class="cgd-v mono" title="${esc(cleanId)}">${esc(cleanId)}</div></div>
+        <div class="cgd"><div class="cgd-l">ASIN</div><div class="cgd-v mono">${esc(r.asin||'—')}</div></div>
+        <div class="cgd"><div class="cgd-l">FNSKU</div><div class="cgd-v mono">${esc(fnsku||'—')}</div></div>
+        <div class="cgd"><div class="cgd-l">SKU</div><div class="cgd-v mono" title="${esc(r.sku||'')}">${esc(r.sku||'—')}</div></div>
+        <div class="cgd"><div class="cgd-l">Quantity</div><div class="cgd-v">${Number(r.quantity||1)}</div></div>
+        <div class="cgd"><div class="cgd-l">Amazon Reimbursed</div><div class="cgd-v">£${Number(r.reimb_amount||0).toFixed(2)}</div></div>
+      </div>
       <div class="fg3">
-        <div class="f"><label>COG (£)</label><input type="number" id="cgm-cog" value="${cog.toFixed(2)}" step="0.01" oninput="cgmUpdate('${reimb_id}')"></div>
-        <div class="f"><label>MSC / Fair Value (£)</label><input type="number" id="cgm-msc" value="${msc>0?msc.toFixed(2):''}" placeholder="e.g. 60.89" step="0.01" oninput="cgmUpdate('${reimb_id}')"></div>
+        <div class="f"><label>COG (£) — total, × qty</label><input type="number" id="cgm-cog" value="${cog>0?cog.toFixed(2):''}" step="0.01" oninput="cgmUpdate('${reimb_id}')"></div>
+        <div class="f"><label>MSC Amount (£) — wins over COG</label><input type="number" id="cgm-msc" value="${msc>0?msc.toFixed(2):''}" placeholder="empty → COG is used" step="0.01" oninput="cgmUpdate('${reimb_id}')" onchange="cgmPersistMsc('${reimb_id}')"></div>
         <div class="f"><label>Reimbursement Date</label><input type="date" id="cgm-date" value="${r.date||''}" oninput="cgmUpdate('${reimb_id}')"></div>
       </div>
       <div class="f"><label>Reason / Scenario</label>
@@ -6341,18 +7113,58 @@ function openCaseGenModal(reimb_id) {
           <option value="subject to a return adjustment" ${reason==='subject to a return adjustment'?'selected':''}>Return adjustment</option>
         </select>
       </div>
-      <div class="f"><label>Generated Message <span id="cgm-chars" style="color:var(--text3)"></span></label>
-        <textarea id="cgm-preview" rows="12" style="font-family:var(--mono);font-size:10.5px;line-height:1.5"></textarea>
+      ${_fallbackStrip}
+      <div id="cgm-ready"></div>
+      <div class="f"><label style="display:flex;align-items:center;gap:8px">Generated Message <span id="cgm-chars" style="color:var(--text3)"></span>
+        <span class="cgm-mode"><button id="cgm-mode-short" class="on" onclick="cgmMode(false,'${reimb_id}')">Short</button><button id="cgm-mode-detail" onclick="cgmMode(true,'${reimb_id}')">Detailed</button></span></label>
+        <textarea id="cgm-preview" rows="11" style="font-family:var(--mono);font-size:10.5px;line-height:1.5"></textarea>
+      </div>
+      <div class="cgm-caseid-row">
+        <span class="ccr-l">New Case ID</span>
+        <input type="text" id="cgm-case-id" value="${esc(a.new_case_id||'')}" placeholder="paste it here after submitting, e.g. 12874884642">
+        <button class="btn btn-green" onclick="cgmSaveCase('${reimb_id}')">Save ID — mark Case Open</button>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-primary" onclick="cgmCopy()">📋 Copy Message</button>
-      <a class="btn btn-sec" href="https://sellercentral.amazon.co.uk/help/center?redirectSource=Hill" target="_blank" style="text-decoration:none;display:inline-flex;align-items:center">Open Case in SC ↗</a>
+      <button class="btn btn-primary" id="cgm-copy-btn" onclick="cgmCopyOpen()">📋 Copy + Open Seller Central ↗</button>
+      <button class="btn btn-sec" onclick="cgmCopy()">Copy only</button>
       <div class="btn-spacer"></div>
       <button class="btn btn-sec" onclick="openRecord('${reimb_id}')">← Back to record</button>
     </div>`;
   document.getElementById('overlay').classList.add('open');
   cgmUpdate(reimb_id);
+}
+function cgmMode(detailed, reimb_id) {
+  CGM_DETAILED = detailed;
+  document.getElementById('cgm-mode-short').classList.toggle('on', !detailed);
+  document.getElementById('cgm-mode-detail').classList.toggle('on', detailed);
+  cgmUpdate(reimb_id);
+}
+// Yes/No on the auto-pulled MSC amount: Yes saves it to the record and claims it;
+// No clears the field so the case claims COG instead. Typing a value always overrides.
+function cgmMscAsk(reimb_id, useIt) {
+  const strip = document.getElementById('cgm-msc-ask');
+  const el = document.getElementById('cgm-msc');
+  if (useIt) {
+    const v = parseFloat(el && el.value);
+    if (!isNaN(v) && v > 0) { setAnn(reimb_id, {msc_amount: v}); toast('MSC £'+v.toFixed(2)+' saved to the record ✓'); }
+  } else {
+    if (el) el.value = '';
+    setAnn(reimb_id, {msc_amount: null});
+    toast('Using COG as the claim value');
+  }
+  if (strip) strip.remove();
+  cgmUpdate(reimb_id);
+}
+// The MSC amount typed in the generator is real data — persist it to the record
+// so it never has to be typed twice (fires on blur, not per keystroke).
+function cgmPersistMsc(reimb_id) {
+  const el = document.getElementById('cgm-msc');
+  if (!el) return;
+  const v = parseFloat(el.value);
+  setAnn(reimb_id, {msc_amount: (!isNaN(v) && v>0) ? v : null});
+  const strip = document.getElementById('cgm-msc-ask');
+  if (strip) strip.remove(); // she typed her own value — that overrides the ask
 }
 function cgmUpdate(reimb_id) {
   const r = records.find(x=>x.reimb_id===reimb_id) || archived.find(x=>x.reimb_id===reimb_id);
@@ -6361,15 +7173,53 @@ function cgmUpdate(reimb_id) {
   const msc = parseFloat(document.getElementById('cgm-msc').value)||0;
   const reason = document.getElementById('cgm-reason').value;
   const prettyDate = prettyDateStr(document.getElementById('cgm-date').value);
-  if (!cog && !msc) { document.getElementById('cgm-preview').value = 'Enter COG and/or MSC amount to generate the case message.'; document.getElementById('cgm-chars').textContent=''; return; }
-  const msg = caseMessageText(r, cog, msc, reason, prettyDate);
-  document.getElementById('cgm-preview').value = msg;
+  const az = cgAnalyse(r, cog, msc);
+  document.getElementById('cgm-ready').innerHTML = cgReadyPanel(az);
+  const prev = document.getElementById('cgm-preview');
+  const copyBtn = document.getElementById('cgm-copy-btn');
+  if (az.blocked) {
+    prev.value = az.missing.length
+      ? 'Case not ready — fill in the missing info above, then the message builds itself.'
+      : 'No case needed for this record — the reimbursement already covers the target value.';
+    document.getElementById('cgm-chars').textContent='';
+    if (copyBtn) copyBtn.disabled = true;
+    return;
+  }
+  if (copyBtn) copyBtn.disabled = false;
+  const msg = caseMessageText(r, cog, msc, reason, prettyDate, CGM_DETAILED);
+  prev.value = msg;
   document.getElementById('cgm-chars').textContent = '· '+msg.length+' chars';
 }
 function cgmCopy() {
   const txt = document.getElementById('cgm-preview').value;
-  if (!txt || txt.includes('Enter COG')) return toast('Generate a message first');
+  if (!txt || txt.includes('Case not ready') || txt.includes('No case needed')) return toast('Nothing to copy — check the readiness box');
   copyToClipboard(txt).then(ok=>toast(ok?'Message copied ✓':'Copy failed — select the text and copy manually'));
+}
+// One click: copy the message AND open Seller Central — then all that's left
+// is paste, submit, and drop the new Case ID back in the box below.
+function cgmCopyOpen() {
+  const txt = document.getElementById('cgm-preview').value;
+  if (!txt || txt.includes('Case not ready') || txt.includes('No case needed')) return toast('Nothing to copy — check the readiness box');
+  copyToClipboard(txt).then(ok=>{
+    toast(ok?'Copied ✓ — opening Seller Central, paste the message there':'Copy failed — select the text and copy manually');
+    window.open('https://sellercentral.amazon.co.uk/help/center?redirectSource=Hill','_blank');
+  });
+}
+function cgmSaveCase(reimb_id) {
+  const el = document.getElementById('cgm-case-id');
+  const v = (el && el.value || '').trim();
+  if (!v) return toast('Paste the new Case ID first');
+  const prev = ann(reimb_id);
+  const today = new Date().toISOString().split('T')[0];
+  setAnn(reimb_id, {
+    new_case_id: v,
+    case_opened_date: prev.case_opened_date || today,
+    reeval_date: prev.reeval_date || today,
+    workflow_status: 'case_open',
+  });
+  renderActive(); renderActions(); updateBadges();
+  toast('Case '+v+' saved — marked as Case Open ✓');
+  openRecord(reimb_id);
 }
 
 function openCaseGen(reimb_id) {
@@ -6382,8 +7232,79 @@ function openCaseGen(reimb_id) {
   },100);
 }
 
+// ── Amazon case attempts — a claim can rack up several case IDs / appeals ──
+function openAddCase(reimb_id) {
+  captureRecordFields(reimb_id);
+  const r = records.find(x=>x.reimb_id===reimb_id) || archived.find(x=>x.reimb_id===reimb_id);
+  if (!r) return;
+  const a = ann(reimb_id);
+  const catts = a.case_attempts||[];
+  const today = new Date().toISOString().split('T')[0];
+  setModalSize('narrow');
+  document.getElementById('modal-inner').innerHTML = `
+    <button class="modal-close" onclick="openRecord('${reimb_id}')">✕</button>
+    <div class="util-head">
+      <div class="util-title">Log Case / Appeal ${catts.length?('#'+(catts.length+1)):''}</div>
+      <div class="util-sub">${esc((r.product_name||'').substring(0,52))}${(r.product_name||'').length>52?'…':''}</div>
+    </div>
+    <div class="modal-body">
+      <div class="msc-hint">Use the <strong>Case Generator</strong> to build the message first if you haven't. Log every case, appeal and follow-up here so the full history stays on the record.</div>
+      <div class="fg">
+        <div class="f"><label>Date</label><input type="date" id="case-log-date" value="${today}"></div>
+        <div class="f"><label>Type</label>
+          <select id="case-log-type">
+            <option value="case">New Seller Support case</option>
+            <option value="appeal">Appeal on a decision</option>
+            <option value="followup">Follow-up / chase</option>
+            <option value="escalation">Escalation</option>
+          </select>
+        </div>
+        <div class="f"><label>Case ID</label><input type="text" id="case-log-id" placeholder="e.g. 12964030622" style="font-family:var(--mono)"></div>
+        <div class="f"><label>Outcome so far</label>
+          <select id="case-log-outcome">
+            <option value="open">Open / awaiting reply</option>
+            <option value="won">Won — payout agreed</option>
+            <option value="denied">Denied</option>
+            <option value="docs">Docs requested</option>
+            <option value="closed">Closed — no result</option>
+          </select>
+        </div>
+      </div>
+      <div class="f"><label>Notes</label><textarea id="case-log-notes" placeholder="e.g. Appealing the reduced MSC — quoted fair market value policy."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="saveCaseAtt('${reimb_id}')">Save Case Attempt</button>
+      <button class="btn btn-sec" onclick="openRecord('${reimb_id}')">Cancel</button>
+    </div>`;
+  document.getElementById('overlay').classList.add('open');
+}
+function saveCaseAtt(reimb_id) {
+  const a = ann(reimb_id);
+  const catts = (a.case_attempts||[]).slice();
+  const date = document.getElementById('case-log-date').value || new Date().toISOString().split('T')[0];
+  const case_id = (document.getElementById('case-log-id').value||'').trim();
+  const type = document.getElementById('case-log-type').value||'case';
+  const outcome = document.getElementById('case-log-outcome').value||'open';
+  const notes = document.getElementById('case-log-notes').value||'';
+  catts.push({date, case_id, type, outcome, notes});
+  const patch = {case_attempts: catts, case_opened_date: a.case_opened_date||date};
+  if (case_id) patch.new_case_id = case_id; // latest ID becomes the headline case link
+  setAnn(reimb_id, patch); // workflow status auto-bumps to case_open via setAnn automation
+  openRecord(reimb_id);
+  renderActive(); renderActions(); updateBadges();
+  toast('Case attempt logged ✓');
+}
+function delCaseAtt(reimb_id, i) {
+  const a = ann(reimb_id);
+  const catts = a.case_attempts||[];
+  catts.splice(i,1);
+  setAnn(reimb_id,{case_attempts:catts});
+  openRecord(reimb_id);
+}
+
 // MSC attempts
 function addMscAtt(reimb_id) {
+  captureRecordFields(reimb_id); // keep any unsaved record edits before swapping the modal
   const r = records.find(x=>x.reimb_id===reimb_id) || archived.find(x=>x.reimb_id===reimb_id);
   if (!r) return;
   const a = ann(reimb_id);
@@ -6426,6 +7347,8 @@ function addMscAtt(reimb_id) {
           </select>
         </div>
       </div>
+      <div class="f" id="msc-approved-wrap" style="display:none"><label>Amazon's Approved / Reduced Amount (£)</label><input type="number" id="msc-log-approved" step="0.01" placeholder="what Amazon actually offered">
+        <div class="field-help">Saves straight into <strong>MSC Amount</strong> on the record — the Case Generator will claim this value automatically.</div></div>
       <div class="f"><label>Notes</label><textarea id="msc-log-notes" placeholder="e.g. Denied — policy mismatch. Will reduce COG by 20% on resubmission."></textarea></div>
       <div class="msc-wait-note" id="msc-wait-note">If this is denied or hits an attempt limit, a 30-day wait is applied automatically and the next re-submission date is set for you.</div>
     </div>
@@ -6441,11 +7364,21 @@ function mscOutcomeHint() {
   const note = document.getElementById('msc-wait-note');
   if (!sel || !note) return;
   const v = sel.value;
+  const apWrap = document.getElementById('msc-approved-wrap');
+  if (apWrap) {
+    apWrap.style.display = (v==='approved'||v==='reduced') ? '' : 'none';
+    if (v==='approved' || v==='reduced') {
+      const ap = document.getElementById('msc-log-approved');
+      // Approved at full value → prefill with what was submitted. Reduced → VA types Amazon's lower figure.
+      if (ap && !ap.value && v==='approved') ap.value = document.getElementById('msc-log-cog').value || '';
+      if (ap && v==='reduced') ap.placeholder = 'the LOWER value Amazon came back with';
+    }
+  }
   if (v==='denied' || v==='error') {
     note.textContent = '⏰ A 30-day wait will be applied. The next re-submission date is set automatically — resubmit then with a ~20% reduced COG.';
     note.style.color = 'var(--amber)';
   } else if (v==='approved' || v==='reduced') {
-    note.textContent = '✓ Approved — next step is to open the re-evaluation case using the Case Generator.';
+    note.textContent = '✓ Enter the amount Amazon offered above — it saves to MSC Amount, then open the re-evaluation case with the Case Generator.';
     note.style.color = 'var(--green)';
   } else {
     note.textContent = 'If this is denied or hits an attempt limit, a 30-day wait is applied automatically and the next re-submission date is set for you.';
@@ -6460,14 +7393,20 @@ function saveMscAtt(reimb_id) {
   const cog = parseFloat(document.getElementById('msc-log-cog').value || '0');
   const status = document.getElementById('msc-log-status').value || 'pending';
   const notes = document.getElementById('msc-log-notes').value || '';
+  const apEl = document.getElementById('msc-log-approved');
+  const approvedAmt = apEl ? (parseFloat(apEl.value)||0) : 0;
   const next = new Date(new Date(date).getTime()+(settings.msc_wait_days||30)*86400000).toISOString().split('T')[0];
-  atts.push({cog, status, date, next_date:next, notes});
-  // Review Date is automatic: 30 days after this submission/denial, unless MSC is approved/reduced (then it moves to the case stage).
   const approved = (status==='approved'||status==='reduced');
-  setAnn(reimb_id,{msc_attempts:atts, msc_status:status, review_date: approved ? '' : next});
+  atts.push({cog, status, date, next_date:next, notes, approved_amt: approved ? (approvedAmt||cog) : null});
+  // Review Date is automatic: 30 days after this submission/denial, unless MSC is approved/reduced (then it moves to the case stage).
+  const upd = {msc_attempts:atts, msc_status:status, review_date: approved ? '' : next};
+  // Approved/Reduced → the amount Amazon offered IS the MSC Amount. Save it so
+  // the Case Generator claims the right value without anyone re-typing it.
+  if (approved) upd.msc_amount = approvedAmt || cog;
+  setAnn(reimb_id, upd);
   openRecord(reimb_id);
   renderActive(); renderActions(); updateBadges();
-  toast(approved ? 'MSC approved — review date cleared, open a case next' : 'MSC logged — review set for '+fmtDate(next));
+  toast(approved ? 'MSC £'+(approvedAmt||cog).toFixed(2)+' saved to the record — open a case next' : 'MSC logged — review set for '+fmtDate(next));
 }
 
 function delMscAtt(reimb_id, i) {
