@@ -251,6 +251,21 @@ input:focus,select:focus,textarea:focus,.fb-input:focus,.fb-select:focus{outline
 .fb-select:hover{border-color:var(--border2);background-color:var(--surface3)}
 .fb-input:focus,.fb-select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
 .fb-input{width:200px}
+/* Upgraded search box — icon + clear button + result count */
+.fb-search{position:relative;display:flex;align-items:center;flex:1 1 260px;min-width:220px;max-width:440px}
+.fb-search-ico{position:absolute;left:11px;width:14px;height:14px;color:var(--text3);pointer-events:none}
+.fb-search .fb-input{width:100%;padding-left:33px;padding-right:58px}
+.fb-search-x{position:absolute;right:40px;width:19px;height:19px;border:0;background:transparent;color:var(--text3);cursor:pointer;border-radius:5px;font-size:11px;display:none;align-items:center;justify-content:center}
+.fb-search-x:hover{background:var(--surface3);color:var(--text)}
+.fb-search-n{position:absolute;right:9px;font-size:9.5px;font-weight:700;color:var(--text3);font-variant-numeric:tabular-nums;pointer-events:none}
+.fb-search.has-val .fb-search-x{display:flex}
+.fb-search.has-val .fb-input{border-color:var(--accent);background:var(--surface3)}
+/* Prominent search on its own row, filters beneath */
+.filter-bar-stack{flex-direction:column;align-items:stretch;gap:8px}
+.filter-bar-stack .fb-filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fb-search-lg{max-width:none;flex:none;width:100%}
+.fb-search-lg .fb-input{padding-top:9px;padding-bottom:9px;font-size:12.5px;font-weight:500}
+.fb-search-lg .fb-search-ico{width:15px;height:15px;left:12px}
 .m-openlink{font-size:10px;color:#38bdf8;margin-left:8px;font-weight:600;text-decoration:none}
 .m-openlink:hover{text-decoration:underline}
 .ar-tagbar{display:flex;flex-wrap:wrap;gap:7px;padding:10px 0 4px}
@@ -425,6 +440,11 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
 .ov2-node-label{font-size:10px;color:var(--text3);text-align:center;font-weight:600}
 .ov2-node-bar{width:34px;height:3px;border-radius:99px;margin-top:2px}
 .ov2-node-arrow{display:flex;align-items:center;color:var(--text3);font-size:12px;opacity:.5;padding:0 2px}
+.ov2-shape{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:-2px 0 10px;padding:2px}
+.ov2-shape-h{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--text3)}
+.ov2-shape-chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--sc,var(--border2));border-radius:8px;padding:4px 10px;cursor:pointer;font-family:inherit;transition:border-color .12s,background .12s}
+.ov2-shape-chip:hover{background:var(--surface2);border-color:var(--sc,var(--border2))}
+.ov2-shape-chip b{color:var(--sc,var(--text));font-variant-numeric:tabular-nums;font-weight:800}
 /* main split */
 .ov2-main{display:grid;grid-template-columns:1.5fr 1fr;gap:14px}
 .ov2-focus{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:9px 12px;box-shadow:var(--shadow-sm)}
@@ -940,11 +960,14 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
 .cg-qp-name{font-size:11px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cg-qp-sub{font-size:9.5px;color:var(--text3);display:flex;align-items:center;gap:5px}
 .cg-qp-amt{font-size:12px;font-weight:800;color:var(--red);font-variant-numeric:tabular-nums;white-space:nowrap}
-.cg-wrap{display:grid;grid-template-columns:minmax(320px,520px) minmax(360px,1fr);gap:14px;height:100%;max-width:1180px}
-.cg-left{display:flex;flex-direction:column;gap:12px;overflow-y:auto;padding-right:8px}
+/* Bounded, content-height layout — was height:100% which stretched the empty
+   message panel to fill the whole viewport (the "big dead space"). */
+.cg-wrap{display:grid;grid-template-columns:minmax(300px,440px) minmax(360px,1fr);gap:14px;max-width:1120px;align-items:start}
+.cg-left{display:flex;flex-direction:column;gap:10px;min-width:0}
 .cg-right{
   background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
   display:flex;flex-direction:column;overflow:hidden;
+  position:sticky;top:8px;min-height:340px;max-height:calc(100vh - 130px);
 }
 .cg-preview-header{
   padding:8px 11px;border-bottom:1px solid var(--border);
@@ -952,12 +975,17 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
   display:flex;align-items:center;justify-content:space-between;
 }
 .cg-preview-body{
-  flex:1;overflow-y:auto;padding:11px;
-  font-size:11.5px;line-height:1.7;color:var(--text2);
+  flex:1;overflow-y:auto;padding:12px;
+  font-size:12px;line-height:1.7;color:var(--text2);
   white-space:pre-wrap;word-break:break-word;
-  font-family:inherit;
+  font-family:inherit;min-height:200px;
 }
 .cg-preview-footer{padding:8px 11px;border-top:1px solid var(--border);display:flex;gap:8px}
+.cg-preview-body.cg-empty{display:flex;align-items:center;justify-content:center;text-align:center;white-space:normal}
+.cg-empty-in{max-width:320px;padding:20px}
+.cg-empty-ico{font-size:30px;opacity:.85;margin-bottom:10px}
+.cg-empty-t{font-size:13px;font-weight:700;color:var(--text);margin-bottom:5px}
+.cg-empty-s{font-size:11.5px;color:var(--text3);line-height:1.55}
 
 /* ─── SETTINGS ─── */
 .settings-section{
@@ -1563,6 +1591,17 @@ tbody tr.row-loss:hover,tbody tr.row-profit:hover,tbody tr.row-cog-error:hover{b
 .ar-gc-actions{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:5px}
 .ar-gc-actions .ar-qa-b{padding:4px 10px;font-size:10px}
 .ar-ladder-band{margin-top:5px;padding-top:5px;border-top:1px solid var(--border)}
+/* MSC attempt dot-summary — at-a-glance history (inspired by the removals app) */
+.mscsum{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:5px}
+.mscsum-dots{display:inline-flex;gap:3px;align-items:center}
+.mscsum-dot{width:9px;height:9px;border-radius:50%;display:inline-block;box-shadow:0 0 0 1px rgba(0,0,0,.25) inset}
+.mscsum-txt{font-size:10.5px;color:var(--text2);font-weight:600;text-transform:none;letter-spacing:0}
+.mscsum-txt b{color:var(--text)}
+.mscsum-next{font-size:9.5px;color:var(--amber);background:var(--amber-dim);border:1px solid color-mix(in srgb,var(--amber) 32%,var(--border));border-radius:99px;padding:2px 8px;font-weight:700;text-transform:none;letter-spacing:0}
+.mscsum-ready{color:var(--green);background:var(--green-dim);border-color:color-mix(in srgb,var(--green) 32%,var(--border))}
+/* compact-bar MSC dots */
+.ar-b-msc{display:inline-flex;gap:3px;align-items:center;margin-left:8px}
+.ar-b-msc .mscsum-dot{width:7px;height:7px}
 .ar-zprog{padding:8px 12px 9px;background:var(--surface);border-top:none;border-bottom:none}
 .ar-zprog .ar-prog{margin-bottom:0}
 .ar-details{display:grid;grid-template-columns:1fr 1fr;gap:0;padding:8px 12px 9px;background:rgba(148,163,184,.035)}
@@ -2222,8 +2261,14 @@ html:not([data-theme="light"]){
 
   <!-- ACTIVE REIMBURSEMENTS -->
   <div class="page" id="page-active">
-    <div class="filter-bar">
-      <input class="fb-input" id="srch" placeholder="Search SKU, FNSKU, ASIN, product…" oninput="renderActive()">
+    <div class="filter-bar filter-bar-stack">
+      <div class="fb-search fb-search-lg" id="srch-wrap">
+        <svg class="fb-search-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="fb-input" id="srch" placeholder="Search product, SKU, FNSKU, ASIN or reimbursement ID…" oninput="srchInput()" onkeydown="if(event.key==='Escape')clearSrch()">
+        <button class="fb-search-x" id="srch-x" onclick="clearSrch()" title="Clear search">✕</button>
+        <span class="fb-search-n" id="srch-n"></span>
+      </div>
+      <div class="fb-filters">
       <select class="fb-select" id="f-month" onchange="renderActive()">
         <option value="">All months</option>
       </select>
@@ -2256,14 +2301,17 @@ html:not([data-theme="light"]){
         <option value="gain">Gains only</option>
       </select>
       <select class="fb-select" id="f-sort" onchange="setActiveSort(this.value)">
-        <option value="nextaction">Sort: Most urgent</option>
-        <option value="net_result">Biggest loss</option>
-        <option value="date">Newest date</option>
-        <option value="actual_cost">Highest COG</option>
+        <option value="nextaction">Sort: Priority (recommended)</option>
+        <option value="deadline">Deadline — soonest first</option>
+        <option value="net_result">Biggest loss first</option>
+        <option value="actual_cost">Highest COG first</option>
+        <option value="date">Newest reimbursement date</option>
+        <option value="product_name">Product name A–Z</option>
       </select>
       <div class="fb-sep"></div>
       <label class="fb-check"><input type="checkbox" id="f-hide-rev" onchange="renderActive()" checked> Hide reversals</label>
       <button class="btn btn-sec" style="padding:4px 10px;font-size:10.5px" onclick="arAllToggle()" title="Toggle all cards between full and compact view">⌃⌄ Collapse / expand all</button>
+      </div>
     </div>
     <div class="ar-tagbar" id="active-tags"></div>
     <div class="tbl-wrap">
@@ -2374,7 +2422,7 @@ html:not([data-theme="light"]){
             Generated Message
             <span id="cg-char-count" style="font-size:10px">—</span>
           </div>
-          <div class="cg-preview-body" id="cg-preview">Select a record and enter MSC amount to generate the case message.</div>
+          <div class="cg-preview-body cg-empty" id="cg-preview"><div class="cg-empty-in"><div class="cg-empty-ico">📋</div><div class="cg-empty-t">Pick a record to build its case</div><div class="cg-empty-s">Choose from the list on the left. The app works out the claim value, checks it's worth opening, and writes the message.</div></div></div>
           <div class="cg-preview-footer">
             <button class="btn btn-primary" onclick="cgCopyOpen()">📋 Copy + Open Seller Central ↗</button>
             <button class="btn btn-sec" onclick="cgCopy()">Copy only</button>
@@ -2667,8 +2715,8 @@ let settings = {
   ]
 };
 
-let sortCol = 'net_result';
-let sortDir = 'asc'; // losses first
+let sortCol = 'nextaction';   // default = priority order (what to work top-to-bottom)
+let sortDir = 'asc';          // rank ascending = most urgent first
 let activeTag = 'all';
 function setActiveTag(t){ activeTag = t||'all'; renderActive(); }
 let pendingImport = null; // parsed CSV preview waiting for confirmation
@@ -2721,8 +2769,13 @@ function loadAll() {
     // Cloud-only: business data comes from Supabase (cloudPull), NOT localStorage.
     // Only UI preferences (theme, sidebar, density) persist locally.
     settings     = {...settings, ...readJSON('bdl_reimb_v15_settings', {})};
+    // Per-staff theme preference persists locally (each device remembers its own).
     const t = localStorage.getItem('bdl_theme');
-    if (t) document.documentElement.setAttribute('data-theme', t);
+    if (t) {
+      document.documentElement.setAttribute('data-theme', t);
+      const tb = document.getElementById('theme-btn');
+      if (tb) tb.textContent = t==='light' ? '🌙 Dark' : '☀ Light';
+    }
     if (localStorage.getItem('bdl_sidebar_collapsed')==='1') document.getElementById('sidebar').classList.add('collapsed');
   } catch(e){ console.warn('loadAll failed:', e); }
   if (normalizeAdjustments()) save();
@@ -2807,6 +2860,9 @@ async function cloudPull(){
         else records.push(r);
       });
       annotations = annMap;
+      // Heal any stale MSC status the moment cloud data lands, so counts/tabs are
+      // right immediately (the correction syncs back on the next save).
+      if (typeof reconcileMscStatus === 'function') reconcileMscStatus();
       batches = (bq.data||[]).map(b=>b.meta||b);
       if (sq.data && sq.data.payload) settings = {...settings, ...sq.data.payload};
       try {
@@ -3168,7 +3224,9 @@ function updateBadges() {
   // Errors have their own badges, so the user does not see "132 actions" with
   // an empty action list.
   const ba=document.getElementById('badge-actions'); if(ba) ba.textContent = actionCount;
-  const bac=document.getElementById('badge-active'); if(bac) bac.textContent = activeRows.length;
+  // Active count = the inbox only: working cases still needing action. Cases waiting
+  // for reimbursement have peeled off to their own tab and don't count here.
+  const bac=document.getElementById('badge-active'); if(bac) bac.textContent = activeRows.filter(r=>!isReimbPending(r)).length;
   const bh=document.getElementById('badge-history'); if(bh) bh.textContent = archived.length;
 }
 
@@ -3310,15 +3368,46 @@ function renderOverview() {
     spark=`<svg class="ov2-spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><defs><linearGradient id="spg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity=".35"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs><path d="${area}" fill="url(#spg)"/><path d="${line}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${pts[pts.length-1][0].toFixed(1)}" cy="${pts[pts.length-1][1].toFixed(1)}" r="3" fill="var(--accent)"/></svg>`;
   }
 
-  // process flow nodes
-  const activeCount = active.length;
+  // process flow nodes — Active shows the inbox (excludes reimb-pending, which
+  // has its own node) so it matches the sidebar Active count.
+  const reimbPendingCount = active.filter(isReimbPending).length;
+  const activeCount = active.filter(r=>!isReimbPending(r)).length;
   const flow=[
     {k:'errors',label:'Import errors',n:errCount,col:'var(--red)',nav:'errors'},
     {k:'review',label:'Review queue',n:reviewItems.length,col:'#c084fc',nav:'triage'},
     {k:'active',label:'Active — working',n:activeCount,col:'var(--amber)',nav:'active'},
     {k:'cases',label:'Cases open',n:casesOpen,col:'#38bdf8',nav:'active'},
+    {k:'reimbpend',label:'Reimb pending',n:reimbPendingCount,col:'#22d3ee',nav:'active'},
     {k:'done',label:'Reimbursed',n:reimbursed.length,col:'var(--green)',nav:'history'},
   ];
+
+  // ── Active inbox "shape" — breaks the 56 into what kind of work it is, so the
+  //    number isn't just a number. Each chip jumps to Active pre-filtered. ──
+  const _shape = {check:0, resubmit:0, opencase:0, docs:0, review:0, caseopen:0, fixcog:0};
+  active.filter(r=>!isReimbPending(r)).forEach(r=>{
+    const a=ann(r.reimb_id), t=today;
+    if(!r.actual_cost||Number(r.actual_cost)<=0){ _shape.fixcog++; return; }
+    if((a.msc_status==='approved'||a.msc_status==='reduced')&&!vaCaseOpen(r)){ _shape.opencase++; return; }
+    if(a.review_date&&a.review_date<=t){ _shape.resubmit++; return; }
+    if(a.msc_status==='docs'){ _shape.docs++; return; }
+    if(a.msc_status==='denied'||a.msc_status==='error'){ _shape.resubmit++; return; }
+    if(a.msc_status==='review'||a.msc_status==='pending'){ _shape.review++; return; }
+    if(vaCaseOpen(r)){ _shape.caseopen++; return; }
+    _shape.check++;
+  });
+  const _shapeChips = [
+    ['check', _shape.check, 'to check MSC', 'var(--text2)', "nav('active');setActiveTag('all')"],
+    ['resubmit', _shape.resubmit, 'to resubmit', 'var(--red)', "nav('active');setActiveTag('denied')"],
+    ['opencase', _shape.opencase, 'open a case', '#38bdf8', "nav('active');setActiveTag('approved')"],
+    ['docs', _shape.docs, 'need a document', 'var(--amber)', "nav('active');setActiveTag('docs')"],
+    ['review', _shape.review, 'under review', '#7dd3fc', "nav('active');setActiveTag('review')"],
+    ['caseopen', _shape.caseopen, 'case open', '#c084fc', "nav('active');setActiveTag('caseopen')"],
+    ['fixcog', _shape.fixcog, 'blocked · fix COG', 'var(--red)', "nav('errors')"],
+  ].filter(c=>c[1]>0);
+  const shapeHtml = _shapeChips.length ? `<div class="ov2-shape">
+      <span class="ov2-shape-h">Active inbox</span>
+      ${_shapeChips.map(c=>`<button class="ov2-shape-chip" style="--sc:${c[3]}" onclick="${c[4]}"><b>${c[1]}</b> ${c[2]}</button>`).join('')}
+    </div>` : '';
 
   // two-column grid, up to 12 — the old 6-row single column left half the panel empty
   const focusRows = focusItems.slice(0,16).map(f=>`
@@ -3390,6 +3479,7 @@ function renderOverview() {
         </div>
         ${i<flow.length-1?'<div class="ov2-node-arrow">→</div>':''}`).join('')}
     </div>
+    ${shapeHtml}
 
     <div class="ov2-main">
       <div class="ov2-focus">
@@ -4336,6 +4426,18 @@ function buildMonthOptions(selectId, data) {
   }).join('');
 }
 
+// Active search box — icon/clear/count wiring
+function srchInput(){
+  const el = document.getElementById('srch');
+  const w = document.getElementById('srch-wrap');
+  if (w) w.classList.toggle('has-val', !!el.value);
+  renderActive();
+}
+function clearSrch(){
+  const el = document.getElementById('srch');
+  el.value=''; const w=document.getElementById('srch-wrap'); if(w) w.classList.remove('has-val');
+  el.focus(); renderActive();
+}
 function renderActive() {
   buildMonthOptions('f-month', [...records,...archived]);
   const srch = (document.getElementById('srch').value||'').toLowerCase();
@@ -4362,11 +4464,14 @@ function renderActive() {
     if (fLoss === 'loss10' && net >= -10) return false;
     if (fLoss === 'loss20' && net >= -20) return false;
     if (srch) {
-      const hay = (r.sku+(r.fnsku||'')+r.asin+(r.product_name||'')+r.reimb_id).toLowerCase();
+      const hay = (r.sku+(r.fnsku||'')+r.asin+(r.product_name||'')+r.reimb_id+(r.reimb_id_real||'')).toLowerCase();
       if (!hay.includes(srch)) return false;
     }
     return true;
   });
+  // live match count in the search box
+  const _sn = document.getElementById('srch-n');
+  if (_sn) _sn.textContent = srch ? (rows.length+' hit'+(rows.length===1?'':'s')) : '';
 
   // ── status tag chips (removal-tracker style) ──
   const todayStr = new Date().toISOString().split('T')[0];
@@ -4374,7 +4479,9 @@ function renderActive() {
   const wfOf  = r => (ann(r.reimb_id).workflow_status||'active');
   const caseOpenOf = r => !!(ann(r.reimb_id).new_case_id) || wfOf(r)==='case_open';
   const tagPred = {
-    all: ()=>true,
+    // "All" = the Active inbox: everything still needing action. Reimb-pending
+    // cases have peeled off to their own tab and are NOT part of the inbox.
+    all: r=>!isReimbPending(r),
     overdue: r=>{ const rd=ann(r.reimb_id).review_date; return rd && rd<todayStr && ['pending','review','reduced','denied'].includes(mscOf(r)); },
     submitted: r=>mscOf(r)==='pending',
     review: r=>mscOf(r)==='review',
@@ -4391,32 +4498,47 @@ function renderActive() {
   const tagEl = document.getElementById('active-tags');
   if (tagEl) {
     tagEl.innerHTML = AR_TAGS.map(([k,label])=>{
-      const n = k==='all' ? rows.length : rows.filter(tagPred[k]).length;
+      const n = rows.filter(tagPred[k]).length;
       return `<button class="ar-tag ${activeTag===k?'on':''}" onclick="setActiveTag('${k}')">${label}<span class="ar-tag-n">${n}</span></button>`;
     }).join('');
   }
-  if (activeTag!=='all' && tagPred[activeTag]) rows = rows.filter(tagPred[activeTag]);
+  if (tagPred[activeTag]) rows = rows.filter(tagPred[activeTag]);
+  // Priority order (work top-to-bottom): blocked → overdue/deadline → your-move
+  // (open case, upload docs, due today) → actionable-now (check MSC) → then the
+  // "waiting" states you can't act on yet (denied cooling off, under review,
+  // case open). Biggest loss breaks ties within a tier (see rows.sort).
   const actionRank = r => {
-    if (!r.actual_cost || Number(r.actual_cost)<=0) return 0; // fix COG first
+    if (!r.actual_cost || Number(r.actual_cost)<=0) return 0; // COG missing — blocked
     const a = ann(r.reimb_id);
     const today = new Date().toISOString().split('T')[0];
     const dl = daysLeft60(r.date);
-    if (dl <= 7 && computedNet(r) < 0) return 1;             // deadline risk
-    if (a.review_date && a.review_date < today) return 2;    // overdue re-review
-    if (a.review_date && a.review_date === today) return 3;  // due today
-    if (a.msc_status==='approved'||a.msc_status==='reduced') return 4; // open case now
-    if (a.msc_status==='docs') return 5;                     // upload docs
-    if (a.msc_status==='denied'||a.msc_status==='error') return 6;     // resubmit
-    if (!a.msc_status || a.msc_status==='none') return 7;    // check MSC
-    if (a.msc_status==='review'||a.msc_status==='pending') return 8;   // waiting
-    if (vaCaseOpen(r)) return 9;                             // waiting on amazon
-    if ((a.outcome||'')==='reimbursed') return 10;          // done
-    return 7;
+    if (a.review_date && a.review_date < today) return 1;             // overdue re-submit — money leaking
+    if (dl <= 7 && computedNet(r) < 0) return 2;                      // claim window closing
+    if ((a.msc_status==='approved'||a.msc_status==='reduced') && !vaCaseOpen(r)) return 3; // MSC approved → open case now
+    if (a.msc_status==='docs') return 4;                             // Amazon wants a document
+    if (a.review_date && a.review_date === today) return 5;          // re-submit due today
+    if (!a.msc_status || a.msc_status==='none') return 6;            // check MSC — actionable now
+    // ── waiting states: nothing to do until time passes / Amazon replies ──
+    if (a.msc_status==='denied'||a.msc_status==='error') return 7;    // cooling off before resubmit
+    if (a.msc_status==='review'||a.msc_status==='pending') return 8;  // waiting on Amazon's MSC result
+    if (vaCaseOpen(r)) return 9;                                     // waiting on Amazon's case reply
+    if ((a.outcome||'')==='reimbursed') return 10;                  // done
+    return 6;
   };
   rows.sort((a,b) => {
+    // Priority sort: rank first (most urgent), then biggest loss within a tier so
+    // Sarah always works the most valuable of the equally-urgent items first.
+    if (sortCol==='nextaction') {
+      const ra=actionRank(a), rb=actionRank(b);
+      if (ra!==rb) return ra-rb;
+      return computedNet(a)-computedNet(b); // more negative (bigger loss) first
+    }
+    if (sortCol==='deadline') {
+      const da=daysLeft60(a.date), db=daysLeft60(b.date);
+      return (da==null?Infinity:da)-(db==null?Infinity:db); // soonest first
+    }
     let av, bv;
     if (sortCol==='net_result') { av = computedNet(a); bv = computedNet(b); }
-    else if (sortCol==='nextaction') { av = actionRank(a); bv = actionRank(b); }
     else { av = a[sortCol]; bv = b[sortCol]; }
     if (av===undefined||av===null||av==='') av = sortDir==='asc'?Infinity:-Infinity;
     if (bv===undefined||bv===null||bv==='') bv = sortDir==='asc'?Infinity:-Infinity;
@@ -4603,6 +4725,24 @@ function buildActiveCard(r){
   } else {
     attLog='<div class="ar-ladder"><div class="att-rung att-empty"><span class="att-out" style="color:var(--text3)">No attempts yet.</span> <span class="att-amt" style="color:var(--text2)">Submit at £'+clCog.toFixed(2)+' (full COG)</span><button class="att-go" onclick="event.stopPropagation();arQuick(\''+idJs+'\',\'submit\')">Log MSC</button></div></div>';
   }
+  // ── MSC dot-summary header: one dot per attempt (coloured by outcome), the last
+  //    result, and the next suggested submit — at-a-glance MSC history. ──
+  let mscDotSummary = '';
+  if (atts.length) {
+    const dots = atts.map((t,i)=>'<span class="mscsum-dot" style="background:'+dotCol(t.status)+'" title="#'+(i+1)+' · £'+Number(t.cog||0).toFixed(2)+' · '+cap(t.status)+' · '+fmtDate(t.date)+'"></span>').join('');
+    let nextChip = '';
+    if (suggestNext!=null) {
+      const _td = new Date().toISOString().split('T')[0];
+      const _dd = a.review_date ? Math.round((new Date(a.review_date)-new Date(_td))/86400000) : null;
+      const _ready = _dd==null || _dd<=0;
+      nextChip = '<span class="mscsum-next'+(_ready?' mscsum-ready':'')+'">'+(_ready?'ready · resubmit £'+suggestNext.toFixed(2):'next £'+suggestNext.toFixed(2)+' in '+_dd+'d')+'</span>';
+    }
+    mscDotSummary = '<div class="ar-sec-h mscsum">MSC log'
+      + '<span class="mscsum-dots">'+dots+'</span>'
+      + '<span class="mscsum-txt">'+atts.length+' attempt'+(atts.length===1?'':'s')+' · last <b>'+cap(lastAtt.status)+'</b> at £'+Number(lastAtt.cog||0).toFixed(2)+'</span>'
+      + nextChip
+      + '</div>';
+  }
   const moneyTiles =
     '<div class="ar-workgrid">'+
       '<div class="ar-tile-panel"><div class="ar-tile-head">Shortfall maths</div><div class="ar-money-grid">'+
@@ -4658,7 +4798,7 @@ function buildActiveCard(r){
   }
   const details=moneyTiles+'<div class="ar-details">'+
     '<div class="ar-dcol ar-dcol-full ar-ladder-band">'+
-      (atts.length?'<div class="ar-sec-h">MSC log <span class="ar-sec-n">'+atts.length+' attempt'+(atts.length===1?'':'s')+'</span></div>':'')+
+      mscDotSummary+
       attLog+
       caseLog+
     '</div>'+
@@ -4690,7 +4830,7 @@ function buildActiveCard(r){
   const bar='<div class="ar-bar" onclick="arHeadClick(event,\''+idJs+'\')">'+
     '<span class="ar-b-seg"><span class="ar-b-lbl">Recover</span><b style="color:'+recCol+'">'+recBig+'</b></span>'+
     '<span class="ar-b-seg"><span class="ar-b-lbl">Deadline</span><b style="color:'+winCol+'">'+dlBig+'</b><span class="ar-b-track'+(hotBar?' ar-gc-bar-hot':'')+'"><span class="ar-b-fill" style="width:'+burnt+'%;background:'+winCol+'"></span></span></span>'+
-    '<span class="ar-b-seg ar-b-next"><span class="ar-b-lbl">Next</span><b style="color:'+ebCol+'">'+eyebrow+'</b>'+(metric?'<span style="color:'+metricCol+'">'+metric+'</span>':'')+'</span>'+
+    '<span class="ar-b-seg ar-b-next"><span class="ar-b-lbl">Next</span><b style="color:'+ebCol+'">'+eyebrow+'</b>'+(metric?'<span style="color:'+metricCol+'">'+metric+'</span>':'')+(atts.length?'<span class="ar-b-msc" title="'+atts.length+' MSC attempt'+(atts.length===1?'':'s')+'">'+atts.map(t=>'<span class="mscsum-dot" style="background:'+dotCol(t.status)+'"></span>').join('')+'</span>':'')+'</span>'+
     '<span class="ar-b-acts">'+barQuick+(cta?'<button class="ar-b-cta" style="--rc:'+ctaCol+'" onclick="event.stopPropagation();'+ctaAct+'">'+cta+'</button>':'')+'</span>'+
   '</div>';
   return '<div class="ar-card '+rowStatusClass(r)+(open?' is-open':'')+'" data-rid="'+esc(id)+'">'+
@@ -4718,7 +4858,8 @@ function arHeadClick(e,id){
 }
 function setActiveSort(col){
   sortCol = col;
-  sortDir = (col==='net_result'||col==='nextaction') ? 'asc' : 'desc';
+  // asc = "smallest/most-urgent first" for these; desc for the rest
+  sortDir = (col==='net_result'||col==='nextaction'||col==='deadline'||col==='product_name') ? 'asc' : 'desc';
   renderActive();
 }
 function arStatus(id, val){
@@ -5373,10 +5514,13 @@ function cgPick(id){
   document.getElementById('cg-record-info').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
+const CG_EMPTY_HTML = '<div class="cg-empty-in"><div class="cg-empty-ico">📋</div><div class="cg-empty-t">Pick a record to build its case</div><div class="cg-empty-s">Choose from the list on the left. The app works out the claim value, checks it\'s worth opening, and writes the message.</div></div>';
+function cgShowEmpty(){ const el=document.getElementById('cg-preview'); if(el){ el.classList.add('cg-empty'); el.innerHTML=CG_EMPTY_HTML; } }
+function cgShowText(t){ const el=document.getElementById('cg-preview'); if(el){ el.classList.remove('cg-empty'); el.textContent=t; } }
 function cgUpdate() {
   const id = document.getElementById('cg-record').value;
   const info = document.getElementById('cg-record-info');
-  if (!id) { info.style.display='none'; document.getElementById('cg-preview').textContent='Select a record and enter MSC amount to generate the case message.'; return; }
+  if (!id) { info.style.display='none'; cgShowEmpty(); return; }
   info.style.display='block';
   const r = records.find(x=>x.reimb_id===id);
   if (!r) return;
@@ -5435,9 +5579,9 @@ function cgUpdate() {
   }
 
   if (az.blocked) {
-    document.getElementById('cg-preview').textContent = az.missing.length
+    cgShowText(az.missing.length
       ? 'Case not ready — fill in the missing info flagged above.'
-      : 'No case needed for this record — the reimbursement already covers the target value.';
+      : 'No case needed for this record — the reimbursement already covers the target value.');
     document.getElementById('cg-char-count').textContent='—';
     return;
   }
@@ -5448,7 +5592,7 @@ function cgUpdate() {
 
   const msg = caseMessageText(r, cog, msc, reason, prettyDate);
 
-  document.getElementById('cg-preview').textContent = msg;
+  cgShowText(msg);
   document.getElementById('cg-char-count').textContent = msg.length+' chars';
 }
 function cgSaveCase() {
@@ -5510,7 +5654,7 @@ function cgReset() {
   if (info) info.removeAttribute('data-current-id');
   ['cg-cog','cg-msc','cg-date','cg-reimb-id','cg-case-id'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   const rd=document.getElementById('cg-ready'); if(rd) rd.innerHTML='';
-  const prev=document.getElementById('cg-preview'); if(prev) prev.textContent='Select a record and enter MSC amount to generate the case message.';
+  cgShowEmpty();
   const cc=document.getElementById('cg-char-count'); if(cc) cc.textContent='—';
 }
 
@@ -7549,8 +7693,12 @@ function delMscAtt(reimb_id, i) {
   const a = ann(reimb_id);
   const atts = a.msc_attempts||[];
   atts.splice(i,1);
-  setAnn(reimb_id,{msc_attempts:atts});
+  // Keep msc_status in sync with the remaining log: last attempt's outcome, or
+  // back to 'not checked' if none are left. Prevents a stale status after a delete.
+  const derived = atts.length ? (atts[atts.length-1].status||'pending') : 'none';
+  setAnn(reimb_id,{msc_attempts:atts, msc_status:derived});
   openRecord(reimb_id);
+  renderActive(); renderActions(); updateBadges();
 }
 
 function openModal(){ setModalSize&&setModalSize('md'); document.getElementById('overlay').classList.add('open'); }
@@ -7600,6 +7748,35 @@ function rowStatusClass(r) {
 function vaCaseOpen(r) {
   const a = ann(r.reimb_id);
   return !!(a.new_case_id || a.case_id || a.workflow_status==='case_open' || (a.case_attempts && a.case_attempts.length));
+}
+// ── Self-heal MSC status drift ──
+// msc_status is stored separately from the attempt log and can go stale (e.g. a
+// record with 3 logged attempts but status 'none'). That impossible state would
+// wrongly park a worked case in the Active inbox. Heal it to the latest attempt's
+// outcome. We ONLY fix the clearly-broken 'none'-with-attempts case — a real
+// status that differs from the last attempt may be an intentional manual advance,
+// so we leave those alone. Returns how many were fixed.
+function reconcileMscStatus(){
+  let changed = 0;
+  Object.keys(annotations||{}).forEach(id=>{
+    const a = annotations[id];
+    const atts = a && a.msc_attempts;
+    if (!atts || !atts.length) return;
+    if (!a.msc_status || a.msc_status==='none') {
+      a.msc_status = atts[atts.length-1].status || 'pending';
+      changed++;
+    }
+  });
+  return changed;
+}
+// A case is "waiting for reimbursement" — Amazon has agreed to pay, we're just
+// waiting for the money. Per Jack's rule these leave the Active inbox (and its
+// count) and live only under the Reimbursement-pending tab, until reimbursed →
+// History. Everything still needing action/chasing stays in Active.
+function isReimbPending(r) {
+  const a = ann(r.reimb_id);
+  if ((a.outcome||'')==='reimbursed') return false;
+  return a.workflow_status==='reimb_pending' || !!String(a.new_reimb_id||'').trim();
 }
 function workflowPill(r) {
   if (r.is_adjustment==='Yes') return '<span class="workflow-pill ws-done">Adjustment credit</span>';
