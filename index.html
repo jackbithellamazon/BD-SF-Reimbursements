@@ -1661,6 +1661,9 @@ thead th{padding:7px 10px}
 .dec-active{color:var(--green);border-color:var(--green);background:var(--green-dim)}
 .dec-active:hover{background:var(--green);color:#0c0e12}
 .dec-none:hover{border-color:var(--text3);color:var(--text)}
+/* ── DARK-ONLY SKIN: everything until the closing brace is the dark theme's
+   hand-tuned colours. Light mode falls back to the var-based base styles. ── */
+html:not([data-theme="light"]) {
 /* ─── V17.1: History month + audit row redesign ─── */
 .hb-card{background:linear-gradient(180deg,#071017,#05080d);border-color:rgba(125,211,252,.16);border-radius:10px;box-shadow:0 18px 40px -34px rgba(0,0,0,.95);overflow:hidden}
 .hb-card.is-reversal-only{border-color:rgba(148,163,184,.22)}
@@ -1840,6 +1843,8 @@ thead th{padding:7px 10px}
 #page-active tbody tr{border-bottom:1px solid var(--border)}
 #page-active tbody td{padding-top:8px;padding-bottom:8px}
 
+} /* end dark-only skin */
+
 /* ── Case Generator v2 + MSC clarity ── */
 .msc-flow-hint{font-size:10.5px;color:var(--text2);background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-bottom:10px;line-height:1.6}
 .msc-flow-hint b{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:var(--amber-dim);color:var(--amber);font-size:9px;margin:0 2px}
@@ -1880,20 +1885,23 @@ thead th{padding:7px 10px}
 .ar-note-inp{flex:1 1 140px;min-width:110px;max-width:260px;margin-left:auto}
 .att-row.docs{border-left-color:#c084fc}
 
-/* ── 2026-07-10 polish v2: white text, readable sizes, zero grey-on-dark ── */
-html:not([data-theme="light"]){--text2:#eef3fa;--text3:#d7e0eb;--code:#e6eef9}
-body{font-size:13px}
-.ar-info-label{font-size:10px;color:#f2f6fc;font-weight:800}
-.ar-info-sub{font-size:10px;color:#dde6f1}
+/* ── 2026-07-10 polish v2: readable sizes in BOTH themes ── */
+body{font-size:13px;letter-spacing:0}
+.ar-info-label{font-size:10px;font-weight:800}
+.ar-info-sub{font-size:10px}
 .ar-info-value{font-size:14px}
-.ar-tile-head{font-size:10.5px;color:#ffffff;letter-spacing:.08em}
-.ar-gc-lbl{font-size:10.5px;color:#f2f6fc}
-.ar-gc-sub{font-size:11px;color:#dde6f1}
-.ar-sec-h{font-size:10.5px;color:#f2f6fc}
-.ar-gc-lbl,.ar-tile-head,.ar-info-label{color:#f2f6fc}
-.ar-gc-sub,.ar-info-sub{color:#dde6f1}
+.ar-tile-head{font-size:10.5px;letter-spacing:.08em}
+.ar-gc-lbl{font-size:10.5px}
+.ar-gc-sub{font-size:11px}
+.ar-sec-h{font-size:10.5px}
 .ar-name{font-size:14px}
 .ar-gc-big{font-size:18px}
+.aq-row-name{font-weight:700;font-size:13px}
+.aq-row-sub{font-size:12px}
+.aq-id{font-size:11px;font-weight:500}
+.aq-dl-days{font-size:13px}
+.aq-amt{font-size:13px}
+.td-mono{font-size:11px}
 /* tighter vertical rhythm — same info, less air */
 .ar-zhead{padding:7px 12px 8px}
 .ar-name{margin-bottom:4px}
@@ -1907,48 +1915,137 @@ body{font-size:13px}
 .ar-dcol-full.ar-ladder-band{margin-top:5px;padding-top:5px}
 .ar-foot{padding:6px 10px;gap:6px}
 
-/* ── Overview scroll fix: ONE scroll container for the whole page.
-   Two stacked .page-body scrollers (ov-body + aq-body) each grabbed half the
-   viewport and scrolled independently — that was the mess. ── */
+/* ── Overview scroll fix: ONE scroll container for the whole page. ── */
 #page-overview.active{display:block;overflow-y:auto}
 #page-overview .page-body{overflow:visible;flex:none;height:auto}
 #page-overview .aq-header{position:sticky;top:0;z-index:5;background:var(--bg);border-top:1px solid var(--border2);border-bottom:1px solid var(--border);padding:10px 24px}
 
-/* ── Typography & colour pass: system SF Pro, white text, bright chips ── */
-body{letter-spacing:0}
-.aq-row-name{font-weight:700;font-size:13px}
-.aq-row-sub{color:#dde6f1;font-size:12px}
-.aq-id{color:#f2f7fd;background:#1a2634;border-color:#3d5471;font-size:11px;font-weight:500}
-.aq-id-sku{color:#e0e9f4}
-.aq-dl-lbl{color:#d7e0eb}
-.aq-dl-days{font-size:13px}
-.aq-amt{color:#f0f5fb;font-size:13px}
-.td-mono{color:#e6eef9;font-size:11px}
-.aq-band-label{color:#ffffff}
-.aq-band-sub{color:#dde6f1}
-.aq-sh-title{color:#ffffff}
-.aq-side-h{color:#e6eef9}
-.aq-sub{color:#dde6f1}
-
-/* Overview focus list — 2-column grid so 12 tasks fill the panel, no void */
+/* Overview focus list — 2-column grid so tasks fill the panel, no void */
 .ov2-taskgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 22px}
-.ov2-task-reason{color:#dde6f1}
-.ov2-task-name{color:#f7fafd}
-.ov2-loss-sub,.ov2-sstat-l,.ov2-sstat-s,.ov2-bar-head span,.ov2-hero-r-foot,.ov2-node-label,.ov2-eyebrow{color:#dde6f1}
-.ov2-side-losses-h{color:#ffffff}
-.ov2-reason-l{color:#e8eff8}
 
-/* ── Settings — modern cards, comfortable single column ── */
+/* ── DARK ONLY: white text + bright chips (light mode keeps its own palette) ── */
+html:not([data-theme="light"]){
+  --text2:#eef3fa;--text3:#d7e0eb;--code:#e6eef9;
+  .ar-gc-lbl,.ar-info-label,.ar-sec-h{color:#f2f6fc}
+  .ar-tile-head{color:#ffffff}
+  .ar-gc-sub,.ar-info-sub{color:#dde6f1}
+  .aq-row-sub{color:#dde6f1}
+  .aq-id{color:#f2f7fd;background:#1a2634;border-color:#3d5471}
+  .aq-id-sku{color:#e0e9f4}
+  .aq-dl-lbl{color:#d7e0eb}
+  .aq-amt{color:#f0f5fb}
+  .td-mono{color:#e6eef9}
+  .aq-band-label,.aq-sh-title{color:#ffffff}
+  .aq-band-sub,.aq-sub{color:#dde6f1}
+  .aq-side-h{color:#e6eef9}
+  .ov2-task-reason{color:#dde6f1}
+  .ov2-task-name{color:#f7fafd}
+  .ov2-loss-sub,.ov2-sstat-l,.ov2-sstat-s,.ov2-bar-head span,.ov2-hero-r-foot,.ov2-node-label,.ov2-eyebrow{color:#dde6f1}
+  .ov2-side-losses-h{color:#ffffff}
+  .ov2-reason-l{color:#e8eff8}
+  .settings-section{border-color:#26364a}
+  .settings-section:hover{border-color:#354962}
+  .ss-header{border-bottom-color:#1c2a3c}
+}
+
+/* ── Settings — modern cards, both themes (colours via vars) ── */
 #page-settings .page-body{max-width:940px}
-.settings-section{border-radius:14px;border:1px solid #26364a;background:linear-gradient(180deg,rgba(148,163,184,.05),rgba(148,163,184,.015));box-shadow:0 14px 34px -28px rgba(0,0,0,.9);transition:border-color .15s}
-.settings-section:hover{border-color:#354962}
-.ss-header{background:transparent;border-bottom:1px solid #1c2a3c;padding:12px 16px 10px;position:relative}
+.settings-section{border-radius:14px;border:1px solid var(--border2);background:linear-gradient(180deg,rgba(148,163,184,.05),rgba(148,163,184,.015));box-shadow:0 14px 34px -28px rgba(0,0,0,.55);transition:border-color .15s}
+.ss-header{background:transparent;border-bottom:1px solid var(--border);padding:12px 16px 10px;position:relative}
 .ss-header::before{content:'';position:absolute;left:0;top:12px;bottom:10px;width:3px;border-radius:3px;background:var(--accent)}
-.ss-header h3{font-size:13px;font-weight:800;color:#ffffff;letter-spacing:-.01em}
-.ss-header p{font-size:11px;color:#dde6f1;margin-top:3px;line-height:1.5}
+.ss-header h3{font-size:13px;font-weight:800;color:var(--text);letter-spacing:-.01em}
+.ss-header p{font-size:11px;color:var(--text2);margin-top:3px;line-height:1.5}
 .ss-body{padding:12px 16px 14px;gap:12px}
-#page-settings label{font-size:11px;color:#e8eff8;font-weight:600}
+#page-settings label{font-size:11px;color:var(--text2);font-weight:600}
 #page-settings input[type="number"],#page-settings input[type="text"],#page-settings select{font-size:12.5px}
+
+/* ── LIGHT MODE FIXES: components that only had a dark skin ── */
+[data-theme="light"] #sidebar{background:linear-gradient(180deg,#ffffff,#f4f7fa);border-right:1px solid #e2e8f0}
+[data-theme="light"] .sb-logo-text .name{color:#141c2b}
+[data-theme="light"] .sb-logo-text .sub{color:#7c8aa0}
+[data-theme="light"] .sb-toggle{color:#4a5871;background:#eef2f7;border-color:#dbe3ec}
+[data-theme="light"] .sb-section-label{color:#8593a8}
+[data-theme="light"] .nav-btn{color:#4a5871}
+[data-theme="light"] .nav-btn:hover{background:#eef2f7;color:#141c2b}
+[data-theme="light"] .nav-btn.active{background:#e3f4ec;color:#0c7a52}
+[data-theme="light"] .hist-fbar{background:#ffffff;box-shadow:0 10px 22px -18px rgba(15,23,42,.20)}
+[data-theme="light"] .hb-header{background:#eef2f7;color:#3c4a5f;border-color:#dbe3ec;box-shadow:none}
+[data-theme="light"] .hb-help{background:#f4f7fa;color:#5a677c;border-color:#e2e8f0;box-shadow:none}
+[data-theme="light"] .hb-help b{color:#232e40}
+[data-theme="light"] .hb-section-total{background:#f4f7fa;color:#3c4a5f}
+[data-theme="light"] .hb-section-total.audit-top,[data-theme="light"] .hb-section-total.bottom{background:#eef2f7;box-shadow:none;border-color:#dbe3ec}
+[data-theme="light"] .hb-section-title{color:#22314a}
+[data-theme="light"] .hb-sku{color:#3c4a5f;background:#eef2f7;border-color:#dbe3ec}
+[data-theme="light"] .hb-sub{color:#5a677c}
+[data-theme="light"] .aq-header{background:#ffffff;border-bottom:1px solid #e2e8f0}
+[data-theme="light"] .aq-title{color:#141c2b}
+[data-theme="light"] .aq-sub{color:#5a677c}
+[data-theme="light"] .hs-rev{background:#eceff3;color:#5a677c;border-color:#dbe3ec}
+[data-theme="light"] .p-dw,[data-theme="light"] .p-di,[data-theme="light"] .p-do{background:#fff1e4;color:#b45309}
+[data-theme="light"] .p-lw,[data-theme="light"] .p-csi{background:#f4ebff;color:#7c3aed}
+[data-theme="light"] .p-li{background:#e3f7ee;color:#0c7a52}
+[data-theme="light"] .p-cr{background:#eceff3;color:#5a677c}
+[data-theme="light"] .p-ra{background:#f2f8dd;color:#4d7c0f}
+[data-theme="light"] .p-ga{background:#e3f2fb;color:#0369a1}
+[data-theme="light"] .p-rev{background:#eceff3;color:#6b7280}
+/* Active card — light skin (base card styles are dark-tinted) */
+[data-theme="light"] .ar-card{background:#ffffff}
+[data-theme="light"] .ar-zhead{background:#f7f9fc;border-bottom:1px solid #e8edf3}
+[data-theme="light"] .ar-name{color:#141c2b}
+[data-theme="light"] .ar-glance{background:#fbfcfe;border-color:#e8edf3}
+[data-theme="light"] .ar-gc{border-color:#e8edf3}
+[data-theme="light"] .ar-gc-lbl,[data-theme="light"] .ar-tile-head,[data-theme="light"] .ar-info-label,[data-theme="light"] .ar-sec-h{color:#5a677c}
+[data-theme="light"] .ar-gc-sub,[data-theme="light"] .ar-info-sub{color:#7c8aa0}
+[data-theme="light"] .ar-workgrid{background:#f4f7fa;border-color:#e8edf3}
+[data-theme="light"] .ar-tile-panel{background:#ffffff;border-color:#e2e8f0}
+[data-theme="light"] .ar-info-tile{background:#f7f9fc;border-color:#e2e8f0}
+[data-theme="light"] .ar-info-value{color:#141c2b}
+[data-theme="light"] .ar-info-value.formula{color:#3c4a5f}
+[data-theme="light"] .id-chip{background:#eef2f7;border-color:#dbe3ec;color:#3c4a5f}
+[data-theme="light"] .ar-details{background:#fbfcfe}
+[data-theme="light"] .ar-footer{background:#ffffff}
+[data-theme="light"] .att-rung{background:#f4f7fa;border-color:#e2e8f0}
+[data-theme="light"] .aq-qt{color:#141c2b}
+[data-theme="light"] .aq-qs{color:#7c8aa0}
+[data-theme="light"] .aq-qgo{background:#eef2f7;border-color:#dbe3ec;color:#3c4a5f}
+[data-theme="light"] .aq-centre-note{background:#f4f7fa;border-color:#e2e8f0;color:#5a677c}
+[data-theme="light"] .aq-centre-note b{color:#141c2b}
+
+/* ── History month band: theme-neutral BASE (the component was born inside the
+   dark-only skin, so light mode had no structure at all). Dark skin still wins
+   in dark mode via higher specificity. ── */
+.hb-card{border-radius:10px;overflow:hidden;border:1px solid var(--border2);background:var(--surface)}
+.hb-month-hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--border);cursor:pointer;background:var(--surface2)}
+.hb-month-left{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.hb-month-toggle{width:24px;height:24px;border-radius:7px;background:var(--surface3);border:1px solid var(--border2);color:var(--text2);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.hb-month-titleline{display:flex;align-items:center;gap:9px;flex-wrap:wrap;min-width:0}
+.hb-month-title{font-size:14.5px;font-weight:900;color:var(--text);letter-spacing:-.01em}
+.hb-month-sub{font-size:10.8px;color:var(--text2);margin-top:3px}
+.hb-month-pill{display:inline-flex;align-items:center;border:1px solid var(--border2);background:var(--surface3);border-radius:999px;padding:3px 8px;font-size:10px;font-weight:780;color:var(--text2)}
+.hb-month-pill.amber{color:var(--amber);background:var(--amber-dim);border-color:color-mix(in srgb,var(--amber) 32%,var(--border))}
+.hb-month-pill.red{color:var(--red);background:var(--red-dim);border-color:color-mix(in srgb,var(--red) 32%,var(--border))}
+.hb-month-pill.blue{color:#0284c7;background:rgba(56,189,248,.12);border-color:rgba(56,189,248,.30)}
+.hb-month-metrics{display:grid;grid-template-columns:repeat(3,minmax(96px,1fr));gap:7px;min-width:390px}
+.hb-month-metric{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:7px 9px;text-align:right}
+.hb-mm-value{font-size:13px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--text)}
+.hb-mm-label{font-size:8.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-top:2px}
+.hb-month-story{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:9px 12px;background:var(--surface2);border-bottom:1px solid var(--border)}
+.hb-story{position:relative;background:var(--surface3);border:1px solid var(--border2);border-radius:8px;padding:8px 10px;min-width:0}
+.hb-story::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:var(--story,var(--text3))}
+.hb-story.work{--story:var(--green)}.hb-story.rev{--story:var(--red)}.hb-story.open{--story:var(--amber)}
+.hb-story-k{font-size:8.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);font-weight:850}
+.hb-story-v{font-size:15px;font-weight:900;font-variant-numeric:tabular-nums;margin-top:3px;color:var(--text)}
+.hb-story-s{font-size:10px;color:var(--text3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hb-work-panel{margin:9px 12px 10px;background:var(--surface2);border:1px dashed var(--border2);border-radius:8px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hb-work-panel b{font-size:12px;color:var(--text)}
+.hb-work-panel span{display:block;font-size:10.5px;color:var(--text3);margin-top:2px}
+.hb-work-pillrow{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.hb-audit-toggle{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:9px 12px;background:var(--surface2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);cursor:pointer}
+.hb-audit-main{display:flex;align-items:center;gap:8px;min-width:0}
+.hb-audit-chevron{width:22px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;background:rgba(56,189,248,.10);border:1px solid rgba(56,189,248,.28);color:#0284c7;font-weight:900}
+.hb-audit-title{font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:900;color:var(--text)}
+.hb-audit-sub{font-size:10px;color:var(--text3);margin-left:4px;text-transform:none;letter-spacing:0;font-weight:650}
+.hb-audit-counts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 </style>
 </head>
 <body>
@@ -3010,8 +3107,13 @@ const PAGE_TITLES = {
   history:'History', casegen:'Case Generator', import:'Import', settings:'Settings'
 };
 function nav(id) {
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   if (id==='actions') id='overview'; // Actions tab merged into Overview — old links land there
+  // Leaving the Case Generator = done with that case. Clear it so the next
+  // visit starts fresh instead of resuming a finished workflow.
+  // (Must run BEFORE the active classes are stripped, or the current page is unknowable.)
+  const _curPage = document.querySelector('.page.active');
+  if (_curPage && _curPage.id==='page-casegen' && id!=='casegen' && typeof cgReset==='function') cgReset();
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   // activate nav btn
