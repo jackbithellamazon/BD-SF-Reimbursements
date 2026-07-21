@@ -986,7 +986,8 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
 .cg-qp-rank{flex:0 0 18px;height:18px;border-radius:5px;background:var(--surface3);color:var(--text3);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center}
 .cg-qp-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .cg-qp-name{font-size:11px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cg-qp-sub{font-size:9.5px;color:var(--text3);display:flex;align-items:center;gap:5px}
+.cg-qp-sub{font-size:9.5px;color:var(--text3);display:flex;align-items:center;gap:5px;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.cg-qp-sub .pill{flex:none}
 .cg-qp-amt{font-size:12px;font-weight:800;color:var(--red);font-variant-numeric:tabular-nums;white-space:nowrap}
 /* Bounded, content-height layout — was height:100% which stretched the empty
    message panel to fill the whole viewport (the "big dead space"). */
@@ -1012,7 +1013,17 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
   white-space:pre-wrap;word-break:break-word;
   font-family:inherit;min-height:200px;
 }
-.cg-preview-footer{padding:8px 11px;border-top:1px solid var(--border);display:flex;gap:8px}
+.cg-preview-footer{padding:8px 11px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap}
+/* Narrow screens (small laptops): stack the two columns — the side-by-side grid's
+   minimum widths clipped the message panel off-screen below ~1100px. */
+@media(max-width:1180px){
+  #page-casegen .page-body{display:block;height:auto;overflow:auto}
+  .cg-wrap{grid-template-columns:1fr;gap:12px}
+  .cg-right{position:static;height:auto;min-height:300px;max-height:none}
+  .cg-preview-body{min-height:160px;max-height:380px}
+  .cg-qp-list{flex:none;max-height:300px}
+  .cg-recent{max-height:none;overflow:visible}
+}
 .cg-preview-body.cg-empty{display:flex;align-items:center;justify-content:center;text-align:center;white-space:normal}
 .cg-empty-in{max-width:320px;padding:20px}
 .cg-empty-ico{font-size:30px;opacity:.85;margin-bottom:10px}
@@ -2052,6 +2063,8 @@ body{font-size:13px;letter-spacing:0}
 
 /* Overview focus list — 2-column grid so tasks fill the panel, no void */
 .ov2-taskgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 22px}
+@media(max-width:1000px){.ov2-taskgrid{grid-template-columns:1fr}}
+@media(max-width:900px){.cgm-data{grid-template-columns:repeat(2,1fr)}}
 
 /* ── DARK ONLY: white text + bright chips (light mode keeps its own palette) ── */
 html:not([data-theme="light"]){
@@ -2977,7 +2990,7 @@ async function cloudPull(){
         // A finished outcome ALWAYS means History — even if workflow_status was
         // never stamped 'archived' (the old archiveRecord bug). Heal the stamp so
         // it syncs back and the case stops boomeranging into Active on reload.
-        const done = (aa.outcome==='reimbursed'||aa.outcome==='loss_taken');
+        const done = (aa.outcome==='reimbursed'||aa.outcome==='loss_taken'||aa.outcome==='reversal');
         if(done && st!=='archived') aa.workflow_status='archived';
         if(st==='archived'||st==='no_action'||done) archived.push(r);
         else if(noCog && !creditOnly) importErrors.push({...r, import_error:'Missing COG from SKU'});
@@ -4985,7 +4998,7 @@ function buildActiveCard(r){
 
   const curStat = isReimb?'reimbursed':(isPend?'reimbpending':(hasCase?'caseopen':(mscS==='none'?'needs':mscS)));
   const statusSel='<select class="ar-statsel" onclick="event.stopPropagation()" onchange="arStatus(\''+idJs+'\',this.value)">'+
-    [['needs','Needs MSC'],['review','MSC submitted'],['denied','MSC denied'],['approved','MSC approved'],['reduced','MSC reduced'],['docs','Needs doc'],['caseopen','Case / Claim'],['reimbpending','Reimb pending'],['reimbursed','Reimbursed']]
+    [['needs','Needs MSC'],['review','MSC submitted'],['denied','MSC denied'],['approved','MSC approved'],['reduced','MSC reduced'],['docs','Needs doc'],['caseopen','Case / Claim'],['reimbpending','Reimb pending'],['reimbursed','Reimbursed'],['reversal','Reimb reversal']]
     .map(o=>'<option value="'+o[0]+'"'+(curStat===o[0]?' selected':'')+'>'+o[1]+'</option>').join('')+'</select>';
   const open = arOpen[id]!==false;   // workshop card open by default; bar is the opt-in compact view
   // compact one-line summary bar (collapsed state)
@@ -5029,6 +5042,13 @@ function setActiveSort(col){
 }
 function arStatus(id, val){
   if (val==='reimbursed'){ promptReimbursed(id); return; }
+  if (val==='reversal'){
+    // Amazon clawed the payment back on a worked case → file to History as a
+    // reversal (undo available via the toast). Sign-flip handled in metrics.
+    if (!confirm('Mark as REIMBURSEMENT REVERSAL?\n\nAmazon has clawed this payment back. The case files to History as a reversal (not a worked win/loss).')) { renderActive(); return; }
+    archiveRecord(id, 'reversal');
+    return;
+  }
   if (val==='reimbpending'){
     setAnn(id,{workflow_status:'reimb_pending'});
   } else if (val==='caseopen'){
@@ -5171,6 +5191,7 @@ function histItemState(r){
   const out = ann(r.reimb_id).outcome||'';
   if (out === 'reimbursed') return 'completed';
   if (out === 'loss_taken') return 'dead';
+  if (out === 'reversal') return 'reversal';   // manually-tagged clawback on a worked case
   return 'notworked';
 }
 function histDisplayCog(r){
@@ -5184,7 +5205,11 @@ function histItemMetrics(r){
   const a = ann(r.reimb_id);
   const cost = totalCost(r);
   const displayCost = histDisplayCog(r);
-  const orig = r.reimb_amount||0;
+  // Imported reversal rows carry NEGATIVE amounts; a live case tagged as a
+  // reversal has the original POSITIVE payment — flip it so the clawback sums
+  // stay sign-consistent (negative = money Amazon took back).
+  const manualRev = (a.outcome==='reversal' && r.is_reversal!=='Yes');
+  const orig = manualRev ? -(r.reimb_amount||0) : (r.reimb_amount||0);
   const lifecycle = lifecycleReimbursed(r);
   const finalSet = (a.final_reimb_amount!=null && a.final_reimb_amount!=='');
   const finalReimb = finalSet ? Number(a.final_reimb_amount) : lifecycle;
@@ -5219,8 +5244,14 @@ function histProcessStats(settled){
       if(winIdx===-1) winIdx=atts.length-1;
       const n=winIdx+1; attemptsToWin.push(n);
       byAtt[n>=3?'3+':n]++; wonN++;
-      const full=claimCog(r), wc=Number(atts[winIdx].cog||0);
-      if(full>0 && wc>0) winDisc.push((full-wc)/full*100);
+      // Discount = cut off full COG at the amount Amazon ACTUALLY settled at.
+      // Prefer the final reimbursed figure — the typed attempt cog can be
+      // mis-keyed (e.g. a "reduced £7" log against a £28 final payout) and one
+      // typo was skewing the average badly. Fall back to the attempt only when
+      // no final amount exists.
+      const full=claimCog(r);
+      const settledAt=Number(a.final_reimb_amount||0)>0 ? Number(a.final_reimb_amount) : Number(atts[winIdx].cog||0);
+      if(full>0 && settledAt>0) winDisc.push(Math.max(0,(full-settledAt)/full*100));
     }
   });
   const avg=arr=>arr.length?arr.reduce((s,x)=>s+x,0)/arr.length:null;
@@ -7422,7 +7453,7 @@ function archiveRecord(reimb_id, outcome) {
   renderCaseGen();
   cgReset();
   updateBadges();
-  toast(outcome==='reimbursed'?'Moved to History — Reimbursed ✓':'Moved to History — loss taken', {undo:true});
+  toast(outcome==='reimbursed'?'Moved to History — Reimbursed ✓':outcome==='reversal'?'Moved to History — reimbursement reversal filed':'Moved to History — loss taken', {undo:true});
 }
 
 function deleteRecord(reimb_id) {
@@ -8611,8 +8642,8 @@ function updateLastBackup(){
 
 // ── Build stamp: bump on every ship. Visible in the sidebar so anyone can tell
 // at a glance whether the live site / their browser is running the latest file.
-const APP_BUILD = 'v15.1 · polish';
-(function(){ const b=document.getElementById('build-tag'); if(b) b.textContent=APP_BUILD; console.log('SF Reimbursements build', APP_BUILD); })();
+const APP_BUILD = 'v15.5 · responsive';
+(function(){ const b=document.getElementById('build-tag'); if(b) b.textContent=APP_BUILD; document.title='SF Reimbursements · '+APP_BUILD; console.log('SF Reimbursements build', APP_BUILD); })();
 // "/" anywhere on the Active page jumps to the search box (ignored while typing).
 document.addEventListener('keydown', e=>{
   if (e.key!=='/' || e.metaKey || e.ctrlKey || e.altKey) return;
