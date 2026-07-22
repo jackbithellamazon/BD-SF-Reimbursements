@@ -124,6 +124,17 @@ input:focus,select:focus,textarea:focus,.fb-input:focus,.fb-select:focus{outline
 .adb-more{font-size:10px;color:var(--text3)}
 /* History: reimbursed-but-no-payout-date hygiene flag */
 .hd-verdict.warn-date{background:var(--amber-dim);border:1px solid color-mix(in srgb,var(--amber) 40%,var(--border));color:var(--text2);margin-top:8px}
+/* History: processed-but-unsettled pipeline strip */
+.hd-verdict.inflight{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.32);color:var(--text2);margin-top:8px}
+.hd-verdict.inflight strong{color:#7dd3fc}
+/* History dashboard v15.8 — notices side-by-side, uniform KPI grid, full-width trend */
+.hd-notices{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:8px;margin-top:8px}
+.hd-notices .hd-verdict{margin-top:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.hd-cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px}
+.hd-cards-grid .hd-card{min-width:0}
+.hd-trend-full{margin-top:10px}
+.hd-trend-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.hd-group{margin-top:10px}
 .hv-fix{display:inline-block;background:var(--surface);border:1px solid color-mix(in srgb,var(--amber) 45%,var(--border));color:var(--amber);border-radius:7px;padding:2px 8px;margin:0 2px;font-size:10.5px;font-weight:700;font-family:inherit;cursor:pointer}
 .hv-fix:hover{background:var(--amber);color:#0c0e12}
 .sb-brand{display:flex;align-items:center;gap:10px;min-width:0}
@@ -605,10 +616,14 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
 .ht-note{font-size:10px;color:var(--text3);text-align:center;margin-top:6px;font-style:italic}
 .ht-empty{padding:26px;text-align:center;color:var(--text3);font-size:11.5px}
 /* sparse-data trend placeholder (replaces the giant empty axis) */
-.ht-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-align:center;padding:18px 16px;background:var(--surface2);border:1px dashed var(--border2);border-radius:var(--r);margin-top:4px}
+.ht-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:14px 16px;background:var(--surface2);border:1px dashed var(--border2);border-radius:var(--r);margin-top:4px}
 .ht-ph-icon{font-size:20px;opacity:.55;filter:grayscale(.3)}
 .ht-ph-main{font-size:12px;font-weight:700;color:var(--text)}
 .ht-ph-sub{font-size:10.5px;color:var(--text3);max-width:440px;line-height:1.45}
+.ht-ph-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.ht-ph-chip{font-size:11px;color:var(--text2);background:var(--surface);border:1px solid var(--border2);border-radius:99px;padding:4px 12px}
+.ht-ph-chip b{color:var(--text);font-variant-numeric:tabular-nums}
+.ht-ph-chip.green b{color:var(--green)}
 /* empty stat card: reads as "waiting for data", not broken */
 .hd-card.is-empty{opacity:.5;background:var(--surface)}
 .hd-card.is-empty::before{background:transparent!important}
@@ -5265,12 +5280,21 @@ function histTrendSVG(trend, metric){
   const vals0=trend.map(t=>t.recovered||t.winPct||t.vol||0);
   if(trend.length<2 || vals0.every(v=>!v)){
     const only = trend.length===1 ? trend[0] : null;
+    // With one month, show ITS real numbers instead of a big empty box — the
+    // chart takes over automatically the moment a second month settles.
+    const chips = only && only.worked
+      ? '<div class="ht-ph-chips">'
+        + '<span class="ht-ph-chip"><b>'+only.worked+'</b> worked</span>'
+        + '<span class="ht-ph-chip green"><b>+£'+Math.round(only.recovered)+'</b> recovered</span>'
+        + '<span class="ht-ph-chip"><b>'+only.winPct+'%</b> win rate</span>'
+        + '</div>'
+      : '';
     return '<div class="ht-placeholder">'+
-      '<div class="ht-ph-icon">📈</div>'+
       '<div class="ht-ph-main">'+(trend.length===0
-        ? 'No settled months yet'
-        : 'One month so far — '+monthLabel(only.month))+'</div>'+
-      '<div class="ht-ph-sub">The trend chart appears once you have two or more settled months. Keep working cases through to reimbursement and it fills in automatically.</div>'+
+        ? '📈 No settled months yet'
+        : '📈 '+monthLabel(only.month)+' — first month on the board')+'</div>'+
+      chips+
+      '<div class="ht-ph-sub">The trend line draws itself once a second month settles.</div>'+
     '</div>';
   }
   const conf={recovered:{col:'var(--green)',fmt:v=>'£'+Math.round(v),ax:v=>'£'+Math.round(v),key:'recovered'},
@@ -5373,15 +5397,30 @@ function renderHistory() {
       (startShort>0?(' — that\u2019s <strong>'+pctBack+'%</strong> of the <strong>£'+startShort.toFixed(2)+'</strong> you were originally short vs COG'):'')+
       '. <strong>'+winPct+'%</strong> of cases improved; <strong>'+reachPct+'%</strong> got back to full COG or better.</div>';
   }
+  // "Worked = 6" only counts FINISHED cases — show what's mid-pipeline so the
+  // number never reads smaller than the real effort. In flight = processed
+  // (left the inbox) but not yet settled: under review, case open, reimb pending.
+  const _inFlight = records.filter(r=>{
+    const a=ann(r.reimb_id);
+    if (a.workflow_status==='triage' || r.is_reversal==='Yes' || (a.outcome||'')) return false;
+    return !inActiveInbox(r);
+  });
+  // Notices sit in their own side-by-side row (not stacked full-width banners).
+  let notices = '';
+  if (_inFlight.length) {
+    const _asins = new Set(_inFlight.map(r=>r.asin).filter(Boolean)).size;
+    notices += '<div class="hd-verdict inflight">⏳ <strong>'+_inFlight.length+'</strong> case'+(_inFlight.length===1?'':'s')+' ('+_asins+' ASIN'+(_asins===1?'':'s')+') still in flight — they land here once Amazon pays.</div>';
+  }
   // Data hygiene: reimbursed cases missing their payout date — the £ totals are
   // fine, but month buckets/trends are only exact when the date is set. One-click fix.
   const _missDate = archived.filter(r=>{const a=ann(r.reimb_id);return (a.outcome||'')==='reimbursed' && !a.reimb_date;});
   if (_missDate.length) {
-    verdict += '<div class="hd-verdict warn-date">📅 <strong>'+_missDate.length+'</strong> reimbursed case'+(_missDate.length===1?'':'s')+' missing the payout date: '
+    notices += '<div class="hd-verdict warn-date">📅 <strong>'+_missDate.length+'</strong> missing payout date: '
       + _missDate.slice(0,3).map(r=>'<button class="hv-fix" onclick="openRecord(\''+String(r.reimb_id).replace(/'/g,"\\'")+'\',true)">'+esc((r.product_name||'').substring(0,26))+'</button>').join(' ')
       + (_missDate.length>3?' +'+(_missDate.length-3)+' more':'')
-      + ' — open it and fill “Date Reimbursed (final)”.</div>';
+      + ' — open &amp; fill “Date Reimbursed (final)”.</div>';
   }
+  if (notices) notices = '<div class="hd-notices">'+notices+'</div>';
   const respStr = pstats.avgResp!=null ? Math.round(pstats.avgResp)+'d' : '—';
   const attStr = pstats.avgAtt!=null ? pstats.avgAtt.toFixed(1) : '—';
   const discStr = pstats.avgDisc!=null ? Math.round(pstats.avgDisc)+'%' : '—';
@@ -5406,18 +5445,8 @@ function renderHistory() {
       </div>
     </div>
     ${verdict}
-    <div class="hd-grid">
-      <div class="hd-main hd-trend"><div class="hd-glabel">Trend · is it improving?${lastT&&prevT?' — latest vs previous shown on cards':''}</div>
-        <div class="ht-toolbar">${metricBtn('recovered','£ Recovered')}${metricBtn('win','Win rate')}${metricBtn('vol','Volume')}</div>
-        <div class="ht-chart">${histTrendSVG(trend, histChartMetric)}</div>
-      </div>
-      <div class="hd-side"><div class="hd-glabel">Process health · how the machine runs</div>
-        ${card('c-blue','Amazon response', respStr, pstats.respN?('avg over '+pstats.respN+' paid case'+(pstats.respN===1?'':'s')):'submit → paid')}
-        ${card('c-teal','Attempts to win', attStr, pstats.wonN?('avg MSC subs · '+attBreak):'MSC subs to approval')}
-        ${card('c-green','Winning discount', discStr, pstats.wonN?('avg cut off full COG to win'):'off full COG')}
-      </div>
-    </div>
-    <div class="hd-group"><div class="hd-glabel">Process performance · worked cases only — did chasing beat doing nothing?</div><div class="hd-cards">
+    ${notices}
+    <div class="hd-group"><div class="hd-glabel">Process performance · worked cases only — did chasing beat doing nothing?</div><div class="hd-cards hd-cards-grid">
       ${card(worked&&recovered>0.005?'c-green':'','Recovered by process', histMoney(recovered),'extra vs Amazon first offer', recDelta)}
       ${card(worked?'c-teal':'','Win rate', winPct+'%', improved+' of '+worked+' got more', winDelta)}
       ${card(worked?'c-blue':'','Reached COG+', reachPct+'%', reached+' of '+worked+' made whole')}
@@ -5425,6 +5454,15 @@ function renderHistory() {
       ${card('','Avg recovery / case', worked?('+£'+avgRec.toFixed(2)):'—','per worked case')}
       ${card('','Biggest win', (worked&&biggest>0)?('+£'+biggest.toFixed(2)):'—','single best recovery')}
     </div></div>
+    <div class="hd-group"><div class="hd-glabel">Process health · how the machine runs</div><div class="hd-cards hd-cards-grid">
+      ${card('c-blue','Amazon response', respStr, pstats.respN?('avg over '+pstats.respN+' paid case'+(pstats.respN===1?'':'s')):'submit → paid')}
+      ${card('c-teal','Attempts to win', attStr, pstats.wonN?('avg MSC subs · '+attBreak):'MSC subs to approval')}
+      ${card('c-green','Winning discount', discStr, pstats.wonN?('avg cut off full COG to win'):'off full COG')}
+    </div></div>
+    <div class="hd-trend hd-trend-full"><div class="hd-trend-head"><span class="hd-glabel" style="margin:0">Trend · is it improving?${lastT&&prevT?' — latest vs previous shown on cards':''}</span>
+      <div class="ht-toolbar" style="margin:0">${metricBtn('recovered','£ Recovered')}${metricBtn('win','Win rate')}${metricBtn('vol','Volume')}</div></div>
+      <div class="ht-chart">${histTrendSVG(trend, histChartMetric)}</div>
+    </div>
   `;
 
   let listItems = settled.filter(r=>{
@@ -8642,7 +8680,7 @@ function updateLastBackup(){
 
 // ── Build stamp: bump on every ship. Visible in the sidebar so anyone can tell
 // at a glance whether the live site / their browser is running the latest file.
-const APP_BUILD = 'v15.5 · responsive';
+const APP_BUILD = 'v15.8 · history-redesign';
 (function(){ const b=document.getElementById('build-tag'); if(b) b.textContent=APP_BUILD; document.title='SF Reimbursements · '+APP_BUILD; console.log('SF Reimbursements build', APP_BUILD); })();
 // "/" anywhere on the Active page jumps to the search box (ignored while typing).
 document.addEventListener('keydown', e=>{
