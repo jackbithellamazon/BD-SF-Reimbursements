@@ -3609,7 +3609,10 @@ function renderOverview() {
     const a=ann(r.reimb_id); const d=daysLeft60(r.date); const net=computedNet(r);
     if (a.workflow_status==='escalated'){ jackItems.push(r); return; }
     if (!r.actual_cost||Number(r.actual_cost)<=0){ focusItems.push({r,rank:1,tag:'Fix COG',reason:'COG missing — blocked',col:'var(--red)'}); return; }
-    if (d<=RISK_D&&d>0&&net<0){ focusItems.push({r,rank:1,tag:'Work now',reason:'Claim window closing — '+d+'d left',col:'var(--red)'}); return; }
+    // Deadline only matters while she can still ACT on it. Once a case is open (or the
+    // money is pending) the claim is already lodged with Amazon and the window is moot —
+    // Sarah: "Bialetti already has an open case but still shows under Today's Focus".
+    if (d<=RISK_D&&d>0&&net<0&&!vaCaseOpen(r)&&!isReimbPending(r)){ focusItems.push({r,rank:1,tag:'Work now',reason:'Claim window closing — '+d+'d left',col:'var(--red)'}); return; }
     if (a.review_date&&a.review_date<=today){ focusItems.push({r,rank:1,tag:'Re-submit',reason:'MSC re-submission due',col:'var(--red)'}); return; }
     // Reimb-pending is WAITING, not incomplete — the payout date is legitimately blank
     // until Amazon actually pays. Flagging it drowned the list in 8 false "missing date"
@@ -8923,7 +8926,7 @@ function updateLastBackup(){
 
 // ── Build stamp: bump on every ship. Visible in the sidebar so anyone can tell
 // at a glance whether the live site / their browser is running the latest file.
-const APP_BUILD = 'v16.7 · deadline-origin';
+const APP_BUILD = 'v16.8 · case-open-focus';
 // Boot loader — the app used to paint an all-zero Overview while the cloud pull was
 // still in flight, which read as "broken until you refresh". Cover it until data lands.
 function hideBootLoader(){ const e=document.getElementById('boot-load'); if(e){ e.style.opacity='0'; setTimeout(()=>e.remove(),260); } }
