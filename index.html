@@ -549,6 +549,18 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
 .pt-r{font-size:9.5px;color:var(--red);font-variant-numeric:tabular-nums}
 /* THE dead space: the focus panel was stretching to match the tall right rail,
    leaving ~500px of empty box under its content. Size it to its content instead. */
+/* ── Overview dead space, properly fixed ──────────────────────────────────────
+   The fixed 1.5fr/1fr split meant a short left column next to a tall right rail,
+   so once the focus panel sized to its content there was a huge void beside it.
+   Drop the split: focus runs full width, then the rail's cards TILE underneath.
+   Nothing is left orphaned in a half-empty column. */
+@media(min-width:1100px){
+  .ov2-main{display:block!important}
+  .ov2-focus{margin-bottom:14px}
+  .ov2-side{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;align-items:start}
+  .ov2-side-stats{grid-column:1/-1}
+  .ov2-side>*{min-width:0}
+}
 .ov2-main{align-items:start!important}
 .ov2-focus{align-self:start!important;height:auto!important}
 .ov2-side{display:flex;flex-direction:column;gap:14px}
@@ -8926,7 +8938,7 @@ function updateLastBackup(){
 
 // ── Build stamp: bump on every ship. Visible in the sidebar so anyone can tell
 // at a glance whether the live site / their browser is running the latest file.
-const APP_BUILD = 'v16.8 · case-open-focus';
+const APP_BUILD = 'v17.0 · overview-layout';
 // Boot loader — the app used to paint an all-zero Overview while the cloud pull was
 // still in flight, which read as "broken until you refresh". Cover it until data lands.
 function hideBootLoader(){ const e=document.getElementById('boot-load'); if(e){ e.style.opacity='0'; setTimeout(()=>e.remove(),260); } }
