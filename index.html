@@ -157,7 +157,11 @@ input:focus,select:focus,textarea:focus,.fb-input:focus,.fb-select:focus{outline
   box-shadow:0 0 0 1px rgba(255,255,255,.10),0 10px 24px rgba(0,0,0,.34),0 0 20px rgba(34,201,132,.10);
 }
 .sb-logo .name{font-size:14px;font-weight:900;letter-spacing:-.35px;color:#f6f9fd;line-height:1.05;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sb-logo .sub{font-size:10.6px;color:#b7c3d2;margin-top:5px;display:flex;align-items:center;gap:6px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-logo .sub{font-size:10.6px;color:#b7c3d2;margin-top:5px;display:flex;align-items:center;gap:5px;min-width:0;flex-wrap:wrap;white-space:normal;overflow:visible}
+/* the build pill was being clipped by the brand's nowrap+overflow:hidden, so the
+   version Sarah needs to quote was invisible. Let it wrap onto its own line. */
+.sb-logo .sub>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.sb-logo .sub .build-tag{flex:0 0 auto;margin-left:0}
 .build-pill{
   display:none;align-items:center;height:17px;padding:0 6px;border-radius:99px;
   border:1px solid rgba(148,163,184,.20);background:rgba(148,163,184,.07);color:var(--text2);
@@ -1170,6 +1174,14 @@ tbody tr:hover .td-copy{border-bottom-color:var(--border2)}
 .ip-topgrid .ip-mini,.ip-topgrid .ip-recon{min-width:0}
 .ip-summarybar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;height:100%}
 .ip-stat{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 8px;min-width:0}
+/* Import review: the stat cards were stretching to match the tall reconcile panel
+   beside them, so each one had a big empty void under its number. Size to content,
+   3 across, bigger figures — reads as a summary strip instead of 6 hollow boxes. */
+.ip-summarybar{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;align-content:start!important;align-items:start!important}
+.ip-summarybar .ip-stat{align-self:start!important;height:auto!important;padding:10px 12px;display:flex;flex-direction:column;gap:3px}
+.ip-summarybar .ip-stat b{font-size:19px;font-weight:800;letter-spacing:-.01em}
+.ip-summarybar .ip-stat span{font-size:9.5px;white-space:normal}
+@media(max-width:900px){.ip-summarybar{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 .ip-stat b{display:block;font-size:14px;line-height:1;font-variant-numeric:tabular-nums;color:var(--text)}
 .ip-stat span{display:block;margin-top:1px;font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:#aeb9c8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ip-stat.good b{color:var(--green)}.ip-stat.bad b{color:var(--red)}.ip-stat.warn b{color:var(--amber)}
@@ -8948,7 +8960,7 @@ function updateLastBackup(){
 
 // ── Build stamp: bump on every ship. Visible in the sidebar so anyone can tell
 // at a glance whether the live site / their browser is running the latest file.
-const APP_BUILD = 'v17.2 · money-format';
+const APP_BUILD = 'v17.4 · import-stats';
 // Boot loader — the app used to paint an all-zero Overview while the cloud pull was
 // still in flight, which read as "broken until you refresh". Cover it until data lands.
 function _int(n){return Number(n||0).toLocaleString('en-GB');}
