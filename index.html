@@ -5592,8 +5592,14 @@ function histTrendSVG(trend, metric){
       (bh>12?`<text x="${(x+bw/2).toFixed(1)}" y="${(by-6).toFixed(1)}" text-anchor="middle" class="ht-val">${conf.fmt(v)}</text>`:'')+
       `<text x="${(x+bw/2).toFixed(1)}" y="${(H-9)}" text-anchor="middle" class="ht-x">${lbl}</text></g>`;
   });
-  return `<svg class="ht-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img">${grid}${bars}</svg>`+
-    (n<3?'<div class="ht-note">More months fill in as you settle cases — the trend gets clearer over time.</div>':'');
+  // The SVG scales to its container, so 1-2 months stretched a single bar across the
+  // full page with a sea of empty plot beside it. Cap the drawing to the data it has
+  // and centre it; it grows to full width naturally once a few months have settled.
+  const capW = n>=5 ? null : Math.max(430, n*190);
+  return '<div class="ht-wrap"'+(capW?' style="max-width:'+capW+'px;margin:0 auto"':'')+'>'
+    + `<svg class="ht-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img">${grid}${bars}</svg>`
+    + '</div>'
+    + (n<3?'<div class="ht-note">More months fill in as you settle cases — the trend gets clearer over time.</div>':'');
 }
 
 function renderHistory() {
@@ -8960,7 +8966,7 @@ function updateLastBackup(){
 
 // ── Build stamp: bump on every ship. Visible in the sidebar so anyone can tell
 // at a glance whether the live site / their browser is running the latest file.
-const APP_BUILD = 'v17.4 · import-stats';
+const APP_BUILD = 'v17.5 · trend-fit';
 // Boot loader — the app used to paint an all-zero Overview while the cloud pull was
 // still in flight, which read as "broken until you refresh". Cover it until data lands.
 function _int(n){return Number(n||0).toLocaleString('en-GB');}
