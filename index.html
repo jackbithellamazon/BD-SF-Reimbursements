@@ -2157,7 +2157,17 @@ body{font-size:13px;letter-spacing:0}
 #page-active .ar-statsel{padding:4px 9px;font-size:10.5px}
 
 /* ── Import page — 2-col so the space is used, guide fills the right ── */
-.import-body{max-width:1200px}
+.import-body{max-width:1600px}
+/* Import page: the 320px guide rail left a tall void beneath it once the steps ran out,
+   and the 1200px clamp was CLIPPING the reconcile panel + preview table. Above 1500px
+   the guide becomes a horizontal strip under the main content — no rail, no void. */
+@media(min-width:1500px){
+  .import-body{display:block!important}
+  .import-guide{position:static!important;margin-top:16px}
+  .import-guide-inner,.import-guide>div:not(:first-child){min-width:0}
+}
+.recon-grid{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+
 @media(min-width:1000px){
   .import-body{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:18px;align-items:start}
 }
@@ -3373,7 +3383,7 @@ function reviewNetLabel(r) {
 }
 function compactMoney(v) {
   const n = Number(v || 0);
-  return (n < -0.005 ? '-£'+Math.abs(n).toFixed(2) : '£'+n.toFixed(2));
+  return (n < -0.005 ? '-£'+_thou(Math.abs(n)) : '£'+_thou(n));
 }
 function reviewConfidence(r) {
   const adj = linkedAdjustmentTotal(r);
@@ -3529,7 +3539,7 @@ function ovPopRow(r, right, rightCls){
 }
 function ovPop(type){
   const cur=settings.currency||'£';
-  const money=v=>(v<0?'-'+cur+Math.abs(v).toFixed(2):cur+v.toFixed(2));
+  const money=v=>(v<0?'-'+cur+_thou(Math.abs(v)):cur+_thou(v));
   const todayMs=Date.now();
   const active=records.filter(r=>ann(r.reimb_id).workflow_status!=='triage'&&r.is_reversal!=='Yes'&&(ann(r.reimb_id).outcome||'')!=='reimbursed');
   const workedArch=archived.filter(r=>{const st=histItemState(r);return st==='completed'||st==='dead';});
@@ -3592,7 +3602,7 @@ function renderOverview() {
   const todayMs = new Date(today).getTime();
   const thisMonth = today.slice(0,7);
   const cur = settings.currency||'£';
-  const money = v => (v<0?'-'+cur+Math.abs(v).toFixed(2):cur+v.toFixed(2));
+  const money = v => (v<0?'-'+cur+_thou(Math.abs(v)):cur+_thou(v));
 
   const active = records.filter(r => ann(r.reimb_id).workflow_status!=='triage' && r.is_reversal!=='Yes' && (ann(r.reimb_id).outcome||'')!=='reimbursed');
   const reviewItems = records.filter(r => ann(r.reimb_id).workflow_status==='triage' && r.is_reversal!=='Yes');
@@ -3742,7 +3752,7 @@ function renderOverview() {
     <div class="ov2-reason" title="${v.n} item${v.n===1?'':'s'}">
       <span class="ov2-reason-l">${esc(k.replace(/_/g,' '))}</span>
       <span class="ov2-reason-bar"><span style="width:${Math.max(6,Math.round(v.sum/reasonMax*100))}%"></span></span>
-      <span class="ov2-reason-v">-£${v.sum.toFixed(2)}</span>
+      <span class="ov2-reason-v">-£${_thou(v.sum)}</span>
       <span class="ov2-reason-n">×${v.n}</span>
     </div>`).join(''):'';
   // MSC re-submission schedule — when each claim must be re-pushed to Amazon.
@@ -3993,7 +4003,7 @@ function renderActions() {
       <div class="aq-section-head">
         <span class="aq-sh-ico" style="background:${dim};color:${col}">${svg(iconName)}</span>
         <span class="aq-sh-title">${title}</span>
-        ${risk>0?`<span class="aq-sh-risk">£${risk.toFixed(2)} at risk</span>`:''}
+        ${risk>0?`<span class="aq-sh-risk">£${_thou(risk)} at risk</span>`:''}
         ${linkHtml||''}
         <span class="aq-sh-count" style="background:${col};color:${ctxt}">${items.length}</span>
       </div>${items.map(rowFn).join('')}</div>`;
@@ -4319,7 +4329,7 @@ function openImportErrorDetails(reimb_id){
     <div class="err-modal-body">
       <div class="err-modal-grid">
         <div class="err-metric"><b style="color:var(--red)">COG missing</b><span>blocked reason</span></div>
-        <div class="err-metric"><b>£${reimb.toFixed(2)}</b><span>Amazon reimbursed</span></div>
+        <div class="err-metric"><b>£${_thou(reimb)}</b><span>Amazon reimbursed</span></div>
         <div class="err-metric"><b>${qty}</b><span>quantity</span></div>
         <div class="err-metric"><b>${ageD==null?'—':ageD+'d'}</b><span>age · deadline ${deadline}</span></div>
       </div>
@@ -4344,7 +4354,7 @@ function openImportErrorDetails(reimb_id){
           ${infoRow('Order ID', esc(r.order_id||''))}
           ${infoRow('Re-evaluation ID', esc(r.re_evaluation_id||''))}
           ${infoRow('MSC text', esc(r.msc_text||''))}
-          ${infoRow('MSC amount', r.msc_amount?('£'+Number(r.msc_amount).toFixed(2)):'')}
+          ${infoRow('MSC amount', r.msc_amount?('£'+_thou(Number(r.msc_amount))):'')}
           ${infoRow('Batch', esc(r.import_batch_label||r.import_batch_id||''))}
           ${infoRow('Internal row ID', esc(r.reimb_id||''))}
         </div>
@@ -4382,7 +4392,7 @@ function fixCogApplyAll(id){
   if(matches.length<=1){ fixCogAndMove(id); return; }
   const rowsHtml = matches.map(m=>`<label class="cfm-row"><input type="checkbox" class="cfm-cb" data-id="${esc(m.reimb_id)}" checked> <span class="cfm-d">${fmtDate(m.date)}</span> <span class="rvq-code dim">${esc(m.reimb_id_real||m.reimb_id)}</span> <span class="cfm-v">£${Number(m.reimb_amount||0).toFixed(2)}</span></label>`).join('');
   document.getElementById('modal-inner').innerHTML = `
-    <h3 style="font-size:15px;font-weight:650;margin-bottom:4px">Apply £${cog.toFixed(2)} cost to which rows?</h3>
+    <h3 style="font-size:15px;font-weight:650;margin-bottom:4px">Apply £${_thou(cog)} cost to which rows?</h3>
     <p style="font-size:12px;color:var(--text3);margin-bottom:12px">Same product, but each is a separate reimbursement — they may have different purchase costs. Tick only the rows that share this cost.</p>
     <div class="cfm-list">${rowsHtml}</div>
     <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">
@@ -4400,7 +4410,7 @@ function applyCogToSelected(cog){
     records.push(m); setAnn(m.reimb_id,{workflow_status:'triage',cog_fixed_by_va:true}); });
   importErrors = importErrors.filter(x=>!ids.includes(x.reimb_id));
   save(); closeModal(); renderErrors(); renderTriage(); updateBadges();
-  toast('£'+cog.toFixed(2)+' applied to '+ids.length+' row'+(ids.length===1?'':'s')+' — moved to Review');
+  toast('£'+_thou(cog)+' applied to '+ids.length+' row'+(ids.length===1?'':'s')+' — moved to Review');
 }
 
 function fixCogAndMove(reimb_id) {
@@ -4584,7 +4594,7 @@ function renderTriage() {
       </div>
       <div class="rvq-money">
         <div class="rvq-m"><span class="rvq-m-v">£${(totalCost(r)||0).toFixed(2)}</span><span class="rvq-m-l">COG</span></div>
-        <div class="rvq-m"><span class="rvq-m-v">£${reimbTotal.toFixed(2)}</span><span class="rvq-m-l">${adjTotal>0?'paid + adj':'Amazon paid'}</span></div>
+        <div class="rvq-m"><span class="rvq-m-v">£${_thou(reimbTotal)}</span><span class="rvq-m-l">${adjTotal>0?'paid + adj':'Amazon paid'}</span></div>
         <div class="rvq-m"><span class="rvq-m-v net-${netCls}">${netStr}</span><span class="rvq-m-l">${netMeta.label}</span></div>
       </div>
       <div class="rvq-act" onclick="event.stopPropagation()">
@@ -5068,7 +5078,7 @@ function buildActiveCard(r){
   // ── glance cell 1: money at stake ──
   let recBig,recSub,recCol;
   if(cogMissing){ recBig='Add COG'; recSub='no cost on this row yet'; recCol='var(--red)'; }
-  else if(net<-0.005){ recBig='£'+Math.abs(net).toFixed(2); recSub='below £'+clCog.toFixed(2)+' cost'; recCol='var(--red)'; }
+  else if(net<-0.005){ recBig='£'+_thou(Math.abs(net)); recSub='below £'+clCog.toFixed(2)+' cost'; recCol='var(--red)'; }
   else { recBig='✓ Recovered'; recSub='met or beat COG'; recCol='var(--green)'; }
 
   // ── glance cell 3: do next (status-aware) ──
@@ -5195,7 +5205,7 @@ function buildActiveCard(r){
       '<div class="ar-tile-panel"><div class="ar-tile-head">Claim tracking / what to fill in</div><div class="ar-track-grid">'+
         '<div class="ar-info-tile"><div class="ar-info-label">Next MSC update</div><div class="ar-info-value">'+nextUpd+'</div><div class="ar-info-sub">'+(a.review_date?'scheduled':'not set')+'</div></div>'+
         '<div class="ar-info-tile"><div class="ar-info-label">Last MSC result</div><div class="ar-info-value" style="color:'+(lastAtt?dotCol(lastAtt.status):'var(--text3)')+'">'+(lastAtt?cap(lastAtt.status):'—')+'</div><div class="ar-info-sub">'+(lastAtt?('#'+atts.length+' · £'+Number(lastAtt.cog||0).toFixed(2)+' · '+fmtDate(lastAtt.date)):'nothing logged yet')+'</div></div>'+
-        '<div class="ar-info-tile"><div class="ar-info-label">Next try / suggestion</div><div class="ar-info-value" style="color:'+(suggestNext!=null?'var(--amber)':'var(--text3)')+'">'+(suggestNext!=null?'£'+suggestNext.toFixed(2):(atts.length===0?'£'+clCog.toFixed(2):'—'))+'</div><div class="ar-info-sub">'+(suggestNext!=null?(redPct+'% below attempt #'+atts.length):(atts.length===0?'first submit — full COG':'no resubmit due'))+'</div></div>'+
+        '<div class="ar-info-tile"><div class="ar-info-label">Next try / suggestion</div><div class="ar-info-value" style="color:'+(suggestNext!=null?'var(--amber)':'var(--text3)')+'">'+(suggestNext!=null?'£'+_thou(suggestNext):(atts.length===0?'£'+_thou(clCog):'—'))+'</div><div class="ar-info-sub">'+(suggestNext!=null?(redPct+'% below attempt #'+atts.length):(atts.length===0?'first submit — full COG':'no resubmit due'))+'</div></div>'+
         '<div class="ar-info-tile"><div class="ar-info-label">Case opened</div><div class="ar-info-value">'+(a.case_opened_date?fmtDate(a.case_opened_date):'—')+'</div><div class="ar-info-sub">'+(a.case_opened_date?(Math.round((Date.now()-new Date(a.case_opened_date).getTime())/86400000)+'d waiting on Amazon'):'no case yet')+'</div></div>'+
         '<div class="ar-info-tile"><div class="ar-info-label">Old reimb ID</div><div class="ar-info-value">'+linkId(reimbDisplay,'reimb')+'</div><div class="ar-info-sub">original payment</div></div>'+
         '<div class="ar-info-tile"><div class="ar-info-label">New payout date</div><div class="ar-info-value" style="color:'+(a.reimb_date?'var(--green)':'var(--text3)')+'">'+(a.reimb_date?fmtDate(a.reimb_date):'—')+'</div><div class="ar-info-sub">'+(a.reimb_date?'money received':'not paid yet')+'</div></div>'+
@@ -5682,11 +5692,11 @@ function renderHistory() {
         <div class="hd-hero-sub">${worked?'reimbursed − COG − reversals':'no-action + credit context + reversals'}</div>
       </div>
       <div class="hd-hero-stats">
-        <div class="hd-hs"><span class="hd-hs-l">Total reimbursed</span><span class="hd-hs-v">£${totalReimbursed.toFixed(2)}</span></div>
-        <div class="hd-hs"><span class="hd-hs-l">Total COG</span><span class="hd-hs-v">£${totalCOG.toFixed(2)}</span></div>
-        <div class="hd-hs"><span class="hd-hs-l">Reversals</span><span class="hd-hs-v" style="color:${revSum<-0.005?'var(--red)':'inherit'}">${revSum<-0.005?'−£'+Math.abs(revSum).toFixed(2):'£'+revSum.toFixed(2)}</span></div>
+        <div class="hd-hs"><span class="hd-hs-l">Total reimbursed</span><span class="hd-hs-v">£${_thou(totalReimbursed)}</span></div>
+        <div class="hd-hs"><span class="hd-hs-l">Total COG</span><span class="hd-hs-v">£${_thou(totalCOG)}</span></div>
+        <div class="hd-hs"><span class="hd-hs-l">Reversals</span><span class="hd-hs-v" style="color:${revSum<-0.005?'var(--red)':'inherit'}">${revSum<-0.005?'−£'+Math.abs(revSum).toFixed(2):'£'+_thou(revSum)}</span></div>
         <div class="hd-hs"><span class="hd-hs-l">Settled items</span><span class="hd-hs-v">${settled.length}</span></div>
-        <div class="hd-hs"><span class="hd-hs-l">Still owed (open)</span><span class="hd-hs-v" style="color:${stillOwed>0.005?'var(--red)':'inherit'}">£${stillOwed.toFixed(2)}</span></div>
+        <div class="hd-hs"><span class="hd-hs-l">Still owed (open)</span><span class="hd-hs-v" style="color:${stillOwed>0.005?'var(--red)':'inherit'}">£${_thou(stillOwed)}</span></div>
         <div class="hd-hs"><span class="hd-hs-l">Items still active</span><span class="hd-hs-v">${activeCount}</span></div>
       </div>
     </div>
@@ -5816,14 +5826,14 @@ function renderHistory() {
     const whyBadge = '<span class="hb-why '+why.cls+'" title="'+esc(why.tip)+'">'+esc(why.txt)+'</span>';
     const cogCell = rev ? dash : (st==='adjustment'
       ? (mt.displayCost>0
-        ? '£'+mt.displayCost.toFixed(2)+'<div class="hb-mini">context only</div>'
+        ? '£'+_thou(mt.displayCost)+'<div class="hb-mini">context only</div>'
         : '<span class="hb-context-cog" title="GeneralAdjustment rows have no standalone COG. The original claim holds the real COG decision.">context only</span>')
-      : (mt.displayCost>0 ? '£'+mt.displayCost.toFixed(2) : '<span class="hb-cog-missing" title="No readable COG was found from the SKU. This should be fixed before chasing.">COG missing</span>'));
-    const firstCell = rev?histMoney(mt.orig):'£'+mt.orig.toFixed(2);
-    const finalCell = rev?histMoney(mt.orig):'£'+mt.finalReimb.toFixed(2);
+      : (mt.displayCost>0 ? '£'+_thou(mt.displayCost) : '<span class="hb-cog-missing" title="No readable COG was found from the SKU. This should be fixed before chasing.">COG missing</span>'));
+    const firstCell = rev?histMoney(mt.orig):'£'+_thou(mt.orig);
+    const finalCell = rev?histMoney(mt.orig):'£'+_thou(mt.finalReimb);
     const gainPct = mt.orig>0?Math.round(mt.recovered/mt.orig*100):0;
     const gainedCell = w
-      ? '<span style="color:'+(mt.recovered>0.005?'var(--green)':(mt.recovered<-0.005?'var(--red)':'var(--text2)'))+'">'+(mt.recovered>=0?'+':'−')+'£'+Math.abs(mt.recovered).toFixed(2)+'</span>'
+      ? '<span style="color:'+(mt.recovered>0.005?'var(--green)':(mt.recovered<-0.005?'var(--red)':'var(--text2)'))+'">'+(mt.recovered>=0?'+':'−')+'£'+_thou(Math.abs(mt.recovered))+'</span>'
       : dash;
     const pctCell = w ? '<span style="color:var(--text2)">'+(mt.recovered>=0?'+':'')+gainPct+'%</span>' : dash;
     const vs = mt.nowNet; // re-eval reimb − cost
@@ -6121,7 +6131,7 @@ function cgUpdate() {
   const cog = parseFloat(document.getElementById('cg-cog').value)||0;
   const msc = parseFloat(document.getElementById('cg-msc').value)||0;
   const az = cgAnalyse(r, cog, msc);
-  document.getElementById('cg-shortfall-show').textContent = az.target > 0 ? (az.shortfall > 0.005 ? '£'+az.shortfall.toFixed(2) : 'covered ✓') : '—';
+  document.getElementById('cg-shortfall-show').textContent = az.target > 0 ? (az.shortfall > 0.005 ? '£'+_thou(az.shortfall) : 'covered ✓') : '—';
   document.getElementById('cg-shortfall-show').style.color = az.shortfall > 0.005 ? 'var(--red)' : 'var(--green)';
   const readyEl = document.getElementById('cg-ready');
   if (readyEl) {
@@ -6574,10 +6584,10 @@ function renderReconPanel(parsed){
     '<div class="recon-box"><div class="recon-h">Reconcile against your PDF summary <span class="recon-sub">— catch a bad conversion before importing</span></div>'+
     '<div class="recon-grid">'+
       '<div class="recon-col recon-csv"><div class="recon-cl">This CSV totals</div>'+
-        reconRow('Reimbursed', cur+reimbSum.toFixed(2))+
-        reconRow('Your cost', cur+rawCost.toFixed(2))+
-        reconRow('Units', String(units))+
-        reconRow('Cases (distinct IDs)', String(cases))+
+        reconRow('Reimbursed', cur+_thou(reimbSum))+
+        reconRow('Your cost', cur+_thou(rawCost))+
+        reconRow('Units', Number(units).toLocaleString('en-GB'))+
+        reconRow('Cases (distinct IDs)', Number(cases).toLocaleString('en-GB'))+
       '</div>'+
       '<div class="recon-col recon-pdf"><div class="recon-cl">Your PDF header (type to check)</div>'+
         reconInp('reimbursed', 'Reimbursed', cur)+
@@ -6668,7 +6678,7 @@ function updateImportPreviewRows() {
     if (r.is_adjustment==='Yes') return moneyCell('£0.00','adjustment credit');
     if (r.actual_cost && Number(r.actual_cost)>0) {
       const src = String(r.cog_source||'')==='SKU' ? 'from SKU' : (String(r.cog_source||'').startsWith('MATCHED') ? 'matched from '+(r.cog_match_from||'prior row') : 'manual/fallback');
-      return moneyCell('£'+Number(r.actual_cost).toFixed(2),src);
+      return moneyCell('£'+_thou(Number(r.actual_cost)),src);
     }
     return '<span class="cog-error">COG missing</span>';
   };
@@ -7477,12 +7487,12 @@ function openRecord(reimb_id, isArchive) {
         <div class="ms-title mt-green">Cost & Reimbursement</div>
         <div class="cost-bar">
           <div class="cb-col">
-            <div class="cb-val">£${r.actual_cost.toFixed(2)}</div>
+            <div class="cb-val">£${_thou(r.actual_cost)}</div>
             <div class="cb-label">COG (gross, inc VAT)</div>
             <div class="cb-sub">From SKU · ×${r.quantity}</div>
           </div>
           <div class="cb-col">
-            <div class="cb-val">£${tc.toFixed(2)}</div>
+            <div class="cb-val">£${_thou(tc)}</div>
             <div class="cb-label">Total COG</div>
             <div class="cb-sub">COG × qty</div>
           </div>
@@ -7855,7 +7865,7 @@ function cgReadyPanel(az) {
 }
 function caseMessageText(r, cog, msc, reason, prettyDate, detailed) {
   const az = cgAnalyse(r, cog, msc);
-  const money = v => '£'+Number(v||0).toFixed(2);
+  const money = v => '£'+_thou(Number(v||0));
   const qty = Number(r.quantity||1);
   const dataLines = [
     'Reimbursement ID: '+az.reimbIdClean,
@@ -7920,8 +7930,8 @@ function openCaseGenModal(reimb_id) {
   const msc = Number(a.msc_amount || _mscFallback || 0);
   const _fallbackStrip = _offer ? `
       <div class="cgr-warn warn" id="cgm-msc-ask" style="margin-bottom:8px;align-items:center">
-        <span style="flex:1">⚠ MSC Amount was empty — pulled <strong>£${_offer.amt.toFixed(2)}</strong> from MSC attempt #${_offer.idx} (${_offer.status}). Use it? You can also just type a different amount above.</span>
-        <button class="btn btn-green" style="padding:3px 10px;font-size:10px" onclick="cgmMscAsk('${reimb_id}',true)">Yes — claim £${_offer.amt.toFixed(2)}</button>
+        <span style="flex:1">⚠ MSC Amount was empty — pulled <strong>£${_thou(_offer.amt)}</strong> from MSC attempt #${_offer.idx} (${_offer.status}). Use it? You can also just type a different amount above.</span>
+        <button class="btn btn-green" style="padding:3px 10px;font-size:10px" onclick="cgmMscAsk('${reimb_id}',true)">Yes — claim £${_thou(_offer.amt)}</button>
         <button class="btn btn-sec" style="padding:3px 10px;font-size:10px" onclick="cgmMscAsk('${reimb_id}',false)">No — use COG</button>
       </div>` : '';
   const reason = CG_REASON_MAP[r.reason]||'damaged in the warehouse';
@@ -8177,7 +8187,7 @@ function addMscAtt(reimb_id) {
       <div class="util-sub">${esc((r.product_name||'').substring(0,52))}${(r.product_name||'').length>52?'…':''}</div>
     </div>
     <div class="modal-body">
-      <div class="msc-full-cog"><span>Full COG on record</span><strong>£${fullCog.toFixed(2)}</strong></div>
+      <div class="msc-full-cog"><span>Full COG on record</span><strong>£${_thou(fullCog)}</strong></div>
       ${hint}
       <div class="fg">
         <div class="f"><label>Date Submitted</label><input type="date" id="msc-log-date" value="${today}"></div>
@@ -8467,7 +8477,7 @@ function relatedBand(rec){
       +reasonPill(r.reason)+badge
       +'<span class="rel-id">#'+esc(r.reimb_id_real||r.reimb_id)+'</span>'
       +'<span class="rel-where">'+where+'</span>'
-      +'<span class="rel-net" style="color:'+netCol+'">'+(net>=0?'+':'−')+'£'+Math.abs(net).toFixed(2)+'</span>'
+      +'<span class="rel-net" style="color:'+netCol+'">'+(net>=0?'+':'−')+'£'+_thou(Math.abs(net))+'</span>'
     +'</div>';
   }).join('');
   return '<div class="ar-dcol ar-dcol-full ar-rel-band">'
@@ -8938,9 +8948,11 @@ function updateLastBackup(){
 
 // ── Build stamp: bump on every ship. Visible in the sidebar so anyone can tell
 // at a glance whether the live site / their browser is running the latest file.
-const APP_BUILD = 'v17.0 · overview-layout';
+const APP_BUILD = 'v17.2 · money-format';
 // Boot loader — the app used to paint an all-zero Overview while the cloud pull was
 // still in flight, which read as "broken until you refresh". Cover it until data lands.
+function _int(n){return Number(n||0).toLocaleString('en-GB');}
+function _thou(n){return Number(n||0).toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function hideBootLoader(){ const e=document.getElementById('boot-load'); if(e){ e.style.opacity='0'; setTimeout(()=>e.remove(),260); } }
 (function(){
   const d=document.createElement('div'); d.id='boot-load';
