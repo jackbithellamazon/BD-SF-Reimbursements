@@ -146,6 +146,14 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 #stale-banner .sb-reload:hover{background:#ffe08a}
 #stale-banner .sb-x{background:transparent;border:0;color:#fff;opacity:.7;cursor:pointer;font-size:14px;padding:2px 4px}
 #stale-banner .sb-x:hover{opacity:1}
+/* Storage-full bar — every github.io app shares one browser storage pot; if it fills, say so (never fail silently) */
+#ls-bar{position:fixed;bottom:0;left:0;right:0;z-index:9998;display:flex;align-items:center;gap:14px;padding:9px 16px;background:linear-gradient(90deg,#7a1420,#b02234);color:#fff;font-size:13px;box-shadow:0 -6px 20px -6px rgba(0,0,0,.6)}
+#ls-bar .lb-warn{font-weight:800;white-space:nowrap}
+#ls-bar .lb-mid b{color:#ffe08a}
+#ls-bar .lb-x{margin-left:auto;background:transparent;border:0;color:#fff;cursor:pointer;font-size:14px;padding:2px 4px}
+body.readonly #ls-bar{bottom:29px}
+body.ls-full #toast{bottom:60px}
+body.ls-full.readonly #toast{bottom:89px}
 /* Deadline warning banner on Active */
 .adb{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 12px 8px;padding:8px 12px;background:var(--red-dim);border:1px solid color-mix(in srgb,var(--red) 45%,var(--border));border-radius:10px}
 .adb-t{font-size:13px;font-weight:800;color:var(--red)}
@@ -3019,6 +3027,25 @@ let pendingImport = null; // parsed CSV preview waiting for confirmation
 // ════════════════════════════════════════════
 //  STORAGE
 // ════════════════════════════════════════════
+// Repair pass: up to v19.5 the SKU parser read the date in Amg-135.68_1603_… as a
+// £1603 COG. Only rows whose stored COG is still exactly that misread are corrected,
+// so a COG Sarah typed in herself is never touched. Returns the ids it fixed.
+function repairSkuCogs(){
+  const oldParse = sku => { const p=String(sku||'').split('_'); if (p.length<2) return null; const n=parseFloat(p[1]); return isNaN(n)?null:n; };
+  const fixed=[];
+  [records, archived, importErrors].forEach(list=>list.forEach(r=>{
+    if (r.cog_source!=='SKU') return;
+    const was=oldParse(r.sku), now=extractCogFromSku(r.sku);
+    if (was===null || now===null || Math.abs(was-now)<0.005) return;
+    if (Math.abs(Number(r.actual_cost||0)-was)>0.005) return;
+    r.actual_cost = now;
+    r.sku_cog_unit = now;
+    r.net_result = Math.round((Number(r.reimb_amount||0) - now*(Number(r.quantity)||1))*100)/100;
+    fixed.push(r.reimb_id);
+  }));
+  if (fixed.length) console.log('SKU COG repaired on', fixed);
+  return fixed;
+}
 // Repair pass: GeneralAdjustment rows are credit/top-up rows, not standalone
 // lost-item claims. Older imports put SKU COG back on them, creating fake losses.
 function normalizeAdjustments(){
@@ -3054,24 +3081,81 @@ function normalizeAdjustments(){
   return changed;
 }
 
+// ── Browser storage ──
+// Every app on this github.io address shares ONE ~5M-character localStorage pot.
+// The cases live in Supabase, so this app keeps only small screen settings here
+// (theme, sidebar, safeguards, last-backup date, cloud settings for first paint).
+// Never fail silently: if the pot is full, keep the value in memory so the app
+// carries on, and show the red bar.
+const _lsMem = new Map();
+// Keys older builds wrote and nothing reads any more (the old copies of the cases
+// were ~635,000 characters). Cleared on every load; removing a missing key is a no-op.
+const LS_DEAD_KEYS = [
+  'bdl_reimb_v15_records','bdl_reimb_v15_archived','bdl_reimb_v15_import_errors',
+  'bdl_reimb_v15_annotations','bdl_reimb_v15_batches',
+  'bdl_reimb_records','bdl_reimb_archived','bdl_reimb_annotations','bdl_reimb_batches',
+  'bdl_reimb_v13_records','bdl_reimb_v13_archived','bdl_reimb_v13_annotations',
+  'bdl_reimb_v13_batches','bdl_reimb_v13_settings','bdl_density_mode'
+];
+function lsSweepDead(){
+  let freed=0;
+  LS_DEAD_KEYS.forEach(k=>{
+    try { const v=localStorage.getItem(k); if (v!=null){ freed+=v.length; localStorage.removeItem(k); } }
+    catch(e){ console.warn('Could not clear old key', k, e); }
+  });
+  if (freed) console.log('SF storage: cleared '+freed.toLocaleString('en-GB')+' characters of old copies');
+  return freed;
+}
+function lsGet(key){
+  if (_lsMem.has(key)) return _lsMem.get(key);
+  try { return localStorage.getItem(key); } catch(e){ return null; }
+}
+function lsSet(key, value){
+  value = String(value);
+  try { localStorage.setItem(key, value); _lsMem.delete(key); return true; }
+  catch(e){
+    // An older SellerFuse tab may have re-filled the pot with its copies: clear them, try once more.
+    if (lsSweepDead()) {
+      try { localStorage.setItem(key, value); _lsMem.delete(key); return true; } catch(e2){ e=e2; }
+    }
+    _lsMem.set(key, value);
+    console.warn('Browser storage refused '+key+' — kept in memory for this session', e);
+    showStorageBar(e);
+    return false;
+  }
+}
+function showStorageBar(e){
+  if (document.getElementById('ls-bar') || window._lsBarDismissed || !document.body) return;
+  const full = !e || /quota/i.test(String(e.name||'')+' '+String(e.message||''));
+  const bar=document.createElement('div');
+  bar.id='ls-bar'; bar.setAttribute('role','alert');
+  bar.innerHTML='<span class="lb-warn">⚠️ Browser storage is '+(full?'full':'blocked')+'</span>'+
+    '<span class="lb-mid">Your cases are <b>still saving to Supabase</b> — nothing is lost. '+
+    'Only screen settings (theme, sidebar, safeguards) won’t be remembered after a reload.'+
+    (full?' Another app on this address is using the space.':'')+'</span>'+
+    '<button class="lb-x" title="Dismiss" onclick="window._lsBarDismissed=true;document.body.classList.remove(\'ls-full\');this.parentNode.remove()">✕</button>';
+  document.body.appendChild(bar);
+  document.body.classList.add('ls-full');
+}
+
 function loadAll() {
   // Parse each key independently: a single corrupt key must not wipe the rest.
   const readJSON = (key, fallback) => {
-    try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+    try { const v = lsGet(key); return v ? JSON.parse(v) : fallback; }
     catch(e){ console.warn('Corrupt localStorage key skipped:', key, e); return fallback; }
   };
   try {
     // Cloud-only: business data comes from Supabase (cloudPull), NOT localStorage.
-    // Only UI preferences (theme, sidebar, density) persist locally.
+    // Only UI preferences (theme, sidebar) and a small settings copy persist locally.
     settings     = {...settings, ...readJSON('bdl_reimb_v15_settings', {})};
     // Per-staff theme preference persists locally (each device remembers its own).
-    const t = localStorage.getItem('bdl_theme');
+    const t = lsGet('bdl_theme');
     if (t) {
       document.documentElement.setAttribute('data-theme', t);
       const tb = document.getElementById('theme-btn');
       if (tb) tb.textContent = t==='light' ? '🌙 Dark' : '☀ Light';
     }
-    if (localStorage.getItem('bdl_sidebar_collapsed')==='1') document.getElementById('sidebar').classList.add('collapsed');
+    if (lsGet('bdl_sidebar_collapsed')==='1') document.getElementById('sidebar').classList.add('collapsed');
   } catch(e){ console.warn('loadAll failed:', e); }
   if (normalizeAdjustments()) save();
   updateBadges();
@@ -3252,6 +3336,7 @@ async function cloudPull(){
         else records.push(r);
       });
       annotations = annMap;
+      const _cogFixed = repairSkuCogs();
       // Heal any stale MSC status the moment cloud data lands, so counts/tabs are
       // right immediately (the correction syncs back on the next save).
       if (typeof reconcileMscStatus === 'function') reconcileMscStatus();
@@ -3261,15 +3346,17 @@ async function cloudPull(){
       // Remember what the cloud holds, in push shape, so the next push sends only real
       // changes. Deferred so the local rebuild above is complete first.
       _forceFullPush = false;
-      setTimeout(()=>{ cloudPushNow(true).catch(()=>{ _forceFullPush = true; }); }, 0);
-      try {
-        localStorage.setItem('bdl_reimb_v15_records', JSON.stringify(records));
-        localStorage.setItem('bdl_reimb_v15_archived', JSON.stringify(archived));
-        localStorage.setItem('bdl_reimb_v15_import_errors', JSON.stringify(importErrors));
-        localStorage.setItem('bdl_reimb_v15_annotations', JSON.stringify(annotations));
-        localStorage.setItem('bdl_reimb_v15_batches', JSON.stringify(batches));
-        localStorage.setItem('bdl_reimb_v15_settings', JSON.stringify(settings));
-      } catch(e){}
+      // A COG repaired above is already in the snapshot, so mark those rows unsent
+      // and push them, otherwise the fix would never reach Supabase.
+      setTimeout(()=>{ cloudPushNow(true).then(()=>{
+        if (_cogFixed.length && !(isReadOnly && isReadOnly())){
+          _cogFixed.forEach(id=>_syncedSnap.delete('r:'+String(id)));
+          save();
+        }
+      }).catch(()=>{ _forceFullPush = true; }); }, 0);
+      // Only the small settings object is kept locally (for first paint). The cases
+      // themselves are NOT copied into browser storage — Supabase is the only store.
+      lsSet('bdl_reimb_v15_settings', JSON.stringify(settings));
       setSyncBadge('ok');
       return true;
     }
@@ -3469,9 +3556,7 @@ function now() {
 
 // ── UI density via CSS class (not browser zoom — zoom rendered inconsistently). ──
 function applyDensity(){
-  const mode='compact';
-  localStorage.setItem('bdl_density_mode', mode);
-  document.documentElement.setAttribute('data-density', mode);
+  document.documentElement.setAttribute('data-density', 'compact');
 }
 function cycleDensity(){
   applyDensity();
@@ -7129,9 +7214,14 @@ function prepareImportedRows(rows) {
   return rows;
 }
 
+// COG lives in the SKU: PREFIX_COG_DDMM_… (Amuk_44.45_2604_70_Repl_02 → 44.45).
+// Some SKUs join the prefix to the COG with a hyphen: Amg-135.68_1603_189_Jac1_01 →
+// 135.68. There the bit after the first underscore is the DDMM date, not the cost.
 function extractCogFromSku(sku) {
   if (!sku) return null;
-  const parts = String(sku).split('_');
+  const parts = String(sku).trim().split('_');
+  const joined = parts[0].match(/^[A-Za-z&]+-(\d+(?:\.\d+)?)$/);
+  if (joined) return parseFloat(joined[1]);
   if (parts.length < 2) return null;
   const n = parseFloat(parts[1]);
   return isNaN(n) ? null : n;
@@ -7490,7 +7580,7 @@ function resetAllData() {
 
 function setTheme(v) {
   document.documentElement.setAttribute('data-theme', v);
-  localStorage.setItem('bdl_theme', v);
+  lsSet('bdl_theme', v);
   document.getElementById('theme-btn').textContent = v==='light'?'🌙 Dark':'☀ Light';
 }
 
@@ -7502,7 +7592,7 @@ function toggleTheme() {
 function toggleSidebar() {
   const sb = document.getElementById('sidebar');
   sb.classList.toggle('collapsed');
-  try { localStorage.setItem('bdl_sidebar_collapsed', sb.classList.contains('collapsed')?'1':'0'); } catch(e){}
+  lsSet('bdl_sidebar_collapsed', sb.classList.contains('collapsed')?'1':'0');
 }
 
 // ════════════════════════════════════════════
@@ -9013,16 +9103,15 @@ async function wipeCloudData(){
 
 // ── Safeguards (persist as UI prefs; read-only gates all writes) ──
 function loadSafeguards(){
-  try{ return JSON.parse(localStorage.getItem('sfre_safeguards')||'{}'); }catch(e){ return {}; }
+  try{ return JSON.parse(lsGet('sfre_safeguards')||'{}'); }catch(e){ return {}; }
 }
 function saveSafeguards(){
   const sg={ confirmBulk:document.getElementById('sg-confirm-bulk')?.checked,
              confirmImport:document.getElementById('sg-confirm-import')?.checked,
              readOnly:document.getElementById('sg-readonly')?.checked };
-  localStorage.setItem('sfre_safeguards', JSON.stringify(sg));
   window._safeguards=sg;
   updateReadOnlyUI();
-  toast('Safeguards updated');
+  toast(lsSet('sfre_safeguards', JSON.stringify(sg)) ? 'Safeguards updated' : 'Safeguards updated for this session (browser storage is full)');
 }
 function applySafeguards(){
   const sg=loadSafeguards(); window._safeguards=sg;
@@ -9081,7 +9170,7 @@ function backupData(){
     a.download=`sf-reimb-backup_${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}.json`;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(()=>URL.revokeObjectURL(url),1500);
-    localStorage.setItem('bdl_reimb_v15_last_backup', new Date().toISOString());
+    lsSet('bdl_reimb_v15_last_backup', new Date().toISOString());
     updateLastBackup();
     toast('Backup downloaded ✓');
   }catch(e){ toast('Backup failed — '+e.message); }
@@ -9122,7 +9211,7 @@ function restoreData(file){
 }
 function updateLastBackup(){
   const el=document.getElementById('last-backup'); if(!el) return;
-  const ts=localStorage.getItem('bdl_reimb_v15_last_backup');
+  const ts=lsGet('bdl_reimb_v15_last_backup');
   if(!ts){ el.textContent='never'; el.style.color='var(--amber)'; return; }
   const d=new Date(ts), days=Math.floor((Date.now()-d.getTime())/86400000);
   const rel = days<=0?'today':days===1?'yesterday':days+' days ago';
@@ -9132,7 +9221,7 @@ function updateLastBackup(){
 
 // ── Build stamp: bump on every ship. Visible in the sidebar so anyone can tell
 // at a glance whether the live site / their browser is running the latest file.
-const APP_BUILD = 'v19.4';
+const APP_BUILD = 'v19.6';
 // Boot loader — the app used to paint an all-zero Overview while the cloud pull was
 // still in flight, which read as "broken until you refresh". Cover it until data lands.
 function _int(n){return Number(n||0).toLocaleString('en-GB');}
@@ -9166,6 +9255,7 @@ document.addEventListener('keydown', e=>{
   const s=document.getElementById('srch');
   if (s){ e.preventDefault(); s.focus(); s.select(); }
 });
+lsSweepDead();
 loadAll();
 applyDensity();
 applySafeguards();
